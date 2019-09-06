@@ -22,17 +22,21 @@ x,y - метапеременные для переменных
 3. P = $(\lambda x.A) \ Q \ =  \ \lambda y.B \ and \  A[x:=t] B[y:=t] \ t $ - свободная переменна
 
 Равенство <=> текстовое совпадение
-A[x:=B] =
-{B,  A=x
- A,  A=y, y!=x
- P[x:=B]  Q[x:B] A = (PQ)
-lambday.p[x:=B], если  A = lambday.P и y !=x
-A, если A= lambdax.P}
+$A[x:=B] = 
+\left \{
+\begin{array}{ll} 
+B  , \  A=x \\
+A,  \ A=y, \ y!=x \\
+P[x:=B] \  Q[x:B] \ A = (PQ) \\
+\lambda y.p[x:=B] \ if  \ A = \lambda y.P \  and \ y \ \neq x \\
+A \ if \ A= \lambda x.P
+\end{array} 
+\right. $
 
-ex.
-(lambdax.(lambday.(yx))) [x:=p]
+$Example\\
+(\lambda x.(lambday.(yx))) [x:=p]
 lambdat.[(lambday.(y.x))] [x:=p]
-lambdat. lambday((y.x)[x:=p]) -> lambdat.lambday.y[x:=p] x[x:=p] -> (lambdat.(lambday.yp))
+lambdat. lambday((y.x)[x:=p]) -> lambdat.lambday.y[x:=p] x[x:=p] -> (lambdat.(lambday.yp)) $
 $$
 (\lambda a.\lambda b(a b)c)d)e))f)g
 $$
