@@ -58,9 +58,9 @@ $$
 
 **def** **$\beta$-редекс**
 
-**def** $\alpha$ -><sub>b</sub> B находятся в отношении B - редукции, если
+**def** $\alpha$ -><sub>b</sub> B находятся в отношении $\beta $ - редукции, если
 
-1. A = PQ B = RS. P -><sub>B</sub>R Q =<sub>$\alpha$</sub> S либо (знаки отрази)
+1. A = PQ B = RS. P -><sub>$\beta$</sub>R Q =<sub>$\alpha$</sub> S либо (знаки отрази)
 2. A - B - редекс A = ($\lambda$ x.P) Q, B = p[x := Q] при условии, что Q  обобщается для подстановки для x в P
 
 **example**
