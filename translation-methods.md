@@ -76,3 +76,138 @@ s - стартовый нетерминал, w - слово, префикс ко
 
 Грамматика $\Gamma$ называется **LL(1) грамматикой**, если $s \Rightarrow^* xA\xi \Rightarrow x \alpha \xi \Rightarrow^* xc\eta \\ s \Rightarrow^* xA\tau \Rightarrow x\beta\sigma \Rightarrow^*xc\zeta \\ \alpha = \beta$
 
+---
+
+**def** *FIRST*: $(N \cup \Sigma)^* \rightarrow 2^{\Sigma \cup \{\epsilon\}}$ 
+    $c \in FIRST(\alpha) \Leftrightarrow \alpha \Rightarrow^* cx \\ e \in FIRST(\alpha) \Leftrightarrow \alpha\Rightarrow^* \epsilon $
+
+> **e.g.** $S \rightarrow SS \\ S \rightarrow (S) \\ S \rightarrow \epsilon$ 
+>
+> $FIRST(S) = \{c, \epsilon\}$
+>
+> $FIRST('S)') = \{(,)\}$
+>
+> $FIRST(\epsilon) = \{\epsilon\}$
+>
+> $FIRST('))((') = \{')'\}$
+
+## Алгортим удаления бесполезных символов
+
+1. Удалить непорождающие символы
+2. Удалить недостижимые
+
+### Удаление непорождающих символов
+
+1. Множество непорождающих символов $Gen = \empty$
+
+    do {
+
+    ​    for A $\rightarrow \alpha$
+
+    ​        if $\alpha \in (\Sigma \cup Gen)^*$:
+
+    ​            Gen $\cup=$ A
+
+    } while Gen change
+
+    NonGen = N $\setminus$ Gen
+
+    
+    
+    A - порождающий, но Алгоритм 1 выбрал как порождающий
+    
+    $A \Rightarrow \alpha \Rightarrow^{k - 1} x$
+
+#### Лемма о рекурсивном вычислении FIRST
+
+$\alpha = c\beta$
+
+$FIRST(\alpha) = \{c\}$
+
+$\alpha = A\beta$
+
+$FIRST(\alpha) = (FIRST(A)) \setminus \epsilon) \cup (FIRST(\beta)\ if\ \epsilon \in FIRST(A))$
+
+$FIRST(\epsilon) = \{\epsilon\}$
+
+### Алгоритм 
+
+FIRST: map<N, set<$\Sigma \cup \epsilon$>>
+
+function getFIRST($\alpha$)
+
+​    if $\alpha = \epsilon$ return $\{\epsilon\}$
+
+​    if $\alpha[i] \in \Sigma$ return $\{\alpha[i]\}$
+
+​    // $\alpha[0] \in N$
+
+​    return $(FIRST[ \alpha[0]] \setminus \epsilon) \cup (getFIRST(\alpha[1:]), if \ \epsilon \in FIRST[\alpha[0]])$
+
+#### Алгоритм построения FIRST
+
+do {
+
+​    for A $\rightarrow \alpha$:
+
+​        FIRST[A] $\cup = getFIRST(\alpha)$
+
+} while FIRST changes
+
+**def** *FOLLOW*: $N \rightarrow 2^{\Sigma \cup \{\$\}}$
+
+​    $c \in FOLLOW(A) \Leftrightarrow S \Rightarrow^* \alpha A c \beta$
+
+​    $\$ \in FOLLOW(A) \Leftrightarrow S \Rightarrow^* \alpha A$
+
+### Алгоритм FOLLOW
+
+FOLLOW: map<N, set<$\Sigma \cup \$$>>
+
+FOLLOW(S) = {$}
+
+do {
+
+​    for A $\rightarrow \alpha$
+
+​        for B in $\alpha$
+
+​            let $\alpha = \xi B \eta$
+
+​            FOLLOW(B) = FIRST($\eta) \setminus \epsilon$
+
+​            if $\epsilon \in FIRST(\eta)$
+
+​                FOLLOW(B) $\cup =$ FOLLOW(A)
+
+} while FOLLOW changes
+
+## Теорема
+
+$\Gamma$ является LL(1) $\Leftrightarrow$ $\forall A \rightarrow \alpha, A \rightarrow \beta$:
+
+1. $FIRST(\alpha) \cap FIRST(\beta) = \empty$
+2. $\epsilon \in FIRST(\alpha) \Rightarrow FIRST(\beta) \cap FOLLOW(A) = \empty$
+
+>  Доказательство:
+>
+>  $\Rightarrow$) от противного:
+>
+>  ​    ] не (1) 
+>
+>    1. $\exists A \rightarrow \alpha, A \rightarrow \beta, c \in FIRST(\alpha) \cap FIRST(\beta)$
+>
+>  ​      $S \Rightarrow^* xA\sigma \Rightarrow x \alpha \sigma \Rightarrow^* xc\xi\sigma$
+>
+>  ​      $S \Rightarrow^* xA\sigma \Rightarrow x \beta \sigma \Rightarrow^* xc\eta\sigma$
+>
+>  ​    2. $\epsilon \in FIRST(\alpha) \cap FIRST(\beta)$
+>
+>  ​       $S \Rightarrow^* xA\sigma \Rightarrow x \alpha \sigma \Rightarrow^* x\sigma \Rightarrow xc\tau$
+>
+>  ​        $S \Rightarrow^* xA\sigma \Rightarrow x \beta \sigma \Rightarrow^* x\sigma \Rightarrow xc\tau$
+>
+>  ​    ] не (2)
+>
+>  ​    ...
+
