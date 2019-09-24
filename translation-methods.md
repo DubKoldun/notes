@@ -211,3 +211,184 @@ $\Gamma$ является LL(1) $\Leftrightarrow$ $\forall A \rightarrow \alpha,
 >
 >  ​    ...
 
+---
+
+## Рекурсивный спуск
+
+$A \rightarrow \alpha_1 | \alpha_2 | ... | \alpha_k$
+
+
+
+Node:
+
+​    s: $N \cup \Sigma$
+
+​    ch: array(Node)
+
+token: $\Sigma \cup \{\$\}$
+
+next()
+
+
+
+$FIRST'(A \rightarrow \alpha) = (FIRST(\alpha) \setminus \epsilon) \cup (FOLLOW(A) \ if\ \epsilon \in FIRST(\alpha))$
+
+
+
+```
+Node A() {
+    Node res = Node(A)
+    switch (token) 
+        FIRST'(A -> a1):
+            // a1 = X1X2...Xl
+            // X1 in N
+            Node x1 = X1()
+            res.addChild(x1)
+            // X1 in N
+            Node x2 = X2()
+            res.addChild(x2)
+            // X3 in Sigma
+            assert x3 = token or Error()
+            res.addChild(token)
+            next()
+            
+            ...
+            // Xl ...
+            ...
+            
+            return res
+       FIRST'(A -> a2)
+           ...
+       
+       default:
+           Error()
+}
+```
+
+
+
+ETF (expression, therm, factor)
+
+Grammar:
+$$
+E \rightarrow E + T \\
+E \rightarrow T \\ 
+T \rightarrow T \times F \\
+T \rightarrow F \\
+F \rightarrow n \\
+F \rightarrow (E)
+$$
+
+
+|      | FIRST  |
+| ---- | ------ |
+| E    | `n, (` |
+| T    | `n, (` |
+| F    | `n, (` |
+
+`FIRST (E + T) = {n, (}`
+`FIRST(T) = {n, (}`
+
+**def** $\Gamma$ называется *леворекурсивной*, если в $\Gamma: A \Rightarrow^+ A \alpha$
+
+**comment** $\Gamma$ - леворекурсивная $\Rightarrow \ \Gamma \notin LL(1) $
+$$
+A \Rightarrow \beta \Rightarrow^* A \alpha \\
+A \Rightarrow^* B \xi \Rightarrow \gamma \xi \Rightarrow^* A \alpha \\
+A \Rightarrow^* B \xi \Rightarrow \delta \xi \Rightarrow^* x = cy \\
+c \in (FIRST(\delta)) \setminus \epsilon \cup (FIRST(\xi) \ if \ \epsilon \in FIRST(\delta)) \\
+c \in FIRST(\gamma) \setminus \epsilon \cup (FIRST(\xi) \ if \ \epsilon \ in FIRST(\gamma))
+$$
+$A \rightarrow A \alpha$ - непосредственная левая рекурсия
+$A \rightarrow \beta$
+$\beta \alpha^*$
+
+Устранение левой рекурсии:
+
+$A \rightarrow \beta A'$
+$A' \rightarrow \epsilon$
+$A' \rightarrow \alpha A'$
+
+$E \rightarrow E \stackrel{\alpha}{+ T}$
+$E \rightarrow \stackrel{\beta}{T}$
+
+
+
+### Грамматика с устранённой непосредственной левой рекурсией
+
+$$
+E \rightarrow TE' \\
+E' \rightarrow \epsilon \\
+E' \rightarrow +TE' \\
+T \rightarrow FT' \\
+T' \rightarrow \epsilon \\
+T' \rightarrow \times FT' \\
+F \rightarrow n \\
+F \rightarrow (E)
+$$
+
+|      | FIRST | FOLLOW    |
+| ---- | ----- | --------- |
+| E    | `( n` | `$ )`     |
+| E'   | `+ e` | `$ )`     |
+| T    | `( n` | `+ $ )`   |
+| T'   | `* e` | `+ $ )`   |
+| F    | `( n` | `* + $ )` |
+
+```
+Node E()
+    Node res = Node(E)
+    switch (token)
+        case n, (:
+            // E -> TE'
+            Node t = T()
+            res.addChild(t)
+            Node e' = E'()
+            res.addChild(e')
+            return res
+            
+        default:
+            Error()
+            
+Node E'()
+    Node res = Node(E')
+    switch (token) 
+       case $, ):
+           // E' -> e
+           return res
+       case +, e:
+           // E' -> +TE'
+           assert token == +
+           res.addChild(Node(t))
+           next()
+           Node t = T()
+           res.addChild(t)
+           Node e' = E'()
+           res.addChild(e')
+           return res
+           
+       default:
+           Error()
+           
+    // T and T' are similar with above   
+    
+Node F()
+    Node res = Node(F)
+    switch (token) 
+        case n:
+            assert token == n
+            res.addChild(n)
+            next()
+            return res
+        case (:
+            assert token == (
+            res.addChild(\()
+            next()
+            Node e = E()
+            res.addChild(e)
+            assert token == )
+            res.addChild(Node(\)))
+            next()
+            return res
+```
+
