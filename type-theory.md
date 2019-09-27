@@ -153,10 +153,7 @@ $Konstant = \lambda x. \lambda y. x$
 
 $I =_\beta S\ K \ K$
 
-```mermaid
-graph TD;
-    A[\x -> x x x (II)] --> B[\x -> x x x (I)]
-```
+
 
 ## Теорема Чёрча Росса
 
@@ -237,4 +234,124 @@ $$
 ### Теорема
 
 Если нормальная форма существует, то она может быть получена п. л. (??)
+
+---
+
+Введём импликацию: $\supset$, аксиомы:
+
++ $(A \supset (A \supset B)) \supset (A \supset B)$
++ $(A \supset A)$
++ $A = _\beta B \implies A \supset B \ \& \ B \supset A$
+
+Теория противоречива, если $\vdash \alpha$
+$\Phi_A : \Phi_A =_\beta \Phi_A \supset A$
+$$
+\Phi_A = _\beta \Phi_A \supset A \\
+\Phi_A \supset (\Phi_A \supset A) \\
+(\Phi_A \supset (\Phi_A \supset A)) \supset (\Phi_A \supset A) \\
+\Phi_A \supset A
+(\Phi_A \supset A) =_\beta \Phi_A
+$$
+$\Phi_A = Y (\lambda x. x \supset A) = _\beta (\lambda x .x \supset A) [Y(\lambda x. x \supset A)] = [Y(\lambda x . x \supset A)] \supset A$
+$$
+X = \{a \ |\ a \notin a \} \\
+\empty - 0\  type \\
+\{\empty\} - 1 \ type \\
+\{\{\empty\}\} - 2 \ type \\
+\{\{\empty\}, \empty\} = \overline{2} \\
+a \notin a \\
+n \ n + 1
+$$
+
+$T :: = T_\lambda \  | \ T \rightarrow T$
+$T_\lambda = \{\alpha, \beta, \gamma\}$ - множество элементарных (атомарных) типов
+$\Lambda$-выражение A имеет тип $\tau$ в контексте $\Gamma$
+$\Gamma \vdash A : \tau$
+$\Gamma = \{x_1 : \tau_1; x_2 : \tau_2; ...; x_n : \tau_n\}$
+если:
+
+1. $\overline{\Gamma, x : \tau \vdash x : \tau}$    x не входит в $\Gamma$ (*аксиома*)
+2. $\dfrac{\Gamma, x \ : \ \tau\  \vdash A \ : \ \sigma}{\Gamma\  \vdash \ \lambda \ x \ .\  A :\  \tau\  \rightarrow\  \sigma}$    x не входит в $\Gamma$ (*введение имплации*)
+3. $\dfrac{\Gamma \ \vdash \ A \ : \ \tau \ \rightarrow \ \sigma \ \ \Gamma \ \vdash \ B \ : \ \tau}{\Gamma \ \vdash \ (A \ B) \ : \ \sigma}$ (*удаление импликации*)
+
+
+
+## Просто-типизированное $\lambda$-исчисление (по Карри)
+
+Импликационный фрагмент ИИВ
+
+Термы:
+
+1. $\alpha, \beta, \gamma$ (переменные)
+2. $(\tau \rightarrow \sigma)$ 
+
+A. Гильбертовский вид:
+
+1. $\alpha \rightarrow \beta \rightarrow \alpha$
+2. $(\alpha \rightarrow \beta) \rightarrow (\alpha \rightarrow \beta \rightarrow \gamma)$
+3. M.P. $\dfrac{\alpha \ \ \alpha \rightarrow \beta}{\beta}$
+
+B. Нормальный вывод:
+
+$\dfrac{[посылка \ 1, [посылка \ 2 \ [...]]]}{заключение}$
+
+1. Аксиома: $\overline{\tau \rightarrow \tau}$
+2. Ввод импликации: $\dfrac{\sigma \ \tau}{\sigma \rightarrow \tau}$
+3. Удаление импликации: $\dfrac{\sigma \ \sigma \rightarrow \tau}{\tau}$
+
+$$
+\overline{\Gamma, x : \tau \vdash x : \tau} \\
+\dfrac{\Gamma, x : \sigma \vdash B : \tau}{\Gamma \vdash \lambda x. B : \sigma \rightarrow \tau} \\
+\dfrac{\Gamma \vdash A : \sigma \ \ \Gamma \vdash B : \sigma \rightarrow\ \tau}{\Gamma \vdash B \ A : \tau}
+$$
+
+**Закон Пирса**: $((\alpha \rightarrow \beta) \rightarrow \alpha) \rightarrow \alpha$
+
+0. Сохранение типа: $A \rightarrow_\beta B, \Gamma \vdash A : \alpha \implies \Gamma \vdash B : \alpha$
+
+1. Теорема Чёрча-Россера для просто-типизированного $\lambda$-исчисленияC
+
+    $$
+    \vdash A : \alpha \\ 
+    A \twoheadrightarrow_\beta B \\
+    A \twoheadrightarrow_\beta C
+    $$
+
+    Тогда существует $\Gamma \vdash D : \alpha$, что $B \twoheadrightarrow_\beta D$ и $ C \twoheadrightarrow_\beta D$
+    
+2. **Теорема об Изоморфизме Карри-Ховарда**
+
+    $(\implies)$ Пусть $\Gamma \vdash A : \alpha$, тогда $|\Gamma| \vdash_{ИИВ} |\alpha|$
+    $|\Gamma| = |\{x_1 : \tau_1, ..., x_n : \tau_n\}| = \{|\tau_1|, ..., |\tau_n|\}$
+    $|\tau|$ - отображение типа в высказывание
+    
+    $(\Longleftarrow)$  Пусть $\Gamma \vdash \alpha$
+    Тогда найдётся $\Gamma ' : |\Gamma '| = \Gamma, |\alpha '| = \alpha'$. существует A, что $\Gamma ' \vdash A : \alpha '$
+    
+    > Доказательство: индукция по структуре
+    
+    Изоморфизм К-Х
+    
+    тип - высказывание
+    
+    терм - докозательство
+    
+    свободная переменная - гипотеза
+    
+3. О замкнутости ИФИИВ (интуиционный фрагмент ИИВ)
+
+    Пусть $\alpha$ - формула с "$\rightarrow$" только (без &, |, !)
+
+    Тогда $\vdash_{ИИВ} \alpha \Longleftrightarrow \  \vdash_{ИФИИВ} \alpha$
+
+    
+
+## Исчисление по Чёрчу
+
+$\Lambda ::= X \ - \ variable \ |(\Lambda \ \Lambda)| \ (\lambda x^\tau . \Lambda)$,  x имеет тип $\tau$
+
+> e.g. паскаль чуть больше, чем Чёрчу
+> хаскель и окамль - типизация по Карри
+>
+> по Черчу - точно определяем тип 
 
