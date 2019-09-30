@@ -43,11 +43,11 @@ $\Sigma, \Sigma^*, L \subset \Sigma^*$ - формальный язык
 3. Синтаксически управляемая трансляция
 
     >  $E \rightarrow T \\ E \rightarrow E \ + \ T \\ T \rightarrow F \\ T \rightarrow T \ \times \ F \\ F \rightarrow n \\ F \rightarrow (E)$
-    
+
     **Аттрибуто транслирующие грамматики** - КСГ с добавлением двух элементов: аттрибуты и транслирующие символы
 
     **транслирующие символы** - фрагменты кода, которые вставляем в грамматику, которые могут взаимодействовать с аттрибутами
-    
+
     >$E \rightarrow E \ + \ T \ \{E_{0}.v = E_{1}.v \ +\ T.v \}$
     >
     >$T \rightarrow T \ \times \ F \ \{T_{0}.v = T_{1}.v \ +\ F.v \}$
@@ -79,10 +79,10 @@ s - стартовый нетерминал, w - слово, префикс ко
 <<<<<<< Updated upstream
 ---
 
-**def** *FIRST*: $(N \cup \Sigma)^* \rightarrow 2^{\Sigma \cup \{\epsilon\}}$ 
+**def** *FIRST*: $(N \cup \Sigma)^* \rightarrow 2^{\Sigma \cup \{\epsilon\}}$
     $c \in FIRST(\alpha) \Leftrightarrow \alpha \Rightarrow^* cx \\ e \in FIRST(\alpha) \Leftrightarrow \alpha\Rightarrow^* \epsilon $
 
-> **e.g.** $S \rightarrow SS \\ S \rightarrow (S) \\ S \rightarrow \epsilon$ 
+> **e.g.** $S \rightarrow SS \\ S \rightarrow (S) \\ S \rightarrow \epsilon$
 >
 > $FIRST(S) = \{c, \epsilon\}$
 >
@@ -113,10 +113,10 @@ s - стартовый нетерминал, w - слово, префикс ко
 
     NonGen = N $\setminus$ Gen
 
-    
-    
+
+
     A - порождающий, но Алгоритм 1 выбрал как порождающий
-    
+
     $A \Rightarrow \alpha \Rightarrow^{k - 1} x$
 
 #### Лемма о рекурсивном вычислении FIRST
@@ -131,7 +131,7 @@ $FIRST(\alpha) = (FIRST(A)) \setminus \epsilon) \cup (FIRST(\beta)\ if\ \epsilon
 
 $FIRST(\epsilon) = \{\epsilon\}$
 
-### Алгоритм 
+### Алгоритм
 
 FIRST: map<N, set<$\Sigma \cup \epsilon$>>
 
@@ -194,7 +194,7 @@ $\Gamma$ является LL(1) $\Leftrightarrow$ $\forall A \rightarrow \alpha,
 >
 >  $\Rightarrow$) от противного:
 >
->  ​    ] не (1) 
+>  ​    ] не (1)
 >
 >    1. $\exists A \rightarrow \alpha, A \rightarrow \beta, c \in FIRST(\alpha) \cap FIRST(\beta)$
 >
@@ -239,7 +239,7 @@ $FIRST'(A \rightarrow \alpha) = (FIRST(\alpha) \setminus \epsilon) \cup (FOLLOW(
 ```
 Node A() {
     Node res = Node(A)
-    switch (token) 
+    switch (token)
         FIRST'(A -> a1):
             // a1 = X1X2...Xl
             // X1 in N
@@ -252,15 +252,15 @@ Node A() {
             assert x3 = token or Error()
             res.addChild(token)
             next()
-            
+
             ...
             // Xl ...
             ...
-            
+
             return res
        FIRST'(A -> a2)
            ...
-       
+
        default:
            Error()
 }
@@ -273,7 +273,7 @@ ETF (expression, therm, factor)
 Grammar:
 $$
 E \rightarrow E + T \\
-E \rightarrow T \\ 
+E \rightarrow T \\
 T \rightarrow T \times F \\
 T \rightarrow F \\
 F \rightarrow n \\
@@ -347,13 +347,13 @@ Node E()
             Node e' = E'()
             res.addChild(e')
             return res
-            
+
         default:
             Error()
-            
+
 Node E'()
     Node res = Node(E')
-    switch (token) 
+    switch (token)
        case $, ):
            // E' -> e
            return res
@@ -367,15 +367,15 @@ Node E'()
            Node e' = E'()
            res.addChild(e')
            return res
-           
+
        default:
            Error()
-           
+
     // T and T' are similar with above   
-    
+
 Node F()
     Node res = Node(F)
-    switch (token) 
+    switch (token)
         case n:
             assert token == n
             res.addChild(n)
@@ -391,27 +391,3 @@ Node F()
             res.addChild(Node(\)))
             next()
             return res
-```
-=======
-**def** FIRST
-
-$(N\cup \Sigma)^* \rightarrow $$2^{\Sigma \cup \{ \epsilon \}}$ 
-
-$c \sub FIRST(\alpha) <=> \alpha \Rightarrow^*cx$
-$\epsilon \sub FIRST(x) <=> \alpha \Rightarrow^* \epsilon$
-
-#### Алгоритм удаления бесполезных символов (токенов) 
-
-1. Удаление непорождающие
-
-2. Удаление недостижимых
-
-   1. $Gen = \empty$	
-
-      $do \ \{ for A \rightarrow \alpha
-      	if \alpha \sub (\Sigma \cup GEN)^*
-      		Gen \cup = A \}$ 
-
-##### Теорема 
->>>>>>> Stashed changes
-
