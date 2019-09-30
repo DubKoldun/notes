@@ -76,6 +76,7 @@ s - стартовый нетерминал, w - слово, префикс ко
 
 Грамматика $\Gamma$ называется **LL(1) грамматикой**, если $s \Rightarrow^* xA\xi \Rightarrow x \alpha \xi \Rightarrow^* xc\eta \\ s \Rightarrow^* xA\tau \Rightarrow x\beta\sigma \Rightarrow^*xc\zeta \\ \alpha = \beta$
 
+<<<<<<< Updated upstream
 ---
 
 **def** *FIRST*: $(N \cup \Sigma)^* \rightarrow 2^{\Sigma \cup \{\epsilon\}}$ 
@@ -391,4 +392,26 @@ Node F()
             next()
             return res
 ```
+=======
+**def** FIRST
+
+$(N\cup \Sigma)^* \rightarrow $$2^{\Sigma \cup \{ \epsilon \}}$ 
+
+$c \sub FIRST(\alpha) <=> \alpha \Rightarrow^*cx$
+$\epsilon \sub FIRST(x) <=> \alpha \Rightarrow^* \epsilon$
+
+#### Алгоритм удаления бесполезных символов (токенов) 
+
+1. Удаление непорождающие
+
+2. Удаление недостижимых
+
+   1. $Gen = \empty$	
+
+      $do \ \{ for A \rightarrow \alpha
+      	if \alpha \sub (\Sigma \cup GEN)^*
+      		Gen \cup = A \}$ 
+
+##### Теорема 
+>>>>>>> Stashed changes
 
