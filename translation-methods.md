@@ -392,3 +392,137 @@ Node F()
             return res
 ```
 
+---
+
+$$
+A \rightarrow A \alpha \\
+A \rightarrow \beta \\
+--- \\
+A \rightarrow \beta A' \\
+A' \rightarrow \alpha A' \\
+A' \rightarrow \epsilon
+$$
+
+
+
+$\beta \alpha^*$
+    A
+        switch
+            FIRST'($A \rightarrow \beta_1$)
+
+​                     $\beta_1$
+
+​            FIRST'($A \rightarrow \beta_2$)
+
+​                     $\beta_2$
+​             ...
+​             while (token $\in$ FIRST'($A \rightarrow A \alpha $))
+
+```mermaid
+graph TD;
+    A[A] --> B[A]
+    A --> C[alpha]
+    B --> D[A]
+    B --> E[alpha]
+    D --> F[A]
+    D --> G[alpha]
+    F --> H[beta]
+```
+
+
+
+$A \Rightarrow^+ A\alpha$
+$A \rightarrow X \alpha, \ X \in \Sigma$ или $\#X > \#A$
+$A_1, A_2, ..., A_n, \ \#A_i = i$
+
+$A_1 \rightarrow A_1 \alpha \\ A_1 \rightarrow \beta \\ A_1 \rightarrow \beta A_1' \\ A_1' \rightarrow \alpha A_1' \\ A_1' \rightarrow \epsilon $
+
+1. Избавиться от $\epsilon$-правила
+
+    $A_1 \rightarrow \beta A_1' \\ A_1 \rightarrow \beta  \\A_1' \rightarrow \alpha A_1' \\ A_1' \rightarrow \alpha $
+
+2. $A_2 \rightarrow A_1 \alpha \rightsquigarrow A_2 \rightarrow \xi \alpha \ для \ всех \ A_1 \rightarrow \xi \ \ (A_2 \rightarrow A_2 \beta, A_2 \rightarrow \gamma) \\ A_2 \rightarrow A_2 \beta \\ A_2 \rightarrow \gamma$
+
+    ```
+    for i = 1..n
+        for j = 1..i - 1
+           A_i -> A_j alpha
+           for A_j -> xi alpha
+              add A_i -> xi alpha
+          remove A_i -> A_j alpha
+    ```
+
+
+
+$A \rightarrow \alpha \beta$
+$A \rightarrow \alpha \gamma$
+$L(\alpha) \ne \{\epsilon\}$, то LL(1)
+
+$A \rightarrow \alpha A' \\ A' \rightarrow \beta \\ A' \rightarrow \gamma$
+
+
+
+## Построение нерекурснвных нисходящих разборов
+
+Стек, управлящая таблица
+
+|          |      |       | $\Sigma$ | c    |       | $     |
+| -------- | ---- | ----- | -------- | ---- | ----- | ----- |
+| N        | A    |       |          |      |       |       |
+|          |      |       |          |      | ERROR |       |
+| $\Sigma$ |      |       | SKIP     |      |       | ERROR |
+|          |      | ERROR |          |      |       |       |
+| $\perp$  |      |       |          |      |       |       |
+
+$$
+E \rightarrow TE' \\
+E' \rightarrow \epsilon \\
+E' \rightarrow +TE' \\
+T \rightarrow FT' \\
+T' \rightarrow \epsilon \\
+T' \rightarrow \times FT' \\
+F \rightarrow n \\
+F \rightarrow (E)
+$$
+
+|      | FIRST | FOLLOW    |
+| ---- | ----- | --------- |
+| E    | `( n` | `$ )`     |
+| E'   | `+ e` | `$ )`     |
+| T    | `( n` | `+ $ )`   |
+| T'   | `* e` | `+ $ )`   |
+| F    | `( n` | `* + $ )` |
+
+|      | n    | +    | *    | (    | )    | $    |
+| ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+| E    | 1    |      |      | 1    |      |      |
+| E'   |      | 2    |      |      | 3    | 3    |
+| T    | 4    |      |      | 4    |      |      |
+| T'   |      | 6    | 5    |      | 6    | 6    |
+| F    | 7    |      |      | 8    |      |      |
+
+> пустые ячейки соответствуют ошибке
+
+> e.g. to parse: `2 + 2 * 2`
+> tree:
+>
+> ```mermaid
+> graph TD;
+>     E --> T
+>     E --> E'
+>     T --> F
+>     T --> T'
+>     F --> n
+>     T' --> epsilon
+>     E' --> +
+>     E' --> G[T]
+>     E' --> H[E']
+>     G --> J[F]
+>     G --> K[T']
+>     J --> U[n]
+>     K --> *
+>     K --> O[F]
+>     K --> P[T']
+>     O --> L[n]
+> ```
+
