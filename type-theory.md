@@ -321,7 +321,7 @@ $$
     
 2. **Теорема об Изоморфизме Карри-Ховарда**
 
-    $(\implies)$ Пусть $\Gamma \vdash A : \alpha$, тогда $|\Gamma| \vdash_{ИИВ} |\alpha|$
+    $(\implies)$ Пусть $\Gamma \vdash A : \alpha$, тогда $|\Gamma\Vdash_{ИИВ} |\alpha|$
     $|\Gamma| = |\{x_1 : \tau_1, ..., x_n : \tau_n\}| = \{|\tau_1|, ..., |\tau_n|\}$
     $|\tau|$ - отображение типа в высказывание
     
@@ -355,3 +355,99 @@ $\Lambda ::= X \ - \ variable \ |(\Lambda \ \Lambda)| \ (\lambda x^\tau . \Lambd
 >
 > по Черчу - точно определяем тип 
 
+---
+
+$\lambda x : \sigma . A$ - альтернативный синтаксис
+
+## Теорема: ИФИИВ замкнут относительно доказуемости
+
+$\vdash_{ИИВ} \alpha \implies \vdash_{ИФИИВ} \alpha$
+
+$\Leftarrow \ :\ \vdash_{ИФИИВ} \alpha \implies \vdash_{ИИВ} \alpha$ очевидно 
+$\Rightarrow \ :\ \vdash_{ИИВ} \alpha \implies \vdash_{ИФИИВ} \alpha$
+
+### Теорема: модели Крипке полны для ИИВ
+
+$\Gamma \vdash \phi \Leftrightarrow \forall$ шкал (моделей) Крипке C $ \Vdash _C \Gamma \implies \Vdash _C \phi$
+
+### Теорема Полнота интуционного фрагмента
+
+$\Gamma \vdash_{ИФ} \alpha \Leftrightarrow C -$ модель  Крипке $\Vdash _C \Gamma \implies \Vdash _C \alpha$ (вынуждено)
+
+$\Rightarrow$ очевидно
+
+$\Leftarrow$ пусть $\Gamma \nvdash_{ИФ}  \alpha$
+$W = \{\Delta \ |\  \Gamma \subseteq \Delta, \Delta$ замкнуто относительно $\vdash_{ИФ}\}$
+$\{\Delta \ | \Gamma \subseteq \Delta, if \ \Delta \vdash \beta, then \ \beta \in \Delta\}$
+
+$w_0 \leqslant w_1 \Leftrightarrow w_0 \subseteq w_1$
+$w_2 \Vdash p \Leftrightarrow p \in w_2$
+(p - пропозициональная переменная)
+
+Покажем, что $w_i \Vdash \alpha \Leftrightarrow \alpha \in w_2$
+
+По предположению теоремы $\Gamma \Vdash \alpha$ во всех моделях, в том числе и в этой, значит, $\Vdash_w \alpha$
+Значит,  $\Gamma \vdash_{ИФ} \alpha$ (по определению $\Vdash$)
+
+По предположению теоремы, $\Vdash_C \Gamma$ влечёт $\Vdash_C \alpha$  в любой C
+Возьмём w в каждой C
+Заметим, что $\Vdash_w \Gamma \implies \Vdash_w \alpha$ (по ф Т)
+Также очевидно $\Vdash_w \Gamma$. Значит, $\Vdash_w \alpha$
+Значит, $\Gamma \vdash_{ИФ} \alpha$ (по определению $\Vdash$)
+
+```mermaid
+graph TD;
+   A -- "фn ~ ф1" --> B
+   A((Г*)) --> |ф2| B[Г U ф1*]
+   A --> C[Г U ф2*]
+   B --> D
+   C --> D["Г U {ф1, ф2}*"]
+   A --> E["Г U {фn}*"]
+   D --> F[Г*]
+```
+
+1. Пусть $A : (\alpha \rightarrow \alpha) \rightarrow (\alpha \rightarrow \alpha)$    ($ = \nu$)
+    $F : \nu \rightarrow \nu \rightarrow \nu$    ($\nu$ - это тип числа)
+
+    **def** 
+    $$
+    E (a, b) =
+    \left\{
+    	\begin{array}{ll}
+       		p_1, a = b = 0 \\
+       		p_2(a), b = 0 \\ 
+       		p_3(b), a = 0 \\
+       		p_4,(a, b), a, b > 0
+    	\end{array}
+    \right.
+    $$
+    $E: \N^2 \rightarrow \N$
+    $p_i(a, b)$ - полином
+    $p^{k_i}(a, b) = x_1 a^{k_1}b^0 + x_2 a^{k_1 -1 }b^1 + ... + x_{k_1 + i, k_1} a^0 b^{k_1} + p^{k_1 -1}(a, b) = \sum_{0 \leqslant i, j < k } y_{i j} a^i b^j$
+    $p^0(a, b) = x_0$
+
+    **def** f(a, b) - полином от a и b, если существует k, существует $\{y_{i j}\}_{0 \leqslant i, j < k}$, что $f(a, b) = \sum_{0 \leqslant i, j,< k} y_{i j} a^i b^j$
+Тогда существует E(a, b): для любых a и b: $F \overline a \overline b =_\beta \overline{E(a, b)}$ (результат функции $\beta$- эвивалентен)
+    
+
+
+## Теорма $\lambda_\rightarrow$ сильно нормализуемо
+
+Любой терм $A : \alpha$ сильно нормализуем
+
+
+
+
+> 3 задачи:
+> 
+> 
+> |      | $\lambda$                                                    |                                   | логика                                                     | решение            |
+> | ---- | ------------------------------------------------------------ | --------------------------------- | ---------------------------------------------------------- | ------------------ |
+> | e.g. | $? \vdash ? : ?$     //   ($\vdash \lambda x . x : \alpha \rightarrow \alpha$) |                                   |                                                            |                    |
+> | 1.   | $\Gamma /? \vdash ? : \alpha$                                | "Задача обитаемости типа"         | существует ли доказательство $\alpha$ в контексте $\Gamma$ | перебор деревьев   |
+> | 2.   | $\Gamma / ? \vdash M : ?$                                    | "Вывод типа / реконструкция типа" | Понять, что доказываем                                     | унификация         |
+> | 3.   | $\Gamma \vdash M : \alpha$                                   | "Проверка вывода"                 | дз номер 2 по мл                                           | сводится ко второй |
+>
+> все 3 задачи решаются в $\lambda_\rightarrow$ (экспоненциальные алгоритмы)
+
+ В исчислении сложнее, чем лямбда-исчисление неразрешимы все 3 задачи. (ex: исчисление предикатов)
