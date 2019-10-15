@@ -706,3 +706,54 @@ Node E'(a)
 операции регистровых машин: load загрузить значение и store выгрузить в память
 преимущество перед регистровыми, в регистровых конечное количество регистров, здесь есть стек и операции push, pop
 
+---
+
+Непосредственная левая рекурсия 
+$A \rightarrow A \alpha$
+$A \rightarrow \beta$
+x - синтезируемый атрибут A
+
+$A \rightarrow \beta A'$
+$A' \rightarrow \epsilon$
+$A' \rightarrow \alpha A'$
+
+```mermaid
+graph TD;
+    A --> B[A]
+    A --> D[a3]
+    B --> C[A]
+    B --> E[a2]
+    C --> J[A]
+    C --> K[a1]
+    J --> L[b]
+    N[A] --> I[b]
+    N --> O[A']
+    O --> P[a1]
+    O --> Q[A']
+    Q --> W[a2]
+    Q --> R[A']
+    R --> Z[e]
+```
+
+A' x - соответствует Ax - синтезируемый
+a - аккумулятор - наследуемый
+
+$A \rightarrow \beta A'$           $A' a = f(\beta)$
+$A' \rightarrow \epsilon$
+$A' \rightarrow \alpha A'$
+
+A s - синтезируемый атрибут
+a - наследуемый атрибут
+
+```
+A(a) -> s
+    switch ()
+        ...
+        // A -> a
+        s = f(alpha)
+        // alpha_k = B
+        B(<->)
+```
+
+Но вообще генерируются парсеры со стеком
+
