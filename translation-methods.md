@@ -757,3 +757,56 @@ A(a) -> s
 
 Но вообще генерируются парсеры со стеком
 
+---
+
+
+
+## Восходящий разбор
+
+перенос - свёртка
+`shift - reduce`
+
+```mermaid
+graph BT;
+   A[n] --- B[F]
+   B --- C[T]
+   C --- D[E]
+   +
+   E[n] --- F[F]
+   F --- G[T]
+   *
+   H[n] --- K[F]
+   G --- I
+   * --- I
+   K --- I[T]
+   D --- J
+   + --- J
+   I --- J[E]
+```
+
+**LR - анализ**
+LR(0) редко используется, есть LR(1)
+LR -> SLR (Simple LR) -> LALR -> LR(1)
+
+$\eta B u \Rightarrow \eta \beta u = \xi A t \Rightarrow \xi \alpha t = \omega$
+
+$\gamma = \xi t \ \ \ \ \ \ S \Rightarrow^* \gamma \ \ \ \ \ \ \ \  \xi \in (\Sigma \cup N)^*, t \in \Sigma^*$
+$\alpha$ - подстрока $\gamma$
+$\gamma = \xi' \alpha t'$   $\xi'$ - подстрока $\xi$, t' - суффикс t
+
+$S \Rightarrow^* \xi'At' \Rightarrow \xi'\alpha t' = \xi t$
+
+Ситуации (items) 
+LR(1) - ситуация ($A \rightarrow \alpha, K \in \{0, ..., |\alpha|\}$)
+
+![table](photos/tm-22-10-2019.jpg)
+
+
+
+### Теорема
+
+Ели строка альфа допускается автоматом, построенным по этим правилам, то:
+
+1. Существует правио $B \rightarrow \gamma$, $\gamma$ - суффикс $\alpha$
+
+![table](photos/tm-22-10-2019-2.jpg)
