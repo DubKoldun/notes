@@ -159,7 +159,7 @@ $I =_\beta S\ K \ K$
 
 $(\twoheadrightarrow_\beta)$ обладает ромбовидным свойством
 
-**def** $(\stackrel{\rightarrow}{\rightarrow_\beta})$ отношение параллельной $\beta$-редукции
+**def** $(\rightrightarrows_\beta)$ отношение параллельной $\beta$-редукции
 
 $A \rightrightarrows_\beta$, если 
 
@@ -178,7 +178,7 @@ $A \rightrightarrows_\beta$, если
 **stat** схема доказательства Чёрча Росса
 
 1. $(\rightrightarrows_\beta)$ обладает ромбовидным свойством
-2. Если R обладает ромбовидным свойстовм, то R^*^ - транзитивное замыкание обладает ромбовидным свойством
+2. Если R обладает ромбовидным свойством, то R^*^ - транзитивное замыкание обладает ромбовидным свойством
 3. Из (1) и (2) следует, что $(\rightrightarrows_\beta)^*$ обладает ромбовидным свойством
 4. $(\rightarrow_\beta) \subseteq (\rightrightarrows_\beta)$
 5. $(\rightrightarrows_\beta)^* \subseteq (\twoheadrightarrow_\beta)$
