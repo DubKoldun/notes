@@ -1,6 +1,10 @@
 # теория сложности
 
-> **literature:** Arora Barak "Complexity Modern Approach" (1st part)
+> **literature:** 
+>
+> *   Arora Barak "Complexity Modern Approach" (1st part)
+> *   Garry Johnson "Трудно разрешенные задачи"
+> *   site: compendium of NP-complete problems
 >
 > **outline:**
 >
@@ -8,6 +12,10 @@
 >     *   [Концепция недетрминированных вычислений](#conception)
 > *   [Сведения](#conversion)
 >     *   [Теорема Кука-Левина](#thkl)
+> *   [язык CNFSAT](#cnfsat)
+>     *   [Теорема $CNFSAT \in NPC$ ](#cnfsatinnpc)
+>     *   [Теорема $CNFSAT \to 3SAT$ ](#cnfsatto3sat)
+> *   [Теорема $IND \in NPC$](#indinnpc)
 
 ## <a name="np-complexity">NP-полнота</a>
 
@@ -180,7 +188,7 @@ $NP \stackrel{t}\rightarrow BH_{1N} \stackrel{t}\rightarrow SAT$
 
 
 
-### <a name="thkl">**Th** *(Кук, Левин)*</a>
+### <a name="thkl">**Th** *(Кук, Левин)* SAT in NPC</a>
 
 $SAT \in NPC$
 
@@ -213,3 +221,112 @@ $T = X_{t0\#x} \or X_{t1\#_y} \or ... \or X_{tt\#_y}$
 $N = (\and_{i, j} \and_{c_1 c_2 c_3 c_3 \notin Q} X_{i - 1, j -1, c_1} \and X_{i -1 , j, c_2} \and X_{i, j +1 , c_3} \and X_{i, j, c_4} \rightarrow c_1 = c_4) \and_{ijx} \and_{c_1...c_6...}$ допустимы
 
 $qed \ \square$
+
+---
+
+## <a name="cnfsat">язык CNFSAT</a>
+
+**def** $CNFSAT = \{\phi \ | \phi$ в КНФ$, \phi \in SAT\}$
+$(x_i\or \neg  \ x_j ...) \and  (\or\or\or) \and (\or)$
+*clause* (клоз)
+**ex** 2-SAT (ровно две) HornSAT (не более одной без отрицания)
+
+### <a name = "cnfsatinnpc">Th CNFSAT in NPC</a>
+
+1.  $CNFSAT \in NP$
+2.  $CNFSAT \in NPH$
+    $SAT \leqslant CNFSAT$
+    $\phi \stackrel {f\ \ (polynomial\ time)} \longrightarrow \psi$
+    $\phi \in SAT \iff \psi = f(\psi) \in CNFSAT$
+
+базис: $\and, \or, \neg$
+
+строим дерево разбора нашей формулы $\phi$:
+
+*   если у neg сын neg, то можем удалить
+*   neg -> and/or => neg <- and/or -> neg neg
+
+каждому поддереву соответствует преобразованная подформула $\phi_i(x_{i_1} ... x_{i_k})$ , хотим построить следующее: $\psi_i(x_{i_1} ... x_{i_k}, y_1 ... y_{i_t})$ 
+$\phi(\overline X) = 1 \implies \exist \overline y \psi(\overline x, \overline y) = 1$
+$\phi(\overline X) = 0 \implies \forall \overline y \psi(\overline x, \overline y) = 0$
+
+| вершина | brand new $\psi$                                             |
+| ------- | ------------------------------------------------------------ |
+| X       | $\phi = X, \psi = X$                                         |
+| neg X   | $\phi = \neg X, \psi = \neg X$                               |
+| and     | $\phi_1 \and \phi_2, \psi_1 \and \psi_2$                     |
+| or      | $\psi_1 \or \psi_2$ не можем написать, потому что это не будет в КНФ <br />новая переменная z: <br />$(\psi_1 \or z) \and (\psi_2 \or \neg z)$ |
+
+>   получается, что число клозов равно числу листьев
+>   внутри каждого клоза число вхождений равно число переменных + или
+
+#clauses = #leaves
+#entries = #vars + #or
+poly
+
+$\square\ qed$
+
+### <a name="cnfsatto3sat">Th CNFSAT to 3SAT</a>
+
+>   $3SAT =CNFSAT \and 3CNF$
+
+1.  $3SAT \in NP$
+2.  $3SAT \in NPH$
+    $CNFSAT \leqslant 3SAT$
+
+| $\psi$                                                       | $X$                                  |
+| ------------------------------------------------------------ | ------------------------------------ |
+| $(x \or y \or u) \and (x \or y \or \neg u)$                  | $x \or y$                            |
+| ok                                                           | $x \or y \or z$                      |
+| вспомогательные переменные<br />k - 3 новые перменные:<br />$(x_1 \or x_2 \or t_1) \and (\neg t_1 \or x_3 \or t_2) \and (\neg t_2 \or x_2 \or t_3) \and ... \and (\neg t_{k - 3} \or x_{k - 1} \or x_k)$ | $x_1 \or x_2 \or ... \or x_k, k > 3$ |
+
+$\square \ qed$
+
+3SAT - superstar
+
+## <a name="indinnpc">Th IND in NPC</a>
+
+дана формула $\phi$ в 3КНФ, мы хотим вывести граф G и число k, такие что $\phi$ удовлетворима тогда и только тогда, когда в графе есть независимое множество размера k
+$\phi \in 3SAT \iff <G, k> \in IND$
+
+в $\phi$ k clauses, граф построим из k triangles
+в вершинах переменные, соответствующие claus'ам
+соединим переменные с их отрицанием
+
+---
+
+$HAM = \{G \ | \ G -$ ориентированный граф, содержит Гамильтонов цикл$\}$
+$HAM\in NP$
+$HAM \in NPH$
+
+$\phi (x_1 x_2 ... x_n)$ k clauses
+$x_i \rightarrow 2k + 2$ вершины
+
+```mermaid
+graph TD;
+  A[ai.] --> B[bi1.]
+  A --> C[ci1.]
+  B --> C
+  C --> B
+  C --> D
+  B --> E
+  D[bi2.] --> E[ci2.]
+  E --> D
+  E --> F[bik.]
+  F --> G[cik.]
+  G --> F
+  D --> G
+  F --> L
+  G --> L[di.]
+```
+
+```mermaid
+graph TD;
+  A[X1.] --> B[X2.]
+  B --> C[...]
+  C --> D[Xn.]
+  D --> A
+```
+
+где X - это компонента предыдущего вида
+
