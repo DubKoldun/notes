@@ -16,6 +16,11 @@
 >     *   [Теорема $CNFSAT \in NPC$ ](#cnfsatinnpc)
 >     *   [Теорема $CNFSAT \to 3SAT$ ](#cnfsatto3sat)
 > *   [Теорема $IND \in NPC$](#indinnpc)
+> *   [диагональный метод](#diagonal)
+>     *   [теоремы об иерархии](#hierarchy)
+>         *   [Теорема о ёмкости иерархии](#thvh)
+>         *   [Теорема о временной иерархии](#thth)
+>     *   [Теорема Бэйкера-Гилла-Соловэя (BGS)](#bgs)
 
 ## <a name="np-complexity">NP-полнота</a>
 
@@ -330,3 +335,96 @@ graph TD;
 
 где X - это компонента предыдущего вида
 
+---
+
+## <a name="diagonal">диагональный метод</a>
+
+### <a name="hierarchy">теоремы об иерахии</a>
+
+$DSPACE(f) = \{L \ | \ \exist$ программа p: $x \in L \implies p(x) = 1 \\ x \notin L \implies p(x) = 0$ $ S(p, x) = O(f(n\}$
+$PSACE = \cup_{p - polynom} DSPACE(p)$
+
+**Th NP subset PS subset EXP**
+
+**thesis** если p запускает q, q использует O(f) памяти, то p может тоже для этого использовать O(f) памяти
+
+#### <a name="thvh">Th о ёмкости иерархии</a>
+
+${f \over g} \to 0$ тогда $\exist L: L \in DSPACE(g)\backslash DSPACE(f)$
+
+$h = \sqrt{fg}, \ \ {h \over g} \to 0, \ \ {f \over h} \to 0$
+
+$n = |<p, x>|$
+
+$L = \{<p, x> \ | \ $неверно, что $(p(<p, x>) = 1, $ использовав $h(n)$ памяти $)\}$
+
+$L \in DSPACE(g)$
+
+Пусть $L \notin DSPACE(f)$, q - разрешает L, используя $\leqslant c f(n)$, рассмотрим $n_0: h(n_0) > cf(n_0)$, $n_0 > |q|$
+
+рассмотрим $x: |<q, x>| = n_0$
+
+$q(<q, x>) = \  ?$
+
+$q(<q, x>) = q \implies <q, x> \in L \implies !(q(<q, x>) = 1 \ and \ S(q, <q, x>) \leqslant cf(n) < h(n_0)) \implies q(<q, x>) = 0$
+
+$q(<q,x>) = 0 \implies <q, x> \notin L \implies q(<q, x>) = 1$
+
+
+
+#### <a name="thth">Th о временной иерархии</a>
+
+DSPACE -> DTIME, память -> время
+
+ломается немного первая часть, так что новое условие:
+
+${f \over g} \to 0, \exist h: {f \over h} \to 0, {sim(h) \over g} \to 0. \ \  (sim(h) = O(g))$ (где $sim(f)$ - за сколько можно просимулировать программу, работающую за f) тогда $\exist L: L \in DTIME(g)\backslash DTIME(f)$
+
+$h = \sqrt{fg}, \ \ {h \over g} \to 0, \ \ {f \over h} \to 0$
+
+$n = |<p, x>|$
+
+$L = \{<p, x> \ | \ $неверно, что $(p(<p, x>) = 1, $ использовав $h(n)$ времени $)\}$
+
+$L \in DTIME(g)$
+
+Пусть $L \notin DTIME(f)$, q - разрешает L, используя $\leqslant c f(n)$, рассмотрим $n_0: h(n_0) > cf(n_0)$, $n_0 > |q|$
+
+рассмотрим $x: |<q, x>| = n_0$
+
+
+
+> **Implies** $P \neq EXP$
+>
+> $f = n^{\log_2 n} = 2^{(\log_2 n)^2}$
+> $g = 2^n$
+> ${f \over g} \to 0 \implies \exist L \in DTIME(g) \backslash DTIME(f)$ (первая часть $\implies L \in EXP$, вторая – $\implies L \notin P$)
+
+
+
+### <a name="bgs">Th (Бейкер, Гилл, Соловэй) BGS</a>
+
+$u = \{<p, x> |\ \ p(x) = 1\}$
+$uni(p, x) \to$ останавливается ли p на x
+
+Вычисления с оракулом $p^A$ – p  с оракулом A
+
+$\exist$ оракул $A: p^A = NP^A$
+$\exist$ оракул $B: p^B \neq NP^B$
+
+// **релятивизуется**, если доказательство остаётся верным, если всему фиксированному в программе добавить оракул
+
+рассмотрим $A \in PSC$
+
+$p^A \stackrel{1}\subset NP^A \stackrel{2}\subset PS^A \stackrel{3}\subset PS \stackrel{4}\subset P^A$:
+
+1.  любая недетерминировання программа частный случай детерминированной
+2.  релятивизуется
+3.  можем заменить вызов оракула на процедуру проверки
+4.  потому что взяли PSpace полный, любой сводится за полином и спросим у оракула
+
+B   $U_B = \{x \ | \ \exist y \in B\ \ \  |x| = |y|\}$
+
+**L** $\forall B \ \ U_b \in NP^B$
+
+Придумаем $B: U_B \notin P^B$
