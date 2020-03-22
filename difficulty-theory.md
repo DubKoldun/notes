@@ -1,6 +1,6 @@
 # теория сложности
 
-> **literature:** 
+> **literature:**
 >
 > *   Arora Barak "Complexity Modern Approach" (1st part)
 > *   Garry Johnson "Трудно разрешенные задачи"
@@ -50,7 +50,7 @@ $L_1 L_2 \in P:  L_1 \cup L_2 \in P, L_1 \cap L_2 \in P, \overline{L_1} \in P, L
 недетерминировання программа p(x) допускает $\iff \ \exist$ последовательность недетерминированных выборов, приводящая к допуску
 p(x) не допускает $\iff \ \forall$ последовательности выборов не допуск
 
-**def** *NTIME(f)* = $\{L \ | \ \exist$ недетерминированная программа  p $1) \ p(x) - acc \iff x \in L; \ 2) \ T(p, x) = O(f(n))\}$
+**def** ==*NTIME(f)*== = $\{L \ | \ \exist$ недетерминированная программа  p $1) \ p(x) - acc \iff x \in L; \ 2) \ T(p, x) = O(f(n))\}$
 
 >   **ex** задача о гамильтоновом цикле
 > ```
@@ -81,7 +81,7 @@ p(x) не допускает $\iff \ \forall$ последовательност
 
 ---
 
-**def** *NP* = $\cup_{f - polynome}\ NTIME(f)$, nondeterministic polynomial
+**def** ==*NP*== = $\cup_{f - polynome}\ NTIME(f)$, *nondeterministic polynomial*
 **stat** $P \sub NP$
 
 **?** $P = NP$
@@ -116,22 +116,22 @@ $L \in NP$, $L \in \Sigma_1$
 
 ## <a name="conversion">сведения</a>
 
-**def** сводим B к A *по Тьюрингу*:  А, B – языки, C – сложностный класс, $B \in C^A$ (C  с *оракулом* A). не считая вызова функции `isInA(x): Bool`, остальные ограничения класса C учитываются.
+**def** ==сводим B к A *по Тьюрингу*==:  А, B – языки, C – сложностный класс, $B \in C^A$ (C  с *оракулом* A). не считая вызова функции `isInA(x): Bool`, остальные ограничения класса C учитываются.
 
-**def** сведение по *Куку-Левину (Тьюрингу за полином)* $B \in P^A$
+**def** ==сведение по *Куку-Левину*== *(Тьюрингу за полином)* $B \in P^A$
 
-**def**<a name="Karp"> </a>*сведене по Карпу (m-сведение)*: язык B сводится к A ($B \leq A$), если $\exist$ вычислимая за полином функция f такая, что $x \in B \iff f(x) \in A$
+**def**<a name="Karp"> </a>==*сведене по Карпу*== *(m-сведение)*: язык B сводится к A ($B \leq A$), если $\exist$ вычислимая за полином функция f такая, что $x \in B \iff f(x) \in A$
 
->   **ex** $IND = \{<G, k> |$ $ в $ $\ G \ d$ независимое множество размера k $\}$
->   $CLIQUE = \{<G, k> |$ в $ G \exist$ клика размера k$\}$ 
+>   **ex** $IND = \{\langle G, k \rangle  |$ $ в $ $\ G \ d$ независимое множество размера k $\}$
+>   $CLIQUE = \{\langle G, k \rangle  |$ в $ G \exist$ клика размера k$\}$
 >   $IND \leq CLIQUE$
->   $f(<G, k>) = <\overline{G}, k>$ // за полином
+>   $f(\langle G, k \rangle ) = \langle \overline{G}, k \rangle $ // за полином
 >   в G и множестве размера k $\iff$ в $\overline{G} \ \exist$ клика размера k
->   $VCOVER = \{<G, k> |$ в $G \ \exist$ вершинное покрытие размера  $k\ \}$
+>   $VCOVER = \{\langle G, k \rangle  |$ в $G \ \exist$ вершинное покрытие размера  $k\ \}$
 >   $IND \leq VCOVER$
->   $f(<G, k>) = <G, n - k>$, где n - число вершин G
+>   $f(\langle G, k \rangle ) = \langle G, n - k \rangle $, где n - число вершин G
 
->   **ex** $SUBSETSUM = \{<[x_1, x_2, ..., x_n], s>\ | \ \exist I \subset \{1,2, ..., n\}, \sum_{i \in I} = s, x_i \in \N\}$
+>   **ex** $SUBSETSUM = \{\langle [x_1, x_2, ..., x_n], s \rangle \ | \ \exist I \subset \{1,2, ..., n\}, \sum_{i \in I} = s, x_i \in \N\}$
 >   `dp[i][w]` - можно ли первые i $\Sigma = w$ // w - $2^{|s|}$
 >   $VCOVER \leq SUBSETSUM$
 >   пронумеруем вершины с единицы, рёбра – с нуля, битовыми масками каждой вершине сопоставляем рёбра
@@ -156,21 +156,21 @@ $L \in NP$, $L \in \Sigma_1$
 >   | s     | 3    | 2    | 2    | 2    | 2    | 2    | 2    |
 >
 >   $x_6 = 1\\ x_7 = 10 \\ x_8 = 100 \\ x_9 = 1000 \\ x_{10} = 10000 \\ x_{11} = 100000$
->   $f(<G, k>)$, n - число вершин, m - число рёбер, $s = k22...2$, m двоек
+>   $f(\langle G, k \rangle)$, n - число вершин, m - число рёбер, $s = k22...2$, m двоек
 >
 >   f сводит VCOVER к SUBSETSUM
 >   $\Rightarrow$: в G $\exist$ вершинное погрытие размера k
 >   $\Leftarrow$: $[x_1 ..., x_{n + n}], s \ \exist$ решение $\Rightarrow$ в $G \ \exist$ вершинное покрытие размера k
 
-**def** язык называется *NP-hard* (*NP-трудный*), если выполнены следующие условия:
-       $\forall B \in NP: B \leq A$ 
-**def** A называется *NP-complete* (*NP-полный*), если:
+**def** язык называется ==*NP-hard*== (*NP-трудный*), если выполнены следующие условия:
+       $\forall B \in NP: B \leq A$
+**def** A называется ==*NP-complete*== (*NP-полный*), если:
        1) $A \in NPH$
        2) $A \in NP$
        // $NPC = NPH \cap NP$
 
 >   **ex** $BH_{1N}$ (bounded halting unary nondeterministic)
->   $BH_{1N} = \{<m, x, 1^t>\ | $ m – недетрминировання машина тьюринга, x – вход, t – ограничение времени: $\exist$ последоватеьность недетерминировання выборов машины Тьюринга m, что она допускается за t шагов: `m(x) = 1`$\}$
+>   $BH_{1N} = \{\angle m, x, 1^t \rangle \ | $ m – недетрминировання машина тьюринга, x – вход, t – ограничение времени: $\exist$ последоватеьность недетерминировання выборов машины Тьюринга m, что она допускается за t шагов: `m(x) = 1`$\}$
 >
 >   **Th** $BH_{1N} \leq NPC$
 >
@@ -178,18 +178,18 @@ $L \in NP$, $L \in \Sigma_1$
 >        $A \in NP$
 >        // [def по Карпу](#Karp)
 >        $m_A$ - недетерминировання машина Тьюринга, решающая A за полином $p(n) = c n^k$
->        $f(x) = <m_A, x, q^{p(|x|)}>$
+>        $f(x) = \langle m_A, x, q^{p(|x|)} \rangle$
 >        $x \in A \iff \exist$ последовательность выборов $m_A(x) = 1$ (за $p(|x|)$)
 >   2.  $BH_{1N} \in NP$
 
-**L** $A \leq^k B, B \leq^k C \implies A \leq^k C$
+**L** $A \leqslant^k B, B \leqslant^k C \implies A \leqslant^k C$
 $x \stackrel{t}\rightarrow f(x) \stackrel{t}\rightarrow g(f(x))$
-**con** $A \in NPH, A \leq B \implies B \in NPH$
+**con** $A \in NPH, A \leqslant B \implies B \in NPH$
 
-**stat** если $B \leq A$, $A \in NPH$
+**stat** если $B \leqslant A$, $A \in NPH$
 $NP \stackrel{t}\rightarrow BH_{1N} \stackrel{t}\rightarrow SAT$
 
-**def** $SAT = \{\phi(x_q...x_n) \ | \ \exist x_1...x_n \ \phi(x_1...x_n) = 1, \phi - бф\}$
+**def** ==$SAT$== $= \{\phi(x_q...x_n) \ | \ \exist x_1...x_n \ \phi(x_1...x_n) = 1, \phi - бф\}$
 
 
 
@@ -197,8 +197,8 @@ $NP \stackrel{t}\rightarrow BH_{1N} \stackrel{t}\rightarrow SAT$
 
 $SAT \in NPC$
 
-$BH_{1N} \leq SAT$
-$<m, x, 1^t>\ \stackrel{f}\mapsto \phi$
+$BH_{1N} \leqslant SAT$
+$\langle m, x, 1^t \rangle \ \stackrel{f}\mapsto \phi$
 
 $\phi$ удовлетворяет $\iff \ \exist$ последовательность недетерминированных выборов $m(x) = 1$, за время t
 
@@ -208,7 +208,7 @@ $q_0\vdash q_1\vdash...\vdash q_t$
 
 *табло вычислений*: первая строка - стартовое состояние, $i \rightarrow i + 1, q_i \vdash q_{i + 1}$, допуск: последовательность до $\#_{acc}$
 
-$<m, x, 1^t> \ \in BH_{1N} \iff \exist$ допускающее табло вычислений
+$\langle m, x, 1^t \rangle  \ \in BH_{1N} \iff \exist$ допускающее табло вычислений
 
 
 
@@ -231,7 +231,7 @@ $qed \ \square$
 
 ## <a name="cnfsat">язык CNFSAT</a>
 
-**def** $CNFSAT = \{\phi \ | \phi$ в КНФ$, \phi \in SAT\}$
+**def** ==$CNFSAT$== $= \{\phi \ | \phi$ в КНФ$, \phi \in SAT\}$
 $(x_i\or \neg  \ x_j ...) \and  (\or\or\or) \and (\or)$
 *clause* (клоз)
 **ex** 2-SAT (ровно две) HornSAT (не более одной без отрицания)
@@ -251,7 +251,7 @@ $(x_i\or \neg  \ x_j ...) \and  (\or\or\or) \and (\or)$
 *   если у neg сын neg, то можем удалить
 *   neg -> and/or => neg <- and/or -> neg neg
 
-каждому поддереву соответствует преобразованная подформула $\phi_i(x_{i_1} ... x_{i_k})$ , хотим построить следующее: $\psi_i(x_{i_1} ... x_{i_k}, y_1 ... y_{i_t})$ 
+каждому поддереву соответствует преобразованная подформула $\phi_i(x_{i_1} ... x_{i_k})$ , хотим построить следующее: $\psi_i(x_{i_1} ... x_{i_k}, y_1 ... y_{i_t})$
 $\phi(\overline X) = 1 \implies \exist \overline y \psi(\overline x, \overline y) = 1$
 $\phi(\overline X) = 0 \implies \forall \overline y \psi(\overline x, \overline y) = 0$
 
@@ -292,7 +292,7 @@ $\square \ qed$
 ## <a name="indinnpc">Th IND in NPC</a>
 
 дана формула $\phi$ в 3КНФ, мы хотим вывести граф G и число k, такие что $\phi$ удовлетворима тогда и только тогда, когда в графе есть независимое множество размера k
-$\phi \in 3SAT \iff <G, k> \in IND$
+$\phi \in 3SAT \iff \langle G, k \rangle \in IND$
 
 в $\phi$ k clauses, граф построим из k triangles
 в вершинах переменные, соответствующие claus'ам
@@ -308,7 +308,7 @@ $\phi (x_1 x_2 ... x_n)$ k clauses
 $x_i \rightarrow 2k + 2$ вершины
 
 ```mermaid
-graph TD;
+graph LR;
   A[ai.] --> B[bi1.]
   A --> C[ci1.]
   B --> C
@@ -326,7 +326,7 @@ graph TD;
 ```
 
 ```mermaid
-graph TD;
+graph LR;
   A[X1.] --> B[X2.]
   B --> C[...]
   C --> D[Xn.]
@@ -341,12 +341,12 @@ graph TD;
 
 ### <a name="hierarchy">теоремы об иерахии</a>
 
-$DSPACE(f) = \{L \ | \ \exist$ программа p: $x \in L \implies p(x) = 1 \\ x \notin L \implies p(x) = 0$ $ S(p, x) = O(f(n\}$
+$DSPACE(f) = \{L \ | \ \exist$ программа p: $x \in L \implies p(x) = 1 \\ x \notin L \implies p(x) = 0$ $ S(p, x) = O(f(n))\}$
 $PSACE = \cup_{p - polynom} DSPACE(p)$
 
 **Th NP subset PS subset EXP**
 
-**thesis** если p запускает q, q использует O(f) памяти, то p может тоже для этого использовать O(f) памяти
+**thesis** если p запускает q, q использует $O(f)$ памяти, то p может тоже для этого использовать$ O(f)$ памяти
 
 #### <a name="thvh">Th о ёмкости иерархии</a>
 
@@ -354,21 +354,21 @@ ${f \over g} \to 0$ тогда $\exist L: L \in DSPACE(g)\backslash DSPACE(f)$
 
 $h = \sqrt{fg}, \ \ {h \over g} \to 0, \ \ {f \over h} \to 0$
 
-$n = |<p, x>|$
+$n = |\langle p, x\rangle|$
 
-$L = \{<p, x> \ | \ $неверно, что $(p(<p, x>) = 1, $ использовав $h(n)$ памяти $)\}$
+$L = \{\langle p, x \rangle  \ | \ $неверно, что $(p(\langle p, x \rangle ) = 1, $ использовав $h(n)$ памяти $)\}$
 
 $L \in DSPACE(g)$
 
 Пусть $L \notin DSPACE(f)$, q - разрешает L, используя $\leqslant c f(n)$, рассмотрим $n_0: h(n_0) > cf(n_0)$, $n_0 > |q|$
 
-рассмотрим $x: |<q, x>| = n_0$
+рассмотрим $x: |\langle q, x \rangle | = n_0$
 
-$q(<q, x>) = \  ?$
+$q(\langle q, x \rangle ) = \  ?$
 
-$q(<q, x>) = q \implies <q, x> \in L \implies !(q(<q, x>) = 1 \ and \ S(q, <q, x>) \leqslant cf(n) < h(n_0)) \implies q(<q, x>) = 0$
+$q(\langle q, x \rangle) = q \implies \langle q, x \rangle \in L \implies !(q(\langle q, x \rangle) = 1 \ and \ S(q, \langle q, x \rangle) \leqslant cf(n) \langle  h(n_0)) \implies q(\langle q, x \rangle) = 0$
 
-$q(<q,x>) = 0 \implies <q, x> \notin L \implies q(<q, x>) = 1$
+$q(\langle q,x \rangle) = 0 \implies \langle q, x \rangle \notin L \implies q(\langle q, x \rangle) = 1$
 
 
 
@@ -382,15 +382,15 @@ ${f \over g} \to 0, \exist h: {f \over h} \to 0, {sim(h) \over g} \to 0. \ \  (s
 
 $h = \sqrt{fg}, \ \ {h \over g} \to 0, \ \ {f \over h} \to 0$
 
-$n = |<p, x>|$
+$n = |\angle p, x \rangle|$
 
-$L = \{<p, x> \ | \ $неверно, что $(p(<p, x>) = 1, $ использовав $h(n)$ времени $)\}$
+$L = \{\angle p, x \rangle \ | \ $неверно, что $(p(\angle p, x \rangle) = 1, $ использовав $h(n)$ времени $)\}$
 
 $L \in DTIME(g)$
 
 Пусть $L \notin DTIME(f)$, q - разрешает L, используя $\leqslant c f(n)$, рассмотрим $n_0: h(n_0) > cf(n_0)$, $n_0 > |q|$
 
-рассмотрим $x: |<q, x>| = n_0$
+рассмотрим $x: |\langle q, x \rangle| = n_0$
 
 
 
@@ -404,7 +404,7 @@ $L \in DTIME(g)$
 
 ### <a name="bgs">Th (Бейкер, Гилл, Соловэй) BGS</a>
 
-$u = \{<p, x> |\ \ p(x) = 1\}$
+$u = \{\langle p, x \rangle |\ \ p(x) = 1\}$
 $uni(p, x) \to$ останавливается ли p на x
 
 Вычисления с оракулом $p^A$ – p  с оракулом A
