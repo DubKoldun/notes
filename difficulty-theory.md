@@ -22,6 +22,11 @@
 >         *   [Теорема о временной иерархии](#thth)
 >     *   [Теорема Бэйкера-Гилла-Соловэя (BGS)](#bgs)
 >     *   [Теорема Ладнера](#ladner)
+> *   [coNP](#coNP)
+> *   [PSPACE и PSPACE полнота](#PS)
+>     *   [$TQBF \in PSC$](#TQBF)
+>     *   [Теорема $NSPACE(f(n)) \subset DSPACE(f(n)^2)$](#nspace)
+>         *   [Следствие. Теорема Сэвитча](#savitch)
 
 ## <a name="np-complexity">NP-полнота</a>
 
@@ -531,3 +536,198 @@ $P \neq NP \implies \exist L: L \notin P, L \notin NPC, L \in NP$
 >   $\exist f : x \in SAT \iff f(x) \in SAT0$
 >
 
+так же, как в теореме БГС, у нас есть последовательность $q_1, q_2, ..., q_n, ...$ , так же запускаем программу $p_i$ с таймером $jn^j$  и так же занумеровали программу по диагонали: $f_1 ... f_i ...$
+
+все $f_i$  работают за полином 
+
+$L = SAT \ \cap \ EVEN\ (SAT \ \cap \ \{\phi \ | \ |\phi|$ в "чёрном" куске $\})$ 
+
+рассмотрели первый чёрный кусок, префикса которого достаточно, чтобы программа $q_1$ не разрешала $L$ за полином
+
+теперь рассмотрим некст белый кусок: добъёмся того, чтобы сведение $f_1$ неправильно сводило $SAT$ к нашему языку
+
+занумеруем формулы по возрастанию длины и дальше лексикографически: $\phi_1, \phi_2, ...$
+
+$\phi_1 \stackrel{f_1} \rightarrow z_1 \\ \phi_2 \rightarrow z_2\\...$
+
+найдётся формула $\phi_x \stackrel{f_1} \rightarrow z_x: \phi_x \in SAT \neq z_x = f_1(\phi_x) \in L$
+
+найдётся такая $\phi_x$ потому, что  если бы не нашлось, то получили бы противоречие в том, что $SAT$ сводится за полиномальное время под действием $f_1$ к конечному языку
+
+$z_x$ лежит либо в первом чёрном отрезке, либо во втором белом
+$n_2 = max(n_1 + 1, |z_x|)$
+
+> **Lemma** $L \in NPC, F -$ конечный, $L \setminus F \in NPC$
+> $L \leqslant L \setminus F$
+>
+> ```
+> f(x):
+>        if x in F
+>            if x in L return YesWord
+>            else return NoWord
+>        else retun x
+> ```
+
+построим $BLACK$:
+
+1.  $x \in BLACK$ – зависит только ок $|X|$
+2.  $BLACK \in P$
+3.  $L \notin NPC, L \notin P$
+
+разрешитель $BLACK$: (верно ли, что слова длины $n$ принадлежат нашему языку, пусть работает за n)
+
+```
+black(x: String)
+    a = black(|x|)
+    return x in BLACK // основываясь на данных из массива a
+
+black(n): List<Int> 
+// [n1, n2, ..., nk] - список всех границ, которые не превышают n
+// ограничение по времени n^(большое число, пусть 100)
+    if n = 0 return []
+    a = black(n - 1)
+    // black(n - 1) отработала за T <= (n - 1)^100, T_left >= n^99
+    set Timer on n^99, if triggered return a
+    if len(a) чётна:
+        i = len(a) / 2 + 1
+        for (phi - формула, |phi| <= n):
+            if (phi in SAT intersect BLACK != q_i(phi))
+                return a ++ [n]
+    else // len(a) нечётна
+        i = (len(a) - 1) / 2 + 1
+        for (phi - формула, |f_i(phi)| <= n):
+            if (phi in SAT != f_i(phi) in SAT intersect BLACK):
+                return a ++ [n]
+    return a
+```
+
+---------
+
+## <a name="coNP">coNP</a>
+
+**def** ==$coNP$== $= L \ | \ \overline L \in NP$
+
+>**ex** $SAT \in NP,\\ \overline{SAT} \in coNP$
+>
+>есть все слова $\Sigma^*$, среди них есть булевы формулы и давайте рассматривать только булевы формулы, они делятся на $SAT$ и на $\overline {SAT}$ , а на небулевы формулы забьём
+>
+>$\overline{SAT} = \{\phi \ | \ \forall \stackrel \rightarrow x: \phi(\stackrel \rightarrow x ) = 0\} $
+
+>**ex** $FACTORIZATION = \{\langle n, x \rangle \ |$ у  $n \ \exist$ простой делитель $\leqslant x \} \in NP \cap coNP$
+>
+>(P candidate)
+
+
+
+## <a name ="PS">PSpace и PSpace полнота</a>
+
+**def** ==$PS$== $= \cup_{p - polynom} DSPACE(p)$
+
+$P \subset NP \subset PS \subset EXP$
+
+**def** $L \in$ ==$PSH$== : $\forall A \in PS: \ A \leqslant L \  (f  \ - $ за полином $x \in A \iff f(x) \in L)$
+
+**def** $L \in$ ==$PSC$==: $1) \ L \in PSH \\ 2) L \in PS $
+
+>   **ex** булевы формулы с квантора (матлог референс)
+>   $TQBF$ (True Quantified Boolean Formula) $= \{\phi \ | \ \phi \ - $ булева формула с кванторами, $Free(\phi) = \empty \ \ val(\phi) = 1\}$
+
+### <a name="TQBF">TQBF in PSC</a>
+
+1.  $TQBF \in PS$
+    построим дерево разбора и храним множество значений текущих свободных переменных
+
+2.  $TQBF \in PSH$ 
+    рассмотрим $L \in PS, \ L \leqslant TQBF$
+    m - машина Тьюринга, разрешающая L, детерминировання, $S(m, x) \leqslant p(n) \ $//$ \ n = |x|$
+
+    $m(x) \ \ q_o \vdash q_1 \vdash q_2 \vdash ... \vdash q_t$
+
+    $f : x \rightarrow \phi$
+
+    $\phi \ -$ истина $\iff m(x) = 1$
+
+    $X_{ijc} \ -$ ячейка $(i, j)$ содержит символ $c$
+
+    $Q_i = [X_{i0c_1}, X_{i1c_1}, ..., X_{ip(n)c_1}, X_{i0c_2}, ..., X_{ip(n)c_2}]$
+
+    $S(Q_0) \ \cap \ T(Q_t) \ \cap \ C \ \cap \ N$
+
+    введём синтаскический сахар: $\exist (\forall) Q_i := \exist (\forall) X_{i0c_1} , \exist (\forall) ...$
+
+    $Q_i \vdash Q_{i + 1}$
+
+    $\exist Q_0 \ \exist Q_1 \ .. \exist Q_t \ S(Q_0) \ \and \ T(Q_t) \ \and \ C \ \and \ Q_0 \vdash Q_1 \ \and\  Q_1 \vdash Q_2 \ \and\  ... \ \and\  Q_{t - 1} \vdash Q_t$
+
+    выведенная формула плоха её длиной: $Q(Q_0), \ T(Q_t), \ Q_0 \vdash Q_1$ имеют длину $p(n)$, но последних кусков $t$, таким образом вся формула имеет длину $p(n) 2^{q(n)}$,  а это не полиномиальное сведение
+
+    $Q \vdash R$
+
+    $\vdash \ -$ булева формула от $2 \ (p(n) + 1) \ z$ аргументов
+
+    $Q \vdash R := Q \underbrace{\vdash U_1 \vdash U_2  ... \vdash U_{2^{m} - 1} \vdash R}_{2^m}$
+
+    $\vdash_m = \vdash^{2^m}$
+
+    $Q \vdash_m R = \exist \ T \ (Q \vdash_{m - 1} T \ \and \ T \vdash_{m - 1} R)$
+
+    $Q \vdash_m R = \exist \ T \ \forall A \ \forall B \ (\neg (A \vdash_{m - 1} B) \rightarrow (Q \neq A \or B \neq T) \and (T \neq A \or B \neq R))$
+
+    $len(m) = O(p(n)) + len(m - 1) \implies len(m) = O(p(n)  \ m)$
+
+$\square$
+
+---------
+
+// PS proof template: $PS \rightarrow TQBF \rightarrow L$
+
+
+
+### <a name="nspace">Th NSPACE(f(n)) subset DSPACE(f(n)^2^)</a>
+
+$f(n) \geqslant log(n)$
+$NSPACE(f(n)) \subset DSPACE(f(n)^2)$
+
+*Доказательство*:
+
+Пусть $L \in NSPACE(f(n))$ $\exist$ недетерминирванная машина Тьюринга $x \in L \iff \exist$ последовательность недетерминированных выборов, m(x) = 1
+$S(m, x) \leqslant f(n), \  n = len(x)$
+
+вход — лента машины Тьюринга со словом $x$
+рабочая — лента машины Тьюринга с $f(n)$ 
+конфигурация машины Тьбринга кодируется:$ (pos, work)$, где $work = \alpha \#_p \beta$, длина $pos = log(n)$ , а длина $work = f(n) + 1$, и тогда вся длина пары — $O(f(n))$
+
+Существует ли последовательность переходов длиной $2^{c \ f(n)}$, которая $q_0$ переводит в допускающую конфигурацию $q_t$
+
+заведём функцию (можно ли достичь): $Reach(q_s, q_t, k)$ (можно ли из $q_s$ перейти за $2^k$ шагов до $q_t$ ($q_s \vdash^{2^k} q_t$))
+
+```
+Reach(qs, qt, k):
+    if (k = 0):
+        return qs |- qt
+    for (qm - конфигурация машины Тьюринга m):
+        if Reach(qs, qm, k - 1) and Reach (qm, qt, k - 1):
+            return True
+    return False
+```
+
+локальные переменные функции `Reach` занимают $f(n)$, суммарно памяти нам понадобится $O(k \ f(n))$
+
+```
+inL(x):
+    qs - стартовая конфигурация m
+    for (qt - допускающая конфиграция m):
+        if Reach(qs, qt, c * f(|x|)):
+            return 1
+    return 0
+```
+
+$q_s$ требует $f(n)$ памяти
+вызов `Reach` требует $f(n)^2$ памяти
+локальная переменная $q_t$ требует $f(n)$ памяти
+
+
+
+#### <a name="savitch">Следствие Th (*Сэвитча*)</a>
+
+$PS = NPS$
