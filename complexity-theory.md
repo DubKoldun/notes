@@ -27,6 +27,11 @@
 >     *   [$TQBF \in PSC$](#TQBF)
 >     *   [Теорема $NSPACE(f(n)) \subset DSPACE(f(n)^2)$](#nspace)
 >         *   [Следствие. Теорема Сэвитча](#savitch)
+> *   [Сублинейнай память](#sublinear-space)
+>     *   [$NL \subset P$](#nlsubp)
+>     *   [Теорема транзитивности $LOGSPACE$-сведения](#translogspace)
+>     *   [Теорема $CIRCVAL \in P$-$complete$](#circvalinpc)
+>     *   [Теорема Иммермана ($NL = coNL$)](#immerman)
 
 ## <a name="np-complexity">NP-полнота</a>
 
@@ -731,3 +736,171 @@ $q_s$ требует $f(n)$ памяти
 #### <a name="savitch">Следствие Th (*Сэвитча*)</a>
 
 $PS = NPS$
+
+
+
+## <a name ="sublinear-space">Сублинейная память</a>
+
+Полином памяти $PS$
+Экспонента памяти $EXPSPACE,\  EXP \subset NEXP \subset EXPSPACE$
+
+$DSPACE(f(n)), f(n) = \overline{\overline o}(n)$ 
+
+
+Миниальный логичный класс возникающий – это $DSPACE(1)$ (в контексте машины Тьюринга можем хранить только состояние) $ = Reg = NSPACE(1)$
+
+$DSPACE(log \ n) = L$
+
+$NSPACE(log \ n) = NL$
+
+можно:
+
+1.  целочисленные переменные $value \leqslant n^c$ (константное количество)
+2.  массив bool: $len \leqslant c * log \ n$
+
+нельзя:
+
+1.  массивы $\Omega(n)$
+2.  рекурсия $\Omega(n)$
+
+>   **ex** проверка на палиндром
+>
+>   ```
+>   pal(s)
+>       n = len(s)
+>       for i = 0..n/2
+>           if s[i] != s[n - 1 - i]
+>               return False
+>           return True
+>   ```
+
+> **ex** проверка пути в графе недетерминированно
+>
+> ```
+> reach(G, s, t)
+>     if (s = t) return True
+>     n = num vert(G)
+>     u = s
+>     for i = 1..n
+>         v = ? {1..n}
+>         if uv not in E
+>             return False
+>         u = v
+>         if u = t
+>             return True
+>     return False
+> ```
+>
+> переменные `n, u, i, v` и на проверку `not in E` – константное количество размера n
+
+$L \subset NL \subset DSPACE(log^2 \ n) \subset PS$
+
+
+
+### <a name = "nlsubp">stat NL subset P</a>
+
+$A \in NL$
+
+$\exist$ машина Тюринга, разрешающая $A$
+
+граф G, вершины – конфигурация m (state (const), pos (n), mem (const^(c log n))), рёбра – переходы m
+
+полиномиальное количество состояний
+
+m допускает x $\iff$ в G $\exist$ путь из (s, 1, 0…00) в вершину (допускающее, *, *)
+
+---
+
+$\forall A \in NL \ \ A \leqslant Reach$
+
+==$LOGSPACE$-сведение==
+
+**def** $A \leqslant_L B$, если $\exist f \ S(f, x) \leqslant c * log \ |x| \ \ : x \in A \iff f(x) \in B$
+
+**def** $A$ ==$P$-complete==:
+
+1.  $A \in P$
+
+2.  $\forall B \in P: B \leqslant _L A$
+
+**def** $A$ ==$NL$-complete==:
+
+1.  $A \in NL$
+2.  $\forall B \in NL: B \leqslant_L A$
+
+можно переписать утверждение как $Reach \in NL-complete$
+
+
+
+### <a name="translogspace">Th транзитивность LOGSPACE-сведения</a>
+
+$x \stackrel f \longrightarrow y \stackrel g \longrightarrow z$
+
+$x \in A \iff y \in B \iff z \in C$
+
+$g$ работает и умеет спрашивать $i$-ый символ слова $y$, в таком случае вызываем $f(x)$, получаем символ, всё остальное выбрасываем
+
+итого памяти надо $mem(f) + mem(g) +$ служебные = логарифм памяти
+
+
+
+### <a name="circvalinpc">Th CIRCVAL in P-complete</a>
+
+> $CIRCVAL = \{\langle C, \stackrel \rightarrow x \rangle \ | \ C$ - схема из функциональных элементов, $\stackrel \rightarrow x$ - входы, $C(\stackrel \rightarrow x) = 1\}$
+>
+> Не путать с $CIRCSAT = \{c \ | \ \exist \stackrel \rightarrow x: C(\stackrel \rightarrow x) = 1\}$
+
+$CIRCVAL \in P$
+
+докажем теперь, что все из $P$ сводятся к ней (аналогично теореме Кука):
+
+$A \in P$, $m$ — детерминированная машина Тьюринга, $m$ разрешает $A$, $m$ работает за $p(n)$
+
+$x \stackrel f \longrightarrow  C, \stackrel \rightarrow x$
+$x \in A \iff C(\stackrel \rightarrow x) = 1$
+
+
+
+### <a name="immerman">Th (Иммермана) NL = coNL</a>
+
+> $coNL = \{A \ | \ \overline A \in NL\}$
+
+$NReach = \{\langle G, s, t \rangle \ | \ $в $G$ не $\exist$ пути из $s \longrightarrow t \}$
+
+```
+NoPath(G, s, t, c) // c - количество вершин, достижимых из s
+    for u = 1..n
+        if (?) // достижима ли
+            c--
+            if not Reach(G, s, u)
+                return False
+            if (u == t) 
+                return False
+    return c == 0
+```
+
+```
+Next(G, s, c) -> Int
+// c - достижимы из s путями len <= k 
+// возвращает достижимые из s путями len <= k + 1
+    r = 0
+    for u = 1..n
+        if u достижимо len <= k || u достижимо len = k + 1
+        // 1: for v -> (?) достижимо или нет, если да, то угадываем путь
+        // 2: for v -> (?) достижимо или нет, если да, то угадываем путь
+        // и перебираем рёбра
+            r++
+    return r
+```
+
+```
+NReach(G, s, t)
+    c = 1 // достижимые путями len <= 0
+    for i = 1..n - 1
+        c = Next(G, s, c) // c: len <= n - 1
+    return NoPath(G, s, t, c
+```
+
+$coNL \subset NL$
+
+$coNL = NL$
