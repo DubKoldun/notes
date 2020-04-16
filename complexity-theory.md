@@ -32,6 +32,10 @@
 >     *   [Теорема транзитивности $LOGSPACE$-сведения](#translogspace)
 >     *   [Теорема $CIRCVAL \in P$-$complete$](#circvalinpc)
 >     *   [Теорема Иммермана ($NL = coNL$)](#immerman)
+> *   [Sparse](#sparse)
+>     *   [Th Бермана-Форчуна](#thbf)
+>     *   [Th Мэхэни](#thm)
+> *   [Полиномиальная иерархия](#phierarchy)
 
 ## <a name="np-complexity">NP-полнота</a>
 
@@ -904,3 +908,215 @@ NReach(G, s, t)
 $coNL \subset NL$
 
 $coNL = NL$
+
+
+
+## <a name="sparse">Sparse</a>
+
+**def** ==$Sparse$ (*редкие языки*)== = $\{L \ | \ \exist $ полином $p \ \forall n \ | \Sigma^n \cap L | \ \leqslant p(n)\}$
+
+// для каждой длины не больше полинома слов этой длины
+
+**ex** *язык простых чисел, заданных в унарной системе счисления*: $Primes_1 = \{1^p \ | \ p$ — простое $\}$
+
+**ex** $Fact_1 = \{\langle 1^n, 1^\alpha \rangle \ | \ d$ - минимальный делитель n $\}$
+
+
+
+### <a name="thbf">Th Бермана-Форчуна</a>
+
+$coNPC \cap Sparse \neq \empty \implies P = NP$
+
+-----
+
+$S \in coNPC \cap Sparse \implies P = NP$
+
+$\sphericalangle \ TAUT \in coNPC$: $f$ сводит $TAUT$ к $S$ за $q$
+
+
+
+```
+taut(phi(x1, ..., xn)):
+    if n == 0
+        return eval(phi)
+
+    phi1 = phi w/ x1 = 1
+    phi0 = phi w/ x1 = 0
+
+    if taut(phi1) and taut(phi0)
+        return True
+    return False
+```
+
+
+
+добавим меморизацию:
+
+```diff
+  // memorization
++ memo: set<formula> // формулы, которые точно являются тавтологиями
+
+  taut(phi(x1, ..., xn)):
+      if n == 0
+          return eval(phi)
+
++     if phi in memo
++         return True
+
+      phi1 = phi w/ x1 = 1
+      phi0 = phi w/ x1 = 0
+
+      if taut(phi1) and taut(phi0)
++         memo.add(phi)
+          return True
+      return False
+```
+
+
+
+$\phi \in TAUT \iff f(\phi) \in S$
+
+$\phi \in memo \implies \phi \in TAUT$
+
+
+
+давайте хранить теперь $f(\phi)$ вместо $\phi$:
+
+$z \in memo \implies z \in S \implies (z = f(\phi) \implies \phi \in TAUT)$
+
+```diff
+  // memorization
++ memo: set<string>
+
+  taut(phi(x1, ..., xn)):
+      if n == 0
+          return eval(phi)
+
++     z = f(phi)
++     if z in memo
+          return True
+
+      phi1 = phi w/ x1 = 1
+      phi0 = phi w/ x1 = 0
+
+      if taut(phi1) and taut(phi0)
++         memo.add(z)
+          return True
+      return False
+```
+
+
+
+$|\phi| = L$
+все формулы, от которых вызывается `taut` имеют длину $\leqslant L$
+$|z| \leqslant q(L)$
+$|S \cap \Sigma^n| \leqslant p(n)$
+`memo.size()` $\leqslant \sum_{n = 0}^{q(L)} p(n) \leqslant p(q(L)) * q(L)=r(L)$
+
+`memo.size()` $\leqslant r(|\phi|)$
+
+$\square$
+
+
+
+### <a name="thm">Th Мэхэни</a>
+
+$NPC \cap Sparse \neq \empty \implies P = NP$
+
+---
+
+> $SAT \in NPC$
+> $LSAT = \{\langle \phi(x_1, ..., x_n), [y_1, ..., y_n] \rangle \ | \ \exist z_1 ... z_n: z_1...z_n \leqslant y_1...y_n, \phi(z_1, ..., z_n) = 1 \}$
+
+**L** $LSAT \in NPC$
+
+1. $LSAT \in NP$ сертификат $\stackrel \rightarrow z$
+2. $SAT \leqslant LSAT$   $\phi \in SAT \iff \langle \phi, [1...1] \rangle \in LSAT$
+
+$f$ сводит $LSAT$ к $S$: $\langle \phi, \stackrel \rightarrow y \rangle \iff f(\phi, \stackrel \rightarrow y) \in S$
+
+$LSAT \stackrel f \leqslant S$
+
+
+
+подобие поиска в ширину:
+
+```mermaid
+graph TD;
+    phi. -- x1 = 0. --> phi0.
+    phi. -- x1 = 1. --> phi1.
+    phi0. -- x2 = 0. --> phi00.
+    phi0. -- x2 = 1. --> phi01.
+    phi1. -- x2 = 0. --> phi10.
+    phi1. -- x2 = 1. --> phi11.
+    
+```
+
+$[\phi_1, \phi_2, \phi_t]$
+на каждом $k$-ом слое $n-k$ переменных 
+выберем одну переменную и положим их = 0 и = 1, положим в общую очередь
+
+при $k = n$ в формулах 0 переменных, вычисляем слева направо, пока не найдём равное единице
+не нашли — формула не удовлетворима, нашли — нашли минимальное лексикографически удовлетворяющее назначение $\phi$
+
+на очередном $k$-ом слое: $[\phi_1, \phi_2, \phi_t]$
+для каждой формулы запишем $\stackrel \rightarrow a$ — вектор, откуда взялась эта формула
+применим к парам
+$z_i = f(\phi, \underbrace {\stackrel \rightarrow {a_i}111...111}_n), \  ...$
+$\stackrel \rightarrow {a_i}$ лежит на пути к минимальному лексикографически удовлетворяющему
+
+$z_1 \notin S, z_2 \notin S, \ ..., z_i \in S, ... \in S$
+
+$|\langle \phi, \underbrace {1..1}_n \rangle | = L$
+$\phi_i(x_{k+1}...x_n) \leqslant q(L)$
+
+$| S \cap \Sigma^n | \leqslant p(n)$
+
+различных $z_i \in S$ не больше $p(q(L)) * q(L)$
+
+$z_k = z_j, k < j$
+$j \neq i$
+из пар равных оставим того, кто раньше
+
+$z_{v_1}, z_{v_2}, ..., z_{v_u}$ — различны
+
+если $u > p(q(L)) * q(L)$, то оставим последние $p(q(L)) * q(L)$
+
+$t \leqslant 2 * p(q(L)) * q(L)$
+
+всё время работы за полином, решили $SAT$ за полином, получается $P = NP$
+
+$\square$
+
+
+
+## <a name="phierarchy">полиномиальная иерархия</a>
+
+
+$\sphericalangle \ NP$
+$\Sigma_1 = \{L \ | \ \exist$ полином $p, R$ (checker), выполняется за полином, $x \in L \iff \exist y, |y| \leqslant p(|x|), R(x, y) = 1 \}$
+
+$\sphericalangle \ coNP$
+$\Pi_1 = \{L \ | \ \exist$ полином $p, R,$ выполняется за полином
+$(x \notin L \iff \exist y, |y| \leqslant p(|x|), R(x, y) = 1)
+$ 
+$x \in L \iff \forall y, |y| \leqslant p(|x|), \overline R(x, y) = 1 \}$
+
+$\Sigma_k = \{L \ | \ \exist$ полином $p, R$ (checker), выполняется за полином, $x \in L \iff \exist y_1 \forall y_2 \exist y_3 ... Q y_k, |y_i| \leqslant p(|x|), R(x, y_1, ..., y_k) = 1 \}$
+
+$\Pi_k = \{L \ | \ \exist$ полином $p, R,$ выполняется за полином $x \in L \iff \forall y_1 \exist y_2 \forall y_3 ... Q y_k, |y_i| \leqslant p(|x|), \overline R(x, y_1, ..., y_k) = 1 \}$
+
+$k = 1 \rightarrow \Sigma_1 = NP, \ \Pi_1 = coNP$
+
+$k = 0 \rightarrow \{L \ | \ \exist R$, вычислимое за полином, $x \in L \iff R(x)\}$, $\Sigma_0 = \Pi_0 = P$
+
+
+
+$MinF = \{\phi \ | \ \phi$ — минимальная по длине булева формула для своей функции $\}$
+$\phi \in MinF \iff \forall \psi$ (функция $\psi =$ функция $\phi \implies |\psi| \geqslant |\phi|$)
+($|\psi| \geqslant |\phi|) \or ($функция $\psi \neq$ функция $\phi)$
+($|\psi| \geqslant |\phi|) \or (\exist x_1 ... x_n \phi(x_1 ... x_n) \neq \psi(x_1 ... x_n))$
+
+$\phi \in MinF \iff \forall \psi \ \exist \stackrel \rightarrow x ((|\psi| \geqslant |\phi|) \or \phi(x_1 ... x_n) \neq \psi(x_1 ... x_n))$
+
+$MinF \in \Pi_2$
