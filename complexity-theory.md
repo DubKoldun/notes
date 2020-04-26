@@ -36,6 +36,12 @@
 >     *   [Th Бермана-Форчуна](#thbf)
 >     *   [Th Мэхэни](#thm)
 > *   [Полиномиальная иерархия](#phierarchy)
+> *   [Схемная сложность](#schema)
+>     *   [Схема из функциональных элементов](#funcel)
+>     *   [Программы с подсказками](#advice)
+>         *   [Th P/poly = SIZE(poly)](#sizepoly)
+>         *   [Th Карпа-Липтона](#thkl)
+>     *   [Параллельные вычисления](#parallel)
 
 ## <a name="np-complexity">NP-полнота</a>
 
@@ -1120,3 +1126,130 @@ $\phi \in MinF \iff \forall \psi$ (функция $\psi =$ функция $\phi 
 $\phi \in MinF \iff \forall \psi \ \exist \stackrel \rightarrow x ((|\psi| \geqslant |\phi|) \or \phi(x_1 ... x_n) \neq \psi(x_1 ... x_n))$
 
 $MinF \in \Pi_2$
+
+
+
+## <a name="schema">Схемная сложность</a>
+
+### <a name="funcel">Схема из функциональных элементов</a>
+
+булева формула $f: B^n \rightarrow B$
+программа $p: \Sigma^* \rightarrow B$
+
+**non-uniform computations**
+$\forall n\ \ C_n \ \ B^n \rightarrow B$
+$L \subset \Sigma^* \ \{C_0, C_1, C_2, ..., C_n, ...\}$
+
+**parallel computation**
+$L \subset \Sigma^* \ \{C_0, C_1, ..., C_n, ...\}$
+$p(n) \rightarrow C_n$, есть ограничения на эту программу p
+
+ограничения, которые у нас есть, -- $size$, $depth$ 
+функция $f$
+==$SIZE(f)$== $= \{L \ | \ \exist$ семейство схем из функциональных элементов $C_0 C_1 ... C_n ... \ \ C_i $ распознаёт $L \cap \Sigma^i, size(C_i) = O(f(i)) \}$
+так же вводится ==$DEPTH(f)$==
+
+==$P/poly$== (P by poly) $= \cup_{k = 0}^\infty  \ SIZE(n^k)$
+
+
+
+> **ex** (**Th**) $P \subset P/poly$
+>
+> $L \in P \implies \exist$ детерминированная машина Тьюринга $m$, распознающая $L$
+>
+> работает за полином $q(n)$
+>
+> $n \rightarrow$ табло вычислений $q(n)$ на $q(n)$
+
+> **ex** $UNARY = \{L \ | \ L \subset \{0\}^* \}$
+> $UNARY \subset P/poly$
+>
+> $\forall n \ 0^n \in L C_n$ допускает только $0^n \downarrow_n$
+> либо $0^n \notin L \ C_n \equiv 0$
+>
+> 
+>
+> $HALT_1 = \{0^k \ | k-$ая программа завершается на пустом входе $\}$
+> $HALT_1$ не разрешим, но принадлежит $UNARY$ и $P/poly$
+
+
+
+### <a name="advice">Программы с подсказками (advise)</a>
+
+$p(x, a_n)$, где $n = |x|$ и $a_n$ называется подсказкой
+
+$L \in C/f \iff \exist$ программа $p$, удовлетворяющая ограничением класса C и $\exist a_0, a_1, ..., a_n, ... \ \  a_i \in \Sigma^* \ \ |a_i| \leqslant f(i) \ \ \forall x \ \ p(x, a_n) = [x \in L]$
+
+#### <a name="sizepoly">Th P/poly = SIZE(poly)</a>
+
+$P/poly$ вычисление с подсказками $= SIZE(poly)$
+
+$\supset$)  $L \in SIZE(poly) \implies \sphericalangle \ \ a_0 a_1a_n ... \ \ a_i = C_i \ \ p(x, a_i)$ вычисляет схему $a_i$ на $x$
+
+ $\subset$)  $L \in P/poly$   $\sphericalangle \ n\ m -$ машина Тьюринга, построим схему и назовём её $C_n$
+
+
+
+> $P \ vs\ NP$
+>
+> $NP \subset P/poly \implies P = NP$ -- неизвестно
+>
+> $NP\ !\subset P/poly \implies P \neq NP$
+
+
+
+#### <a name="thkl">Th (Карпа-Липтона)</a>
+
+$NP \subset P/poly \implies \Sigma_2 = \Pi_2$
+
+> **L** $NP \subset P/poly$ 
+> $\exist C_0 C_1 C_2 ... C_n ...$ - схемы для $SAT$  $|C_i| \leqslant p(i)$ полином $p$
+> тогда $\exist$ схемы $A_0 A_1 ... A_n ...$ 
+>
+> 1. $|A_i|$ -- полном от $i$
+> 2. $A_i$ имеет $i$ выходов и если $\phi \in STA \implies \phi(A_i(\phi)) = 1$
+>
+> 
+>
+> $\phi \rightarrow [SET \ \ x_1 = 1] \rightarrow \phi |_{x_1 = 1} \rightarrow [C_i] \rightarrow (\phi |_{x_1 = 1} \in SAT)$
+
+$\sphericalangle \ L \in \Pi_2$, докажем $L \in \Sigma_2$
+
+$R(x, y, z)$ -- полиномиальная детерминированная машина Тьюринга
+
+$x \in L \iff \forall y \ \exist z\ R(x, y, z)$
+
+$T = \{\langle x, y \rangle \ | \ \exist z \ R(x,y, z\}$
+
+$x \in L \iff \forall y \ \langle x, y \rangle \in T$
+
+$T \in NP \implies T \leqslant^f SAT$
+
+$x \in L \iff \forall y \ f(\langle x, y \rangle) \in SAT$ //       $|y| \leqslant q(|x|)$            $|\langle x, y \rangle | \leqslant r(n)$
+
+$x \in L \iff \exist [A_0 A_1 ... A_{r(n)}]$ 1) $A_i$ -- схемы из леммы, 2) $\forall y \ \ \phi :=  f(\langle x, y \rangle) \ |\phi| = m, \phi(A_m(\phi)) = 1$
+
+1)  $\iff \forall |\phi| \leqslant r(n): \ \ (\forall z \ \phi(z) = 0 \or \phi(A_m(\phi)) = 1)$
+
+
+
+$x \in L \iff \exist A_0 A_1 ... A_{r(n)} \ \forall \phi \forall z \forall y (\phi(z) = 0 \or \phi(A_{|\phi|} (\phi) = 1) \and \phi := f(x, y) \ \psi(A_{|\psi|} (\psi)) = 1$
+
+
+
+### <a name="parallel">Параллельные вычисления</a>
+
+**def** ==$NC^i$== (_Nick's class_) $= \{L \ | \ \exist$  схемы из функциональных элементов $C_ k,\ size(C_k) \leqslant poly(k), \ \ depth(C_k) \leqslant c\   log^i(k), \ \ C_k$  может быть выведено по $k$, используя $O(log \ k)$ памяти $\}$
+==$NC$== $= \cup_{i = 0}^\infty \ NC^i$
+
+**def** ==$AC^i$== (_Aaron's class_) -- то же самое, но $\or$ и $\and $ могут иметь неограниченное число входов
+==$AC$== $= \cup_{i = 0}^\infty \ AC^i$
+
+$AND(x_1...x_n) \in NC^1 \cap AC^0$
+$PARITY(x_1...x_n) \in NC^1 \setminus AC^0$
+$SUM(x_1...x_ny_1...y_n) \in \widetilde {NC^1}$
+
+**Th** $NC^i \subset AC^i \subset AC^{i + 1}$
+**Cons** $AC = NC$
+**Th** $L \subset NC \subset P$
+
