@@ -42,6 +42,8 @@
 >         *   [Th P/poly = SIZE(poly)](#sizepoly)
 >         *   [Th Карпа-Липтона](#thkl)
 >     *   [Параллельные вычисления](#parallel)
+> *   [Вероятностные сложностные классы](#prob)
+>     *   [Th Лаутемана](#lauteman)
 
 ## <a name="np-complexity">NP-полнота</a>
 
@@ -1252,4 +1254,246 @@ $SUM(x_1...x_ny_1...y_n) \in \widetilde {NC^1}$
 **Th** $NC^i \subset AC^i \subset AC^{i + 1}$
 **Cons** $AC = NC$
 **Th** $L \subset NC \subset P$
+
+
+
+## <a name="prob">Вероятностные сложностные классы</a>
+
+$\sphericalangle \ L$ и $p$ – вероятностная программа для $L$ 
+
+1.   ==нульстороння ошибка==: $x \in L \iff p(x) = 1, \ T(p, x)$ – случайная величина
+2.  ==односторонняя ошибка==: $x \in L \implies p(x) = 1$ (false positive), $x \notin L \implies p(x) = 0$ (false negative)
+    **ex** тест Миллера-Рабина на простоту
+3.   ==двусторонняя ошибка==
+
+
+
+### Введение вероятности
+
+#### Способ 1. Вероятностная лента
+
+**ex** linux `/dev/urand`
+
+есть доступ к вероятнстной ленте — односторонней бесконечной последовательности символов какого-то алфавита
+
+множество всех вероятностных лент — $\Omega$
+
+#### Способ 2. Генератор случайных чисел
+
+**ex** `random(n) -> [0, n - 1]`
+
+
+
+способы **эквивалетны**
+
+
+
+### События, связанные с программой
+
+**Thesis**  $\forall$ множество $R \subset \Omega$, задающее множество вероятностных лент, приводящих рещультат работы программ, является событием
+
+>   **Proof** $R = \{r \ | \ A(p,r,x)\}$, выполняется какой-то предикат $A$
+>
+>   $R = \cup_{i = 0}^\infty r_i$,   $r_i = \{r \ | \ A(p,r,x) \ \and $ считан $i$ бит с вероятностной ленты $\}$
+>
+>   $R_i = \{r = z\{01\}^* \ | \ z \in Z_i\}$
+>
+>   $\mu(z_i) = {|z_i| \over 2^i}$
+>
+>   не более, чем счётное объединение измеримых, значит, объединение измеримо, значит $R$ является событием
+
+
+
+### Нульсторонняя ошибка
+
+==$ZPP$== (*Zero-error Probabilistic Polynomial*) $= \{L \ | \ \exist$ программа $p: {1)\ \forall x \ p(x) = 1 \iff x \in L \\ 2)\ E(T(p, x)) = poly(|x|)} \ \ \}$
+
+**ex** $QSort \in \widetilde{ZPP}$ // (волна – это не про распознователь, а про преобразователь)
+
+альтернативное определение: $ZPP_1 = \{L \ | \ \exist p: \Sigma^* \to \{0, 1, ?\} : {1) \ p(x) = 1 \implies x \in L \\ \ \ \ \  \ p(x) = 0 \implies x \notin L \\ 2) \ T(p, x) \leqslant poly(|x|) \\ 3) \ P(p(x) = ?) \leqslant {1 \over 2}} \ \ \}$
+
+**Th** $ZPP = ZPP_1$
+
+>   **Proof** 
+>
+>   1.  $ZPP \subset ZPP_1$
+>       $p, \ \ E(T(p, x)) = q(n)$
+>       $p(x) |_{TL = 2q(n)}$ (on TL `return ?`)
+>
+>   2.  $ZPP_1 \subset ZPP$
+>
+>       ```c
+>       p:
+>           while ((res = p(x)) = ?);
+>           return res
+>       ```
+
+
+
+### Односторонняя ошибка
+
+==$RP$== (*Randomized Polynomial*) $= \{L \ | \ \exist$  программа $p: {1) \ x \notin L \implies p(x) = 0 \\ \ \ \ \  x \in L \implies P(p(x) = 1) \geqslant {1 \over 2} \\ 2) \ T(p, x) \leqslant poly(|x|)} \ \ \}$
+
+==$coRP$== $= \{ -//- \ \ {x \in L \implies p(x) = 1 \\ x \notin L \implies P(p(x) = 0) \geqslant {1 \over 2} } \ \}$
+
+>   **ex** $Primes \in coRP$
+>
+>   тест Миллера-Рабина
+>
+>   $n \in Primes$
+>
+>   *Малая теорема Ферма*: $p$ - простое $\implies \forall a$ простое с $p$ $a^{p - 1} \equiv 1 \mod p$
+>
+>   *тест Ферма*: $a$ взаимно простое с $p$, $a^{p - 1} \equiv 1 \mod p$ ~~$\implies$~~ $p$ - простое (числа Кармайкла ломают)
+>
+>   $a^{n - 1} \mod n \neq 1$,   $a$ - *свидетель Ферма*
+>
+>   либо $n \notin Primes \implies P(a$ - свидетель Ферма $\geqslant {1 \over 2})$, либо $n$ - число Кармайкла
+>
+>   …
+
+**вероятность берётся только по вероятностным лентам**
+
+
+
+**Th** ==$RP_{weak}$== $= \{-//- \ \ x \in L \implies P(p(x) = 1) \geqslant {1 \over a(n)}$, $q$ - любой полином, $q > 1 \ \}$, ==$RP = RP_{weak}$==
+
+>   **Proof** Повторим $k$ раз $(1 - {1 \over q(n)})^k < {1 \over 2}$
+>   $k \sim q(n)$
+>   $(1 - {1 \over q(n)})^{q(n)} \sim {1 \over e} < {1 \over 2}$
+
+
+
+**Th** ==$RP_{strong}$== $= \{-//- \ \ x \in L \implies P(p(x) = 1) \geqslant 1 - {1 \over 2^{q(n)}}, q$ - полином, $q > 1 \ \}$, ==$RP = RP_{strong}$==
+
+>   **Proof** $P(p(x) = 0 \ | \ x \in L) < {1 \over 2}$
+>   $P(p(x) = 0 \ \ k \ times \ | \ x \in L) < {1 \over 2^k}$
+>   $k = q(n)$ 
+
+
+
+такой способ называется **amplification** (*уменьшение вероятности ошибки (накачка)*)
+
+
+
+**L** $ZPP \subset RP$
+
+>   **Proof** $\sphericalangle \ L \in ZPP \ \ P(p(zx) = ?) \leqslant {1 \over 2}$
+>
+>   ```
+>   q(x):
+>       res = p(x)
+>       if res != ?
+>           return res
+>       return 0
+>   ```
+>
+>   $x \notin L \implies q(x) = 0$
+>   $x \in L \implies P(q(x) = 1) \geqslant {1 \over 2}$
+
+**$\implies$** $ZPP \subset coRP$
+
+**Th** ==$ZPP = RP \cap coRP$==
+
+>   **Proof**
+>
+>   $RP \cap coRP \subset ZPP$
+>
+>   $p_1 \ \ {x \notin L \implies P_1(x) = 0 \\ x\in L \implies P(p_1(x) = 1) \geqslant 1} \ \ \ \ p_2 \ \ {x \in L \implies p_2(x) = 2\\ x \notin L \implies P(p_2(x) = 0) \geqslant {1 \over 2} }$
+>
+>   сделаем программу $q$:
+>
+>   | $p_1$ | $p_2$ | res                                         |
+>   | ----- | ----- | ------------------------------------------- |
+>   | 0     | 0     | 0                                           |
+>   | 0     | 1     | ?    // $P(q(x) = ?) \leqslant {1 \over 4}$ |
+>   | 1     | 0     | _impossible_                                |
+>   | 1     | 1     | 1                                           |
+
+
+
+### Двусторонняя ошибка
+
+==$PP$== (*Probabilistic Polynomial*)   $= \{L \ | \ {x \in L \implies P(p(x) = 1) > {1 \over 2} \\ x \notin L \implies P(p(x) = 0) > {1 \over 2}}, \ p$ работает за полином$\}$
+
+На практике неприменим, рассматривают скорее:
+==$BPP$== (*Bounded Probabilistic Polynomial*) — пишем вместо ${1 \over 2}$ какое-то число, например $2 \over 3$
+
+
+
+### <a name="lauteman">Th (*Лаутемана*)</a>
+
+==$BPP \subset \Sigma_2$==
+
+$\implies BPP \subset \Pi_2$ (по симметрии)
+
+>   $L \in BPP: x \in L \iff \exist$ много $r: p(x, r) = 1$
+>   $L \in \Sigma_2: x \in L \iff \exist y \forall z: \ R(x, y, z)$
+
+**L** (*прокачка $BPP$*) $L \in BPP: \forall$ полинома $p(n)  \ \ \exist$ полином $q(n)$ и программа $A$, работающая ща полином $P(A(x) = [x \in L]) \geqslant 1 - {q \over 2^{p(n)}}, A$ импользует $q(n)$ случайных бит
+
+>   $A(x, r) \ \ x \in L \iff |\{r \ | \ A(x, r) = 1\}| \geqslant (1 - {1 \over 2^{p(n)}}) 2^{q(n)} = 2^{q(n)} 2^{q(n) - p(n)}$
+>   $x \notin L \iff |\{r \ | \ A(x, r) = 1\} | < {2^{q(n)} \over 2^{p(n)}} = b$, тогда выше: $2^{q(n)} - b$
+>
+>   $B^{q(n)} = \Omega, \ \ |\Omega| = 2^{q(n)}$
+>
+>   введём групповую операцию (**ex** xor)
+>
+>   выберем $k$
+>
+>   $X \subset \Omega$ - большое $\iff \exist y_1 y_2 ... y_k: \cup_{i = 1}^k y_i \oplus  X = \Omega$
+>
+>   $X \subset \Omega$ - маленькое $\iff \forall y_1 y_2 ... y_k \cup_{i = 1}^k y_i \oplus X \neq \Omega$
+>
+>   1.  $|X| < {2^{1(n)} \over k} \implies X$ — $k$-маленькое
+>       $x \notin L \implies \underbrace {|\{r \ | \ A(x, r) = 1\}|}_R < {2^{q(n)} \over 2^{p(n)}} < {2^{q(n)} \over k} \implies R$ — $k$-маленькое
+>   2.  $|X| > (1 - {1 \over 2^{p(n)}}) 2^{q(n)} \stackrel {k?} \implies X$ — $k$-большое
+>       $\exist y_1 y_2 … y_k \cup_{i = 1}^k y_i \oplus X = \Omega$
+>       $P_{y_1 y_2 ... y_k} (\cup_{k = 1} ^k y_i \oplus X = \Omega) = \\ = P(\forall z \or_{i = 1} ^k z \in y_i \oplus X) = \\ = P(\forall z \or_{i = 1}^k y_i \in z \oplus X) = \\ = 1 - P(\exist z \and_{i = 1}^k y_i \notin z \oplus X) = \\ = 1 - P(\or_{z} \and_{i = 1}^k y_i \notin z \oplus X) \geqslant \\ \geqslant 1 - \Sigma_k P(\and_{i = 1} ^k y_i \notin z \oplus X) = \\ = 1 - 2^{q(n)} (1 - {|X| \over |\Omega|})^k \geqslant \\ \geqslant  1 - 2^{q(n)} (1 - (1 - {1 \over 2^{q(n)}}) {2^{q(n)} \over 2^{q(n)}})^k = \\ = 1 - {2^{q(n)} \over 2^{k p(n)}}$
+>       если добавим условие что $k > {q(n) \over p(n)}$, то получается, что $> 0$
+>
+>   $\sphericalangle \ L \in BPP$, выберем $p(n) = n$, по лемме $\exist q(n) \ \ R = \{r \ | \ A(x,r) = 1\}$
+>
+>   $x \in L \implies |R| > (1 - {q \over 2^n} 2^{q(n)}) \ \ x \notin L \implies |R| < {2^{q(n)} \over 2^n}$
+>
+>   выберем $k = q(n)$, для $n > n_0: {q(n) \over n} < k < 2^n$
+>
+>   $X \in L \implies R$ — $k$-большое
+>
+>   $X \notin L \implies R$ — $k$-маленькое
+>
+>   $x \in L \iff \exist y_1 ... y_k \forall z (A(x, y_1 \oplus z) \or A(x, y_w \oplus z) ... \or A(x, y_k \oplus z))$
+>
+>   $z \in y_i \oplus R \iff z \oplus y_i \in R \iff A(x, y_i \oplus z) = 1$
+>
+>   $\implies L \in \Sigma_2$
+
+
+
+==$PI$== (*Polynom Identity*) $= \{\langle p(x_1...x_n), q(x_1...x_n), m \rangle \ | \ \forall x_1...x_n \ \ p(\overline x) \equiv q(\overline x) \mod m \}$
+
+1.  $PI \in coNP$
+2.  $PI \in NP$ открыто
+3.  $PI \in coRP \subset BPP$
+
+
+
+**L** (*Шварца-Зиппеля*)
+
+$p$ – полином над полем, $deg \ p = d$, $p \ne 0$, $S$, $|S| = s$ 
+если случайно выбрать $x_i$ из $S$, $P(p(x_1...x_n) = 0) \leqslant {d \over s}$
+
+>   **Proof** индукция по количеству переменных в полиноме
+>
+>   база $n = 1$ полином над полем имеет $\leqslant d$ корней
+>
+>   $P(p(x) = 0) \leqslant {d \over s}$
+>
+>   переход к $n$
+>
+>   $P(x_1 ... x_n) = x_1^k \stackrel  {\ne 0} {q_k} (x_2 ... x_n) + x_1^{k - 1} q_{k -1}(x_2...x_n) + ... + x_1^0q_0(x_2...x_n)$
+>
+>   $P(p(x_1…x_n) = 0) = P(p(x_1...x_n) = 0 \ | \ \stackrel {\leqslant 1} {q_k} (x_2...x_n) = 0) P(\stackrel {\leqslant {d - k \over s}} {q_k} (x_2...x_n) = 0) + \stackrel {\leqslant {k \over s}} P(p(x_1...x_n) = 0 \ | \ q_k \ne 0) \stackrel {\leqslant 1} P(q_k \ne 0)$
+>
+>   $\sphericalangle  \ p - 1 \ \ p \equiv q \iff p - q \equiv 0$
 
