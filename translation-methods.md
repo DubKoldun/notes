@@ -52,7 +52,8 @@ $\Sigma, \Sigma^*, L \subset \Sigma^*$ - формальный язык
     >
     >$T \rightarrow T \ \times \ F \ \{T_{0}.v = T_{1}.v \ +\ F.v \}$
     >
-    >Нужно быстрее, чем за куб $ \Rightarrow $ накладываем ограничения на грамматики
+
+Нужно быстрее, чем за куб $ \Rightarrow $ накладываем ограничения на грамматики
 
 ---
 
@@ -124,9 +125,9 @@ $S\rightarrow abB|aaA\\ B\rightarrow d\\A\rightarrow c|d$
 
 2. Удалить недостижимые
 
-   Менять шаги алгоритма нельзя 
+   Менять шаги алгоритма нельзя
 
-   **ex**: Grammar: 
+   **ex**: Grammar:
 
 ### Удаление непорождающих символов
 
@@ -704,22 +705,22 @@ E'(a: int): int
             $ADD.res = $ADD(a, T.v)
             E'.v = E'($ADD.res)
             return E'.v
-        
+
 E(): int
    switch
        case
            T.v = T()
            E'v. = E'(T.v)
            return E'.v
-           
+
 $ADD(op1, op2: int): int
    return op1 + op2
-   
+
 // alternative:
 Node E'(a)
     Node res = Node(E, atr = {a.a})
-    
-    switch 
+
+    switch
         -> e
            res v = res.a
            return res
@@ -740,7 +741,7 @@ Node E'(a)
 
 ---
 
-Непосредственная левая рекурсия 
+Непосредственная левая рекурсия
 $A \rightarrow A \alpha$
 $A \rightarrow \beta$
 x - синтезируемый атрибут A
@@ -828,7 +829,7 @@ $\gamma = \xi' \alpha t'$   $\xi'$ - подстрока $\xi$, t' - суффик
 
 $S \Rightarrow^* \xi'At' \Rightarrow \xi'\alpha t' = \xi t$
 
-Ситуации (items) 
+Ситуации (items)
 LR(1) - ситуация ($A \rightarrow \alpha, K \in \{0, ..., |\alpha|\}$)
 
 ![table](photos/tm-22-10-2019.jpg)
@@ -876,4 +877,3 @@ lr1 - грамматике - если в детерминированном ав
 если они оба терминальные, то их символ предпросмотра не совпадает
 
 [lr1 приколюхи](jsmachines.sourceforge.net/machines/lr1.html)
-
