@@ -95,7 +95,7 @@
   1. $\alpha\sqsubseteq\beta$, если $\alpha\vdash\beta$ 
   2. $\alpha\approx\beta$, если $\alpha\sqsubseteq\beta$ и $\beta\sqsubseteq\alpha$
 
-* Полнота ИИВ???
+* Полнота ИИВ TODO()
 
  ## 5.  Модели Крипке. Сведение моделей Крипке к псевдобулевым алгебрам. Нетабличность интуиционистского исчисления высказываний.
 
@@ -368,10 +368,49 @@
 
  ## 15.  Непротиворечивость и $\omega$-непротиворечивость. Первая теорема Гёделя о неполноте арифметики, её неформальный смысл.
 
-* ???
+* **Непротиворечивость.** Формальная арифметика непротиворечива, если нет формулы $\alpha$,что $\vdash\alpha$ и $\vdash\neg\alpha$
 
+* **$\omega$-непротиворечивость.** Формальная арифметика $\omega$-непротиворечива, если для любой формулы $\phi(x)$,что
+   * $\vdash\phi(\overline{p})$ при всех $p\in\N_0$ выполено $\nvdash\exist p.\neg\phi(p)$ 
+   * (менее фомально) пусть $\vdash\phi(\overline{0}),\vdash\phi(\overline{1})$... Значит,z нет $p$, что $\vdash\neg\phi(p)$
+
+* **Первая теорема Гёделя о неполноте арифметики.**
+    
+    def. Определим функция $W_1:W_1(x,p)=1$, если $x=\ulcorner\alpha\urcorner$, где $\alpha$-формула с единственной свободной переменной $x_1$, а $p$- доказательство самоприменения $\alpha:\vdash\alpha(\overline{\ulcorner\alpha\urcorner})$ и $W_1(x,p)=0$, если это не так.
+
+    Теорема. Существует формула $\omega_1$ со своодными переменными $x_1,x_2$ такая, что:
+
+    1. $\vdash\omega_1(\overline{\ulcorner\phi\urcorner},\overline{p})$, если $p$ - гёделев номер доказательства самоприменения $\phi$
+    2. $\vdash\neg\omega_1(\overline{\ulcorner\phi\urcorner},\overline{p})$ иначе
+
+    **Теорема Гёделя**
+    
+    * Если формальная арифметика непротиворечива,то $\nvdash\sigma(\overline{\ulcorner\sigma\urcorner})$ 
+    * Если формальная арифметика $\omega$-непротиворечива,то $\nvdash\neg\sigma(\overline{\ulcorner\sigma\urcorner})$
+
+        $\sigma(x):=\forall p.\neg\omega_1(x,p)$: $\sigma(\overline{\ulcorner\sigma\urcorner})$ означает "я не доказуема". При этом мы показали, что она не доказуема, значит она истинна? Покажем это формально
+        
+        **Теорема** $\models\sigma(\overline{\ulcorner\sigma\urcorner})$ В стандартной интерпретации формальной арифметики: $D=\N_0,a'=a+1$ и тд.
+        
+
+        <details>
+        <summary>Доказательство</summary>
+        $\nvdash\sigma(\overline{\ulcorner\sigma\urcorner})$, значит, при любом $p\in\N_0$ выполнено $W_1(\ulcorner\sigma\urcorner,p)=0$. То есть, $[\neg\omega_1(\ulcorner\sigma\urcorner,p)]=И$, то есть $[\forall p.\neg\omega_1(x,p)$: $\sigma(\overline{\ulcorner\sigma\urcorner})] = [\sigma(\overline{\ulcorner\sigma\urcorner})]=И$
+        </details>
+
+         
  ## 16. Формулировка первой теоремы Гёделя о неполноте арифметики в форме Россера, её неформальный смысл. Формулировка второй теоремы Гёделя о неполноте арифметики, $Consis$. Неформальное пояснение метода доказательства.
 
-* ???
+* **Первая теорема Гёделя в форме Россера.** 
+    
+    * def. $W_2(x,p)=1$, если p-доказательство отрицания самоприменения.
+    * Лемма. Существует формула $\omega_2$, что $\vdash\omega_2(\overline{x},\overline{p})$, если $W_2(x,p)=1$, иначе $\vdash\neg\omega_2(\overline{x},\overline{p})$
+    * **Теорема**. Пусть $\alpha(x):=\forall p.\omega_1(x,p)\rightarrow\exist q.q<p\&\omega_2(x,q)$, тогда $\nvdash \alpha(\overline{\ulcorner\alpha\urcorner})$ и $\nvdash\neg \alpha(\overline{\ulcorner\alpha\urcorner})$
+
+       Описание. Мы говорим, что если $p$ является доказательством самоприменения $x$, то найдется доказательство $q$, причем, с меньшим Гёделевым номером, чем $p$, который является док-вом отрицания самоприменения $x$. Тогда не доказуемо ни самоприменение $\alpha$, ни отрицание самоприменения.
+
+       Менее формальное определение теоремы. Если существует доказательство самоприменения $\alpha$, то существует и доказательство отрицания самоприменения $\alpha$, причем с меньшим номером
+
+       TODO (степик лег)  
 ​    
 
