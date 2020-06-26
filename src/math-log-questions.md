@@ -246,7 +246,7 @@
   Пусть $\theta$ свободно для подстановки вместо $x$
 
   11. $\forall x(\psi)\rightarrow (\psi[x:=\theta])$
-  12. $ (\psi[x:=\theta])\rightarrow \exists x(\psi)$
+  12. $(\psi[x:=\theta])\rightarrow \exists x(\psi)$
 
 * Правила вывода:
 
@@ -418,23 +418,23 @@
   <summary>Haskell code</summary>
   
   ```haskell
-      div2while0h :: [Int] -> Int
-      div2while0h = s if' [s eq [s div2 [u 1], z], u 2, s div2while0' [s div2 [u 1], s plus [u 2, one], z]]
+  div2while0h :: [Int] -> Int
+  div2while0h = s if' [s eq [s div2 [u 1], z], u 2, s div2while0' [s div2 [u 1], s plus [u 2, one], z]]
 
-      div2while0' :: [Int] -> Int
-      div2while0' = sr (r . (,,) div2while0h z) [u 1, u 2, z]
+  div2while0' :: [Int] -> Int
+  div2while0' = sr (r . (,,) div2while0h z) [u 1, u 2, z]
 
-      div2while0 :: [Int] -> Int
-      div2while0 = s div2while0' [u 1, one]
+  div2while0 :: [Int] -> Int
+  div2while0 = s div2while0' [u 1, one]
 
-      plogkh :: [Int] -> Int
-      plogkh = s z [u 1]
+  plogkh :: [Int] -> Int
+  plogkh = s z [u 1]
 
-      plogkg :: [Int] -> Int
-      plogkg = s if' [s eq [s modhs [u 1, s powhs [u 2, u 3]], z], u 3, u 4]
+  plogkg :: [Int] -> Int
+  plogkg = s if' [s eq [s modhs [u 1, s powhs [u 2, u 3]], z], u 3, u 4]
 
-      plogk :: [Int] -> Int
-      plogk = sr (r . (,,) plogkh plogkg) [u 1, u 2, s plus [ s div2while0 [u 1], one]]
+  plogk :: [Int] -> Int
+  plogk = sr (r . (,,) plogkh plogkg) [u 1, u 2, s plus [ s div2while0 [u 1], one]]
   ```
 </details>
   
@@ -526,7 +526,9 @@
 
         <details>
         <summary>Доказательство</summary>
+          
         $\nvdash\sigma(\overline{\ulcorner\sigma\urcorner})$, значит, при любом $p\in\N_0$ выполнено $W_1(\ulcorner\sigma\urcorner,p)=0$. То есть, $[\neg\omega_1(\ulcorner\sigma\urcorner,p)]=И$, то есть $[\forall p.\neg\omega_1(x,p)$: $\sigma(\overline{\ulcorner\sigma\urcorner})] = [\sigma(\overline{\ulcorner\sigma\urcorner})]=И$
+        
         </details>
 
          
