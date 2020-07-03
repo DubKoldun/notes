@@ -401,7 +401,112 @@
 
 * **Непротиворечивое множество формул.** Назовем $\Gamma$ - множество замкнутых формул - непротиворечивым, если ни для какой формулы $\alpha$ невозможно показать, что $\Gamma\vdash\alpha$ и $\Gamma\vdash\neg\alpha$
 
-* **Def.** Полным непротиворечивым множеством (непротиворечивым бескванторным множеством) формул назовем такое множество $\Gamma$, что для любой замкнутой (замкнутой и бескванторной) формулы $\alpha$ либо $\alpha\in\Gamma$, либо $(\neg\alpha)\in\Gamma$
+    * *Альтернативное определение.* $\Gamma$ - непротиворечивое множество формул, если $\Gamma\nvdash\alpha\&\neg\alpha$ при некотором $\alpha$ 
+
+* **Пример замкнутых и бескванторных.**
+
+  * Бескванторная = не содержащая кванторов.\
+    Замкнутая = не содержащая свободных переменных.
+
+    Возможны все 4 варианта:\
+    ЗБ: $0=1\\$
+    З: $\forall x.x=1\\$
+    Б: $x=1\\$
+    : $\forall x.x=y\\$
+
+* **Def.** Полным непротиворечивым множеством замкнутых (замкнутых и бескванторных)  формул назовем такое множество $\Gamma$, что для любой замкнутой (замкнутой и бескванторной) формулы $\alpha$ либо $\alpha\in\Gamma$, либо $(\neg\alpha)\in\Gamma$
+
+<details><summary>Некоторые теоремы.</summary>
+
+  * **Теорема.** Пусть $\Gamma$ - непротиворечивое множество замкнутых (замкнутых и бескванторных) формул. Тогда какова бы ни была замкнутая (замкнутая и бескванторная) формула $\phi$, хотя бы $\Gamma\cup\{\phi\}$ или $\Gamma\cup\{\neg\phi\}$ - непротиворечиво
+
+    <details><summary>Доказательство</summary>
+    
+    Пусть это не так и найдутся такие $\Gamma,\phi,\alpha$, что
+
+      $\Gamma,\phi\vdash\alpha\&\neg\alpha\\$
+      $\Gamma,\neg\phi\vdash\alpha\&\neg\alpha\\$
+
+      Тогда по лемме об исключении гипотезы: 
+        
+      $\Gamma\vdash\alpha\&\neg\alpha$
+      
+    </details>
+
+  * **Теорема.** Пусть $\Gamma$ - непротиворечивое множество замкнутых (замкнутых и бескванторных) формул. Тогда найдется полное непротиворечивое множество замкнутых (замкнутых и бескванторных) формул $\Delta$, что $\Gamma\in\Delta$.
+
+    <details><summary>Доказательство</summary>
+
+    1. Занумеруем все формулы (их счетное количество): $\phi_1,\phi_2...$
+    2. Построим семейство множеств $\{\Gamma_i\}:\\$
+    $\Gamma_0=\Gamma\\$
+    $$
+      \Gamma_{i+1} =
+        \left \{
+          \begin{array}{ll}
+            \Gamma_i\cup\{\phi_i\},\ если\ \Gamma_i\cup\{\phi_i\}\ непротиворечиво\\
+            \Gamma_i\cup\{\neg\phi_i\},\ иначе
+          \end{array}
+        \right.
+    $$
+
+    3. Итоговое множество
+
+    $$
+      \Delta=\cup_i\Gamma_i
+    $$
+
+    4. Непротиворечивость $\Delta$ не следует из индукции - индукция гарантирует непротивопречивость только $\Gamma_i$ при натуральном i
+
+        1. Пусть $\Delta$ противоречиво, то есть: $\Delta\vdash\alpha\&\neg\alpha$
+        2. Доказательство конечной длины и использует конечное кол-во гипотез $\{\delta_1,...,\delta_n\}\subset\Delta$, то есть $\delta_1,...,\delta_n\vdash\alpha\&\neg\alpha$
+        3. Пусть $\delta_i\in\Gamma_{d_i}$, тогда $\Gamma_{d_1}\cup...\cup\Gamma_{d_n}\vdash\alpha\&\neg\alpha$
+        4. Но $\Gamma_{d_1}\cup...\cup\Gamma_{d_n}=\Gamma_{max(d_i)}$, которое непротиворечиво, и потому $\Gamma_{d_1}\cup...\cup\Gamma_{d_n}\nvdash\alpha\&\neg\alpha$
+        5. Противоречие
+
+    </details>
+      
+</details>
+
+* **Def.** Моделью для множества формул $F$ назовем такую модель $M$, что при всяком $\phi\in F$ выполнено $[\phi]_M=И$
+
+    * **Альтернативное обозначение.** $M\models\phi$
+
+* **Теорема.** Любое непротиворечивое множество замкнутых бескванторных формул имеет модель.
+
+* **Def.** Пусть $\Mu$ - полное непротиворечивое множество замкнутых формул. Тогда модель $M$ задается так:
+
+    1. $D$ - множество всех бескванторных формул и дополнительная строка "ошибка!"
+    2. $[f(\theta_1,...,\theta_n)]="f(" ++ [\theta_1] ++ "," ++...++ ","++ [\theta_n] ++")"$
+    3. 
+    $$
+      [P(\theta_1,...,\theta_n)] =
+        \left \{
+          \begin{array}{ll}
+            И,\ если\ "f(" ++ [\theta_1] ++ "," ++...++ ","++ [\theta_n] ++")"\in M\\
+            Л,\ иначе
+          \end{array}
+        \right.
+    $$
+    4. $[x]=$"ошибка!", тк формулы замкнуты
+
+* *Лемма.* Пусть $\phi$ - бескванторная формула, тогда $M\models\phi$ тогда и только тогда, когда $\phi\in\Mu$
+
+    <details><summary> Доказательство корректности <summary>
+
+    Индукция по длине формулы $\phi$
+
+    1. База. $\phi$ - предикат. Требуемое очевидно по определению $M$  
+    2. Переход. Пусть $\phi=\alpha\star\beta$ (или $\phi=\neg\alpha), причем $M\models\alpha(M\models\beta)$ тогда и только тогда, когда $\alpha\in\Mu(\beta\in\Mu)$.
+
+    Тогда покажем требуемое для каждой связки в отдельности. А именно, для каждой связки покажем 2 утверждения:
+
+    1. если $M\models\alpha\star\beta$, то  $\alpha\star\beta\in\Mu$
+    2. если $M\nvDash\alpha\star\beta$, то  $\alpha\star\beta\notin\Mu$
+
+    </details>
+
+  
 
 * **Lemma.** Пусть $\Gamma$ - полное непротиворечивое множество бескванторых формул. Тогда существует модель для $\Gamma$.
   
@@ -426,6 +531,18 @@
 * **Теорема Гёделя о полноте исчисления предикатов.**
 
   Пусть $\Gamma$ - непротиворечивое множество формул исчисления предикатов. Тогда существует модель для $\Gamma$.
+
+  <details><summary>Общая идея доказательства</summary>
+
+    1. Надо справиться со слишком большим количеством вариантов. Мдель задается как $\langle D,F,P,X\rangle$. 
+    2. Для оценки в модели важно только какие формулы истинны. Модели $M_1$ и $M_2$ "похожи", если $[\phi]_{M_1}=[\phi]_{M_2}$ при всех $\phi$
+    3. Поступим так:
+      
+        1. построим эталонное множество моделей $\Mu$, каждая модель соответствует списку истинных формул, но им не является;
+        2. докажем полноту $\Mu$: если каждая $M\in\Mu$ предполагает $M\models\phi$, то $\vdash\phi$;
+        3. заметим, что если $\models\phi$, то каждая $M\in\Mu$ предполагает $M\models\phi$
+
+  </details>
 
   <details><summary>Доказательство</summary>
   TODO()
@@ -484,7 +601,7 @@
     * $(A3)\ a'=b'\rightarrow a=b$ (инъективность штриха)
     * $(A4)\ \neg a'=0$ (у нуля нет предшественников)
     * $(A5)\ a+0=a$ (определение сложения)
-    * $(A6)\ a=b'=(a+b)'$ (определение сложения)
+    * $(A6)\ a+b'=(a+b)'$ (определение сложения)
     * $(A7)\ a\ast 0 =0$ (определение умножения)
     * $(A8)\ a\ast b'=a\ast b+a$ (определение умножения)
   
@@ -553,6 +670,67 @@
   TODO()
   </details>
 
+* **Простые арифмитические операции.** 
+
+  * Сложение 
+    
+    <details><summary>Haskell code</summary>
+  
+    ```haskell
+    plusf :: [Int] -> Int
+    plusf = u 1
+
+    plusg :: [Int] -> Int
+    plusg = s n [u 3] 
+
+    plus :: [Int] -> Int
+    plus = sr (r . (,,) plusf plusg) [u 1, u 2]
+    ```
+    </details>
+
+  * Умножение
+
+    <details><summary>Haskell code</summary>
+  
+    ```haskell
+    prodf :: [Int] -> Int
+    prodf = s z [u 1]
+
+    prodg :: [Int] -> Int
+    prodg = s plus [u 1, u 3]
+
+    prod :: [Int] -> Int
+    prod = sr (r . (,,) z prodg) [u 1, u 2]
+    ```
+    </details>
+
+  * Вычитание
+
+    <details><summary>Haskell code</summary>
+  
+    ```haskell
+    sub1g :: [Int] -> Int
+    sub1g = u 2
+
+    sub1' :: [Int] -> Int
+    sub1' = sr (r . (,,) z sub1g) [u 1, u 2]
+
+    sub1 :: [Int] -> Int
+    sub1 = s sub1' [u 1, u 1]
+
+    subf :: [Int] -> Int
+    subf = u 1
+
+    subg :: [Int] -> Int
+    subg = s sub1 [u 3]
+
+    sub :: [Int] -> Int
+    sub = sr (r . (,,) subf subg) [u 1, u 2]
+    ```
+    </details>
+
+   * [Остальные арифметические операции](https://github.com/DubKoldun/mathlog_labs_2018/tree/master/PrRecFunctions/haskell)
+    
 * **Проверка числа на простоту.**  Функция проверки числа на простоту примитивно-рекурсивна.
 * <details>
   <summary>Haskell code</summary>
@@ -860,55 +1038,116 @@
 
  ## 15.  Непротиворечивость и $\omega$-непротиворечивость. Первая теорема Гёделя о неполноте арифметики, её неформальный смысл.
 
+  <details><summary>Некоторые определения</summary>
+
+  * **Проблема останова.** Не существует функции ```bool p (std::string source, std::string arg)```, возвращающей $true$ тогда и только тогда, когда функция с исходным кодом $source$ (имеющая аргумент типа ```std::string```) оканчивает работу, если ей передать на вход значение $arg$
+    
+    *Доказательство.* Предположим, что такая функция $p$ существует и определим функцию $s$: если ей дают на вход программу, которая останавливается (останавливается на самоприменении), то программа (функция) $s$ зацикливается; если подать на вход то, что зацикливается, то она останавливается и возвращает истину.
+    ```cpp
+    bool s (std::string arg) {
+      if (p(arg,arg)) { while true; }
+      return true;
+    }
+    ```
+    Ее полный исходный код - в переменной $s\_source\\$
+    Что вернет ```p (s_source, s_source)```? Если возвращаемое $p$ истинно, то $s$ должна остановиться, но по ее исходному коду она зациклиться. Если возвращаемое $p$ ложна, то $s$ должна зациклиться, но по ее исходному коду она должна остановиться. Противоречие.\
+    Из этого получаем, что такой функции $p$ не существует.
+
+  * **Самоприменимость.** $W_1:W_1(x,p)=1$, если $x=\ulcorner \xi\urcorner$, где $\xi$ - формула с единственной свободной переменной $x_1$, а $p$ - доказательство самоприменения $\xi$:
+
+    $\vdash\xi(\overline{\ulcorner \xi\urcorner})\\$
+    $W_1(x,p)=0$, если это не так.
+
+  **Теорема.** Существует формула $\omega_1$ со свободными переменными $x_1,x_2$, такая, что:
+
+  1. $\vdash\omega_1(\overline{\ulcorner\phi\urcorner}, \overline{p})$, если $p$ - гёделев номер доказательства самоприменения $\phi$;
+  2. $\vdash\neg\omega_1(\overline{\ulcorner\phi\urcorner}, \overline{p})$, иначе
+
+  Док-во. $W_1$ рекурсивна, то есть представима в ФА формулой $o_1$. Функция такая же как и $proof$ (add ref to proof TODO()). 
+
+  Возьмем $\omega_1(x_1,x_2):=o_1(x_1,x_2,\overline{1})$.
+  </details>
+
 * **Непротиворечивость.** Формальная арифметика непротиворечива, если нет формулы $\alpha$, что $\vdash\alpha$ и $\vdash\neg\alpha$
 
 * **$\omega$-непротиворечивость.** Формальная арифметика $\omega$-непротиворечива, если для любой формулы $\phi(x)$, что
    * $\vdash\phi(\overline{p})$ при всех $p\in\N_0$ выполено $\nvdash\exist p.\neg\phi(p)$ 
-   * (менее фомально) пусть $\vdash\phi(\overline{0}),\vdash\phi(\overline{1})$... Значит,z нет $p$, что $\vdash\neg\phi(p)$
+   * (менее фомально) пусть $\vdash\phi(\overline{0}),\vdash\phi(\overline{1})$... Значит, нет $p$, что $\vdash\neg\phi(p)$
+
+* **Теорема.** Если формальная арифметика $\omega$-непротиворечива, то она непротиворечива.
+
+  <details><summary>Доказательство</summary>
+  Пусть $\phi(x):=(x=x\rightarrow x=x)$. Очевидно, что $\vdash\phi$ при любом $x$. Пусть существует $\beta$, что $\vdash\beta$ и $\neg\vdash\beta$. Тогда из ИВ известно $\vdash\beta\rightarrow\neg\beta\rightarrow\exist p.\neg(x=x\rightarrow x=x)$. После двух $MP$ получаем нарушение $\omega$-противоречивости. 
+  </details>
+
+
 
 * **Первая теорема Гёделя о неполноте арифметики.**
-    
-    def. Определим функция $W_1:W_1(x,p)=1$, если $x=\ulcorner\alpha\urcorner$, где $\alpha$-формула с единственной свободной переменной $x_1$, а $p$- доказательство самоприменения $\alpha:\vdash\alpha(\overline{\ulcorner\alpha\urcorner})$ и $W_1(x,p)=0$, если это не так.
 
-    Теорема. Существует формула $\omega_1$ со своодными переменными $x_1,x_2$ такая, что:
-
-    1. $\vdash\omega_1(\overline{\ulcorner\phi\urcorner},\overline{p})$, если $p$ - гёделев номер доказательства самоприменения $\phi$
-    2. $\vdash\neg\omega_1(\overline{\ulcorner\phi\urcorner},\overline{p})$ иначе
-
-    <details><summary>Доказательство</summary>
-    TODO()
-    </details>
-
+    **Def.** $\sigma(x):=\forall p.\neg\omega_1(x,p)$. Не существует доказательства $p$ для самоприменения $x$. 
+   
     **Теорема Гёделя**
     
     * Если формальная арифметика непротиворечива,то $\nvdash\sigma(\overline{\ulcorner\sigma\urcorner})$ 
     * Если формальная арифметика $\omega$-непротиворечива,то $\nvdash\neg\sigma(\overline{\ulcorner\sigma\urcorner})$
 
-        $\sigma(x):=\forall p.\neg\omega_1(x,p)$: $\sigma(\overline{\ulcorner\sigma\urcorner})$ означает "я не доказуема". При этом мы показали, что она не доказуема, значит она истинна? Покажем это формально
-        
-        **Теорема** $\models\sigma(\overline{\ulcorner\sigma\urcorner})$ В стандартной интерпретации формальной арифметики: $D=\N_0,a'=a+1$ и тд.
-        
+    <details><summary>Доказательство</summary>
+    
+    Покажем, что $\nvdash\sigma(\overline{\ulcorner\sigma\urcorner})$
 
-        <details>
-        <summary>Доказательство</summary>
-          
-        $\nvdash\sigma(\overline{\ulcorner\sigma\urcorner})$, значит, при любом $p\in\N_0$ выполнено $W_1(\ulcorner\sigma\urcorner,p)=0$. То есть, $[\neg\omega_1(\ulcorner\sigma\urcorner,p)]=И$, то есть $[\forall p.\neg\omega_1(x,p)$: $\sigma(\overline{\ulcorner\sigma\urcorner})] = [\sigma(\overline{\ulcorner\sigma\urcorner})]=И$
+    1. Пусть $\vdash\sigma(\overline{\ulcorner\sigma\urcorner})$ и $p$ - гёделев номер доказательства. Значит, что $W_1(\ulcorner\sigma\urcorner,p)=1$, то есть $\vdash\omega_1(\overline{\ulcorner\sigma\urcorner},\overline{p})$.
+
+        С другой стороны $\vdash\sigma(\overline{\ulcorner\sigma\urcorner})$ - то же, что $\vdash\forall p.\neg\omega_1(\overline{\ulcorner\sigma\urcorner},p)$. Отсюда выводится $\vdash\neg\omega_1(\overline{\ulcorner\sigma\urcorner},\overline{p})$ (Sch. Ax. 11 + MP). Противоречие
+    
+    2. Пусть $\vdash\neg\sigma(\overline{\ulcorner\sigma\urcorner})$, то есть $\vdash\neg\forall p.\neg\omega_1(\overline{\ulcorner\sigma\urcorner},p)$, то есть $\vdash\exist p.\omega_1(\overline{\ulcorner\sigma\urcorner},p)$. 
         
-        </details>
+        Неизбежно найдется $q$, что $\vdash\omega_1(\overline{\ulcorner\sigma\urcorner},\overline{q})$, поскольку для каждого $q\in\N_0$ выполнено  $\vdash\neg\omega_1(\overline{\ulcorner\sigma\urcorner},\overline{q})$, то по $\omega$-непротиворечивости $\nvdash\exist p.\neg\neg\omega_1(\overline{\ulcorner\sigma\urcorner},p)$. 
+        
+        Но тогда $W_1(\ulcorner\sigma\urcorner,q)=1$ и тогда $\vdash\sigma(\overline{\ulcorner\sigma\urcorner})$. Противоречие (Еще раз прочекать TODO())
+
+        
+    </details>
+
+    $\sigma(x):=\forall p.\neg\omega_1(x,p)$: $\sigma(\overline{\ulcorner\sigma\urcorner})$ означает "я не доказуема". При этом мы показали, что она не доказуема, значит она истинна? Покажем это формально.
+    
+    **Теорема** $\models\sigma(\overline{\ulcorner\sigma\urcorner})$ В стандартной интерпретации формальной арифметики: $D=\N_0,a'=a+1$ и тд.
+    
+    <details>
+    <summary>Доказательство</summary>
+      
+    $\nvdash\sigma(\overline{\ulcorner\sigma\urcorner})$, значит, при любом $p\in\N_0$ выполнено $W_1(\ulcorner\sigma\urcorner,p)=0$. То есть, $[\neg\omega_1(\ulcorner\sigma\urcorner,p)]=И$, то есть $[\forall p.\neg\omega_1(x,p)$: $\sigma(\overline{\ulcorner\sigma\urcorner})] = [\sigma(\overline{\ulcorner\sigma\urcorner})]=И$
+    
+    </details>
 
          
  ## 16. Формулировка первой теоремы Гёделя о неполноте арифметики в форме Россера, её неформальный смысл. Формулировка второй теоремы Гёделя о неполноте арифметики, $Consis$. Неформальное пояснение метода доказательства.
 
 * **Первая теорема Гёделя в форме Россера.** 
     
-    * def. $W_2(x,p)=1$, если p-доказательство отрицания самоприменения.
-    * Лемма. Существует формула $\omega_2$, что $\vdash\omega_2(\overline{x},\overline{p})$, если $W_2(x,p)=1$, иначе $\vdash\neg\omega_2(\overline{x},\overline{p})$
-    * **Теорема**. Пусть $\alpha(x):=\forall p.\omega_1(x,p)\rightarrow\exist q.q<p\&\omega_2(x,q)$, тогда $\nvdash \alpha(\overline{\ulcorner\alpha\urcorner})$ и $\nvdash\neg \alpha(\overline{\ulcorner\alpha\urcorner})$
+    * **Def.** $W_2(x,p)=1$, если p-доказательство отрицания самоприменения.
+    * **Лемма.** Существует формула $\omega_2$, что $\vdash\omega_2(\overline{x},\overline{p})$, если $W_2(x,p)=1$, иначе $\vdash\neg\omega_2(\overline{x},\overline{p})$
+    * **Теорема**. Пусть $\rho(x):=\forall p.\omega_1(x,p)\rightarrow\exist q.q<p\&\omega_2(x,q)$, тогда $\nvdash \rho(\overline{\ulcorner\rho\urcorner})$ и $\nvdash\neg \rho(\overline{\ulcorner\rho\urcorner})$
 
-       Описание. Мы говорим, что если $p$ является доказательством самоприменения $x$, то найдется доказательство $q$, причем, с меньшим Гёделевым номером, чем $p$, который является док-вом отрицания самоприменения $x$. Тогда не доказуемо ни самоприменение $\alpha$, ни отрицание самоприменения.
+       Описание. Мы говорим, что если $p$ является доказательством самоприменения $x$, то найдется доказательство $q$, причем, с меньшим Гёделевым номером, чем $p$, который является док-вом отрицания самоприменения $x$. Тогда не доказуемо ни самоприменение $\rho$, ни отрицание самоприменения.
 
-       Менее формальное определение теоремы. Если существует доказательство самоприменения $\alpha$, то существует и доказательство отрицания самоприменения $\alpha$, причем с меньшим номером
+       Менее формальное определение теоремы. Если существует доказательство самоприменения $\rho$, то существует и доказательство отрицания самоприменения $\rho$, причем с меньшим номером
 
-       TODO (степик лег)  
+* **Формула $Consis$.** 
+    
+    * **Теорема.** Существует формула $\pi(x,p)$ - доказуемая тогда и только тогда, когда $proof(x,p)=1$. Проверка, что $p$ является доказательством $x$
+    * **Def.** Формула *"доказуемо"*: $\pi_r(x):=\exist p.\pi(x,p)$. Если найдется $p$ - гёделев номер доказательства $x$
+    * **Def.** $Consis:=\neg\pi_r(\overline{\ulcorner\overline{1}=0\urcorner})$. Если формальная арифметика непротиворечива, то ожидаем, что формула $Consis$ истинна.
+    
 ​    
+* **Вторая теорема Гёделя о неполноте арифметики.**
 
+  $\vdash Consis\rightarrow\sigma(\overline{\ulcorner\sigma\urcorner})$ 
+
+  <details><summary>Идея доказательства</summary>
+  
+  * Первая теорема Гёделя, часть 1: *если формальная арифметика непротиворечива, то недоказуемо $\sigma(\overline{\ulcorner\sigma\urcorner})$*
+  * Недоказуемость $\sigma(\overline{\ulcorner\sigma\urcorner})$ означает истинность этого утверждения.
+  * Итого, первая теорема Гёделя утверждает, что $Consis\rightarrow\sigma(\overline{\ulcorner\sigma\urcorner})$ истинно. Рассуждение оказывается возможным формализовать.
+  </details> 
+ 
+  *"Если непротиворечивость формальной арифметики может быть доказана в формальной арифметике, то формальная арифметика противоречива"* 
