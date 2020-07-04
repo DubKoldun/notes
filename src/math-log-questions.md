@@ -1,12 +1,8 @@
-
-
-
-
 # Mathematical Logic Questions
 
 <p><a href="#1-исчисление-высказываний-общезначимость-следование-доказуемость-выводимость-корректность-полнота-непротиворечивость-теорема-о-дедукции-для-исчисления-высказываний">1.  Исчисление высказываний. Общезначимость, следование, доказуемость, выводимость. Корректность, полнота, непротиворечивость. Теорема о дедукции для исчисления высказываний.</a></p>
 <p><a href="#2-теорема-о-полноте-исчисления-высказываний">2.  Теорема о полноте исчисления высказываний.</a></p>
-<p><a href="#3-интуиционистское-исчисление-высказываний-bhk-интерпретация-решётки-булевы-и-псевдобулевы-алгебры">3.  Интуиционистское исчисление высказываний. BHK-интерпретация. Решётки. Булевы и псевдобулевы алгебры.</a></p>
+<p><a href="#3-интуиционистское-исчисление-высказываний-bhk-интерпретация-решётки-булевы-и-псевдобулевы-алгебры-теорема-гливенко">3.  Интуиционистское исчисление высказываний. BHK-интерпретация. Решётки. Булевы и псевдобулевы алгебры. Теорема Гливенко</a></p>
 <p><a href="#4-алгебра-линденбаума-полнота-интуиционистского-исчисления-высказываний-в-псевдобулевых-алгебрах">4.  Алгебра Линденбаума. Полнота интуиционистского исчисления высказываний в псевдобулевых алгебрах.</a></p>
 <p><a href="#5-модели-крипке-сведение-моделей-крипке-к-псевдобулевым-алгебрам-нетабличность-интуиционистского-исчисления-высказываний">5.  Модели Крипке. Сведение моделей Крипке к псевдобулевым алгебрам. Нетабличность интуиционистского исчисления высказываний.</a></p>
 <p><a href="#6-гёделева-алгебра-операция-gammaa-дизъюнктивность-интуиционистского-исчисления-высказываний">6.  Гёделева алгебра. Операция Г(А). Дизъюнктивность интуиционистского исчисления высказываний.</a></p>
@@ -187,7 +183,7 @@
   TODO()
   </details>
 
- ## 3.  Интуиционистское исчисление высказываний. BHK-интерпретация. Решётки. Булевы и псевдобулевы алгебры.
+ ## 3.  Интуиционистское исчисление высказываний. BHK-интерпретация. Решётки. Булевы и псевдобулевы алгебры. Теорема Гливенко.
  * **Интуиционистское исчисление высказываний.** Чтобы получить **ИИВ** (Интуиционистское исчисление высказываний) нужно в **КИВ** (Классическое исчисление высказываний) заменить 10-ю аксиому ($\neg\neg\alpha\rightarrow\alpha$) на $\alpha\rightarrow\neg\alpha\rightarrow\beta$
    
     * В интуиционистском исчислении высказываний невозможно доказать правило исключенного третьего: $\alpha\vee\neg\alpha$
@@ -264,6 +260,51 @@
 
   <details><summary>Неполнота классической модели для ИИВ</summary>
   TODO()
+  </details>
+
+* **Теорема Гливенко.** $\vdash_{КИВ}\alpha$, то $\vdash_{ИИВ}\alpha$.Если формула $\alpha$ выводима в классическом исчислении высказываний, то $\neg\alpha$ выводима в интуиционистком исчислении высказываний.
+
+  <details><summary> Доказательство </summary>
+
+  1. Требуется показать для всех утверждений, что есть в обоих исчислениях: $\vdash_{КИВ}\alpha$, то $\vdash_{ИИВ}\alpha$. (Это будет работать для гипотез и аксиом)
+      
+    $1.\ \alpha\ (Hypothesis)\\$
+    $2.\ \alpha\rightarrow\alpha\rightarrow\alpha\ (Sch.\ Ax.\ 1)\\$
+    $3.\ \alpha\rightarrow\alpha\ (MP\ 1,2)\\$
+    $4.\ \alpha\rightarrow\neg\alpha\rightarrow\alpha\ (Sch.\ Ax.\ 1)\\$
+    $5.\ \neg\alpha\rightarrow\alpha\ (MP\ 1,4)\\$
+    $6.\ (\alpha\rightarrow\alpha)\rightarrow(\neg\alpha\rightarrow\neg\alpha)\ (Contraposition)\\$
+    $7.\ (\neg\alpha\rightarrow\neg\alpha)\ (MP\ 3,6)\\$
+    $8.\ (\neg\alpha\rightarrow\alpha)\rightarrow(\neg\alpha\rightarrow\neg\alpha)\rightarrow\neg\neg\alpha\ (Sch.\ Ax.\ 9)\\$
+    $9.\ (\neg\alpha\rightarrow\neg\alpha)\rightarrow\neg\neg\alpha\ (MP\ 5,8)\\$
+    $10.\ \neg\neg\alpha\ (MP\ 7,9)\\$
+
+  2. Двойное отрицание 10 аксиомы из КИВ $\vdash\neg\neg(\neg\neg\alpha\rightarrow\alpha)$
+  
+    $1.\ \alpha\rightarrow\neg\neg\alpha\rightarrow\alpha\ (Sch.\ Ax.\ 1)\\$
+    $2.\ \neg\alpha\rightarrow\neg\neg\alpha\rightarrow\alpha\ (Sch.\ Ax.\ 10\ (int))\\$
+    $3.\ (\alpha\rightarrow\neg\neg\alpha\rightarrow\alpha)\rightarrow(\neg(\neg\neg\alpha\rightarrow\alpha)\rightarrow\neg\alpha)\ (Contraposition)\\$
+    $4.\ (\neg\alpha\rightarrow\neg\neg\alpha\rightarrow\alpha)\rightarrow(\neg(\neg\neg\alpha\rightarrow\alpha)\rightarrow\neg\neg\alpha)\ (Contrapositions)\\$
+    $5.\ (\neg(\neg\neg\alpha\rightarrow\alpha)\rightarrow\neg\alpha)\ (MP\ 1,3)\\$
+    $6.\ (\neg(\neg\neg\alpha\rightarrow\alpha)\rightarrow\neg\neg\alpha)\ (MP\ 2,4)\\$
+    $7.\ (\neg(\neg\neg\alpha\rightarrow\alpha)\rightarrow\neg\alpha)\rightarrow(\neg(\neg\neg\alpha\rightarrow\alpha)\rightarrow\neg\neg\alpha)\rightarrow\neg\neg(\neg\neg\alpha\rightarrow\alpha)\ (Sch.\ Ax.\ 9)\\$
+    $8.\ (\neg(\neg\neg\alpha\rightarrow\alpha)\rightarrow\neg\neg\alpha)\rightarrow\neg\neg(\neg\neg\alpha\rightarrow\alpha)\ (MP\ 5,7)\\$
+    $9.\ \neg\neg(\neg\neg\alpha\rightarrow\alpha)\ (MP\ 6,8)$
+
+  3. Также нужно перестроить $M.P.$: 
+    
+    $${{\alpha,\alpha\rightarrow\beta}\over{\beta}}\Rightarrow{{\neg\neg\alpha,\neg\neg(\alpha\rightarrow\beta)}\over{\neg\neg\beta}}$$
+
+    $1.\ \alpha,\alpha\rightarrow\beta\vdash\beta\ (Def\ MP)\\$
+    $2.\ \alpha\rightarrow\beta\vdash\alpha\rightarrow\beta\ (Deduction\ \Rightarrow)\\$
+    $3.\ \alpha\rightarrow\beta\vdash\neg\beta\rightarrow\neg\alpha\ (Constraposition)\\$
+    $4.\ \neg\beta,\alpha\rightarrow\beta\vdash\neg\alpha\ (Deduction\ \Leftarrow)\\$
+    $5.\ \neg\beta\vdash(\alpha\rightarrow\beta)\rightarrow\alpha\ (Deduction\ \Rightarrow)\\$
+    $6.\ \neg\beta\vdash\neg\neg\alpha\rightarrow\neg(\alpha\rightarrow\beta)\ (Constraposition)\\$
+    $7.\ \neg\neg\alpha,\neg\beta\vdash\neg(\alpha\rightarrow\beta)\ (Deduction\ \Leftarrow)\\$
+    $8.\ \neg\neg\alpha\vdash\neg\beta\rightarrow\neg(\alpha\rightarrow\beta)\ (Deduction\ \Rightarrow)\\$
+    $9.\ \neg\neg\alpha\vdash\neg\neg(\alpha\rightarrow\beta)\rightarrow\neg\neg\beta\ (Contraposition)\\$
+    $10.\ \neg\neg\alpha,\neg\neg(\alpha\rightarrow\beta)\vdash\neg\neg\beta\ (Deduction\ \Leftarrow)\\$
   </details>
 
  ## 4.  Алгебра Линденбаума. Полнота интуиционистского исчисления высказываний в псевдобулевых алгебрах.
@@ -646,7 +687,7 @@
   
   1. Ноль. $Z: \N_0\rightarrow\N_0, Z(x)=0$
   2. Инкремент. $N: \N_0\rightarrow\N_0, N(x)=x'$
-  3. Проекция. $V_i^n:\N_0\rightarrow\N_0, V_i^n(x_1,...,x_n)=x_i$
+  3. Проекция. $V_i^n:\N_0^n\rightarrow\N_0, V_i^n(x_1,...,x_n)=x_i$
   4. Подстановка. Если $f:\N_0^n\rightarrow\N_0$ и $g_1,...,g_n:\N_0^m\rightarrow\N_0$, то $S\langle f,g_1,...,g_n\rangle:\N_0^m\rightarrow\N_0$, при этом: 
    
   $$
