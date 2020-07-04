@@ -23,6 +23,31 @@
 
 * **Следование( $\Gamma\models\alpha$ ).** Пусть $\Gamma =\gamma_1,\gamma_2,\ ...,\gamma_n$. Тогда $\alpha$ следует из $\Gamma$, если при любой оценке пропозициональных переменных, входящих в высказывания $\Gamma$ и $\alpha$, на которых все высказывания из $\Gamma$ истинны, $\alpha$ также истинна.
 
+* **Выполнимость.** Формула истинна при какой-нибудь оценке.
+
+* **Невыполнимость.** Формула не истинна ни при какой оценке.
+
+* **Опровержимость.** Формула ложна при какой-нибудь оценке.
+
+* <details><summary> Схемы аксиом и правило вывода </summary>
+
+  $1.\ \alpha\rightarrow\beta\rightarrow\alpha\\$
+  $2.\ (\alpha\rightarrow\beta)\rightarrow(\alpha\rightarrow\beta\rightarrow\gamma)\rightarrow(\alpha\rightarrow\gamma)\\$
+  $3.\ \alpha\rightarrow\beta\rightarrow\alpha\&\beta\\$
+  $4.\ \alpha\&\beta\rightarrow\alpha\\$
+  $5.\ \alpha\&\beta\rightarrow\beta\\$
+  $6.\ \alpha\rightarrow\alpha\lor\beta\\$
+  $7.\ \beta\rightarrow\alpha\lor\beta\\$
+  $8.\ (\alpha\rightarrow\gamma)\rightarrow(\beta\rightarrow\gamma)\rightarrow(\alpha\lor\beta\rightarrow\gamma)\\$
+  $9.\ (\alpha\rightarrow\beta)\rightarrow(\alpha\rightarrow\neg\beta)\rightarrow\neg\alpha\\$
+  $10.\ \neg\neg\alpha\rightarrow\alpha\\$
+
+  $Modus Ponens:$ 
+  $${{\alpha,\alpha\rightarrow\beta}\over{\beta}}$$
+
+  </details>
+
+
 * **Доказуемость( $\vdash\alpha$ ) .** Высказывание $\alpha$ доказуемо, если существует доказательство $\alpha_1,\alpha_2...\alpha_k$ и $\alpha_k$ совпадает с $\alpha$
 
   Доказательство. Доказательство в исчислении высказываний — это некоторая конечная последовательность выражений (высказываний) $\alpha_1,\alpha_2...\alpha_k$, что каждое из высказываний $\alpha_i$ либо является аксиомой, либо получается из других утверждений $\alpha_{P_1},\alpha_{P_2},...,\alpha_{P_n}\ (P_1... P_n < i)$ по правилу вывода.
@@ -102,6 +127,7 @@
       (2 часть) Оттого, что мы поменяли местами некоторые гипотезы в списке гипотез, то ход вывода и сами утверждения в нем можно не менять, стоит изменить только ссылки на гипотезы (если они упоминались в самом выводе). 
 
       </details>
+
     * *Лемма 2.* Если справедливы три утверждения: $\Gamma\vdash\gamma,\ \Delta\vdash\delta,\ \gamma,\delta\vdash\alpha$, то справедливо и $\Gamma,\Delta\vdash\alpha$ 
       <details><summary>Доказательство Леммы 2</summary>
 
@@ -110,18 +136,9 @@
       предположениях. Но поскольку эти высказывания доказаны в первых двух частях вывода, мы будем иметь полное право их упоминать — на тех же основаниях, на которых они указаны в конце соответствующих доказательств.
 
       </details>
-    * *Лемма 3.* Каждое из построенных по таблицам истинности утверждений доказуемо.
-      <details><summary>Доказательство Леммы 3</summary>
-      
-      Доказательство каждого из утверждений стоит провести формально.  
-        Ex: $\neg\alpha,\beta\vdash\alpha\rightarrow\beta\\$
-            $1.\ \beta\rightarrow\alpha\rightarrow\beta\ (Sch.\ Ax\ 1)\\$
-            $2.\ \beta\ (Hypothesis\ 2)\\$
-            $3.\ \alpha\rightarrow\beta\ (MP\ 1,\ 2)$
 
-      </details>
-    * *Лемма 4.* (Правило контрапозиции). Каковы бы ни были формулы $\alpha,\beta$, справедливо, что $\vdash(\alpha\rightarrow\beta)\rightarrow(\neg\beta\rightarrow\neg\alpha)$
-      <details><summary>Доказательство Леммы 4</summary>
+    * *Лемма 3.* (Правило контрапозиции). Каковы бы ни были формулы $\alpha,\beta$, справедливо, что $\vdash(\alpha\rightarrow\beta)\rightarrow(\neg\beta\rightarrow\neg\alpha)$
+      <details><summary>Доказательство Леммы 3</summary>
 
       Докажем $(\alpha\rightarrow\beta),\neg\beta\vdash\neg\alpha\\$
       $1.\ (\alpha\rightarrow\beta)\rightarrow(\alpha\rightarrow\neg\beta)\rightarrow\neg\alpha\ (Sch.\ Ax.\ 9)\\$
@@ -134,8 +151,9 @@
       И два раза применим дедукцию
 
       </details>
-    * *Лемма 5.* Правило исключенного третьего. Какова бы ни была формула $\alpha,\vdash\alpha\vee\neg\alpha$
-      <details><summary>Доказательство Леммы 5</summary> 
+
+    * *Лемма 4.* Правило исключенного третьего. Какова бы ни была формула $\alpha,\vdash\alpha\vee\neg\alpha$
+      <details><summary>Доказательство Леммы 4</summary> 
 
       * 1 часть. Для начала покажем $\vdash\neg(\alpha\vee\neg\alpha)\rightarrow\neg\alpha\\$
         $1.\ \alpha\rightarrow\alpha\vee\neg\alpha\ (Sch.\ Ax.\ 6)\\$
@@ -156,31 +174,112 @@
         $6.\ \neg\neg(\alpha\vee\neg\alpha)\rightarrow(\alpha\vee\neg\alpha)\ (Sch.\ Ax.\ 10)\\$
         $7.\ (\alpha\vee\neg\alpha)\ (MP\ 5,6)\\$
 
+      </details> 
+    
+    * *Лемма 5.* Каждое из построенных по таблицам истинности утверждений доказуемо.
+      <details><summary>Доказательство Леммы 5</summary>
+      
+      Доказательство каждого из утверждений стоит провести формально.  
+        Ex: $\neg\alpha,\beta\vdash\alpha\rightarrow\beta\\$
+            $1.\ \beta\rightarrow\alpha\rightarrow\beta\ (Sch.\ Ax\ 1)\\$
+            $2.\ \beta\ (Hypothesis\ 2)\\$
+            $3.\ \alpha\rightarrow\beta\ (MP\ 1,\ 2)$
+
       </details>
-    * *Лемма 6.* Исключение допущения. Пусть справедливо $\Gamma,\rho\vdash\alpha$ и $\Gamma,\neg\rho\vdash\alpha$. Тогда также справедливо $\Gamma\vdash\alpha$.   
-      <details><summary>Доказательство Леммы 6</summary> 
+
+    * *Лемма 6.*  Пусть пропозициональные переменные $X_1,X_2...X_N$ - все переменные, которые используются в формуле $\alpha$. И пусть задана некоторая оценка переменных. Тогда $X_1^{(\neg)},X_2^{(\neg)}...X_N^{(\neg)}\vdash\alpha^{(\neg)}$.
+
+      <details><summary>Доказательство Леммы 6</summary>
+      
+      База: формула $\alpha$ - атомарная, те $\alpha=X_i$. Тогда $X_i\vdash X_i$ и $\neg X_i\vdash\neg X_i$
+      
+      Переход: $\alpha=\phi\star\xi$, причем $X_1^{(\neg)},X_2^{(\neg)}...X_N^{(\neg)}\vdash\phi^{(\neg)}$ и $X_1^{(\neg)},X_2^{(\neg)}...X_N^{(\neg)}\vdash\xi^{(\neg)}$. Тогда построим вывод:
+
+      $(1)...(n)\ \phi^{(\neg)}$ индукционное предположение\
+      $(n+1)...(k)\ \xi^{(\neg)}$ индукционное предположение\
+      $(k+1)...(l)\ (\phi\star\xi)^{(\neg)}$ лемма 5
+      </details>
+
+    * *Лемма 7.* Исключение допущения. Пусть справедливо $\Gamma,\rho\vdash\alpha$ и $\Gamma,\neg\rho\vdash\alpha$. Тогда также справедливо $\Gamma\vdash\alpha$.   
+      
+      <details><summary>Доказательство Леммы 7</summary> 
 
       $\Gamma\vdash\rho\rightarrow\alpha$ Дедукция.\
       $\Gamma\vdash\neg\rho\rightarrow\alpha$ Дедукция.\
       $1.\ \rho\rightarrow\alpha\\$
       $2.\ \neg\rho\rightarrow\alpha\\$
-      $3.\ \rho\vee\neg\rho\ (Lemma 5)\\$
+      $3.\ \rho\vee\neg\rho\ (Lemma 4)\\$
       $4.\ (\rho\rightarrow\alpha)\rightarrow(\neg\rho\rightarrow\alpha)\rightarrow\rho\vee\neg\rho\rightarrow\alpha\ (Sch.\ Ax.\ 8)\\$
       3 MP
       $7.\ \alpha\\$
 
       </details>
 
-  </details>
-  <!-- <details><summary>Доказательство полноты КИВ</summary> -->
+    * *Лемма 8.* Пусть при всех оценках переменных $X_1^{(\neg)},X_2^{(\neg)}...X_N^{(\neg)}\vdash\alpha$, тогда $\vdash\alpha$   
+      
+      <details><summary>Доказательство Леммы 8</summary> 
+      
+      Индукция по количеству переменных n.
+      
+      База: $n=0$. Тогда $\vdash\alpha$ есть из условия.
 
-  Для доказательства теоремы мы докажем чуть более сильное утверждение — что для любого $k$ от $0$ до $n$ и любой оценки переменных $x_1,...,x_k$ справедливо ${}^{[x_1]}P_1,...,{}^{[x_k]}P_k\vdash\alpha$. Нетрудно заметить, что утверждение теоремы непосредственно следует из данного утверждения для $k = 0$. Доказательство будет вестись индукцией по $n − k$.\
-  База. 
-  <!-- </details> -->
+      Переход: пусть $X_1^{(\neg)},X_2^{(\neg)}...X_N^{(\neg)}\vdash\alpha$. Рассмотрим $2^{n-1}$ пар выводов:
+
+      $${{X_1^{(\neg)},X_2^{(\neg)}...\neg X_N\vdash\alpha,X_1^{(\neg)},X_2^{(\neg)}...X_N\vdash\alpha}\over{X_1^{(\neg)},X_2^{(\neg)}...X_{N-1}^{(\neg)}\vdash\alpha}}$$
+      
+      Завершая доказательство теоремы, заметим, что раз $\models\alpha$, то $X_1^{(\neg)},X_2^{(\neg)}...X_N^{(\neg)}\vdash\alpha$ при всех оценках переменных, и, следовательно, $\vdash\alpha$
+
+      </details>
+
+  </details>
+
+  <details><summary>Доказательство полноты КИВ</summary>
+    
+    1. Построим таблицы истинности для каждой связки $(\star)$ и докажем в них каждую строку: (Лемма 5)
+      
+      $\phi^{(\neg)},\xi^{(\neg)}\vdash(\phi\star\xi)^{(\neg)}$ 
+    
+    2. Построим таблицу истинности для $\alpha$ и докажем в ней каждую строку: (Лемма 6)
+    
+      $X_1^{(\neg)},X_2^{(\neg)}...X_N^{(\neg)}\vdash\alpha^{(\neg)}$
+
+    3. Если формула общезначима, то в ней все строки будут иметь вид $\Gamma\vdash\alpha$, потому от гипотез мы можем избавиться и получить требуемое $\vdash\alpha$. (Лемма 8)
+
+
+  </details>
 
 * Классическое исчисление высказываний корректно.
   <details><summary>Доказательство корректности КИВ</summary>
-  TODO()
+  
+  Индукция по длине вывода $n$. Для каждого высказывания $\delta_n$ из вывода разбор случаев:
+
+    1. Аксиома - убедиться, что все аксиомы общезначимы.
+
+    Давайте рассмотрим одну из схем аксиом, общезначимость остальных схем аксиом нетрудно проввести. Общезначимость схемы аксиом 9:
+    
+    | [a] | [b] | [!a]  | [a->b] | [a->!b]  | [(a->!b)->!a] | [(a->b)->(a->!b)->!a] |
+    | --- | --- | - | - | - | - | - |
+    | Л   | Л   | И | И | И | И | И |
+    | Л   | И   | И | И | И | И | И | 
+    | И   | Л   | Л | Л | И | Л | И |
+    | И   | И   | Л | И | Л | И | И |
+
+
+    2. $Modus\ Ponens\ j,k$ - убедиться, что если $\models\delta_j$ и $\models\delta_k$ (ака $\models\delta_j\rightarrow\delta_n$), то $\models\delta_n$  
+
+    Пусть в выводе есть формулы $\delta_j,\delta_k:=\delta_j\rightarrow\delta_n,\delta_n\ (j<k<n)$ 
+
+    Фиксируем какую-нибудь оценку. По индукционному предположению, $\delta_j,\delta_k:=\delta_j\rightarrow\delta_n$ - общезначимы. Поэтому при данной оценке $[\delta_j]=И,[\delta_j\rightarrow\delta_n]=И$. Построим таблицу истинности для импликации.
+
+    | [d_j] | [d_n] | [d_j->d_n] |
+    | ----- | ----- | ---------- |
+    | Л | Л | И |
+    | Л | И | И |
+    | И | Л | Л |
+    | И | И | И |
+
+    По таблице видно, что если оба значения $[\delta_j],[\delta_k]$ истинны, то и $[\delta_n]$=И
+   
   </details>
 
  ## 3.  Интуиционистское исчисление высказываний. BHK-интерпретация. Решётки. Булевы и псевдобулевы алгебры. Теорема Гливенко.
