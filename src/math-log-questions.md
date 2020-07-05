@@ -42,7 +42,7 @@
   $9.\ (\alpha\rightarrow\beta)\rightarrow(\alpha\rightarrow\neg\beta)\rightarrow\neg\alpha\\$
   $10.\ \neg\neg\alpha\rightarrow\alpha\\$
 
-  $Modus Ponens:$ 
+  $Modus\ Ponens:$ 
   $${{\alpha,\alpha\rightarrow\beta}\over{\beta}}$$
 
   </details>
@@ -491,7 +491,7 @@
    
 * <details><summary>Вспомогательные утверждения</summary>
 
-  * **Лемма 0.** Пусть $\langle\{W_0\},(\preceq),(\Vdash)\rangle$ - модель Крипке с одноэлементным множеством миров. Пусть $\phi$ - формула. Пусть $T_1,...,T_n$ - все переменные из $\phi$, что $\W_0\Vdash T_i$, и $F_1,...,F_k$ - переменные из $\phi$, что $W_0\nVdash F_i$. Тогда $W_0\Vdash\phi$ тогда и только тогда, когда $[\phi]^{T_i:=И,F_j:=Л}=И$ (как формула классического исчисления высказывания)
+  * **Лемма 0.** Пусть $\langle\{W_0\},(\preceq),(\Vdash)\rangle$ - модель Крипке с одноэлементным множеством миров. Пусть $\phi$ - формула. Пусть $T_1,...,T_n$ - все переменные из $\phi$, что $W_0\Vdash T_i$, и $F_1,...,F_k$ - переменные из $\phi$, что $W_0\nVdash F_i$. Тогда $W_0\Vdash\phi$ тогда и только тогда, когда $[\phi]^{T_i:=И,F_j:=Л}=И$ (как формула классического исчисления высказывания)
   
   Доказательство. Индукция по структуре формулы, проверка значений.
 
@@ -533,7 +533,7 @@
   Переход: $\delta_1...\delta_{n-1}$ - вывод, и $\vDash\delta_1...\vDash\delta_{n-1}$. Покажем, что если $\delta_1...\delta_{n}$ - вывод, то и $\vDash\delta_n$. Разбор случаев:
     
     1. $\delta_n$ - аксиома (лемма 1);
-    2. $\delta_n$ - $Modeus\ Ponens$ из $\delta_k,\ \delta_p=\delta_k\rightarrow\delta_n$. Фиксируем модель Крипке $\langle\Psi,(\preceq),(\Vdash)\rangle$, выберем $W\in\Psi$. По индукционному предположению, $W\Vdash\delta_k,\ W\Vdash\delta_k\rightarrow\delta_n$. Тогда, по определению импликации, $W\Vdash\delta_n$. 
+    2. $\delta_n$ - $Modus\ Ponens$ из $\delta_k,\ \delta_p=\delta_k\rightarrow\delta_n$. Фиксируем модель Крипке $\langle\Psi,(\preceq),(\Vdash)\rangle$, выберем $W\in\Psi$. По индукционному предположению, $W\Vdash\delta_k,\ W\Vdash\delta_k\rightarrow\delta_n$. Тогда, по определению импликации, $W\Vdash\delta_n$. 
   </details>
 
   Если мы нашли хотя бы один пример, на котором некоторая формула не истинна, то нет возможности ее доказать.
@@ -562,31 +562,28 @@
   
   <details><summary>Доказательство</summary>
       
-      Рассмотрим $\alpha_n=\vee_{1\leq i\leq j\leq n}((P_i\rightarrow P_j)(P_j\rightarrow P_i))$
+    Рассмотрим $\alpha_n=\vee_{1\leq i\leq j\leq n}((P_i\rightarrow P_j)(P_j\rightarrow P_i))$
 
-      Тогда покажем, что: 
-      
-      1. Если $|V|=n$, то $[\alpha_{n+1}]\in T$ (лемма 1)
-      2. Найдется такая модель Крипке $\langeW,(\preceq),(\Vdash)\rangle$, что $\nVdash\alpha_{n+1}$ (лемма 2)
+    Тогда покажем, что: 
+    
+    1. Если $|V|=n$, то $[\alpha_{n+1}]\in T$ (лемма 1)
+    2. Найдется такая модель Крипке $\langle W,(\preceq),(\Vdash)\rangle$, что $\nVdash\alpha_{n+1}$ (лемма 2)
 
-      * **Лемма 1.** Если $|V|=n$, то $[\alpha_{n+1}]\in T$
+    * **Лемма 1.** Если $|V|=n$, то $[\alpha_{n+1}]\in T$
 
-      1. По принципу Дирихле найдутся такие $p$ и $q$, что $[P_p]=[P_q]$ 
-      2. $\vdash (P\rightarrow P)\rightarrow(P\rightarrow P)$
-      3. По корректности $[(P\rightarrow P)\rightarrow(P\rightarrow P)]\in T$
-      4. Тк $[P_p]=[P_q]$, то $[(P_p\rightarrow P_q)\rightarrow(P_q\rightarrow P_p)]\in T$
-      5. Аналогично, если $[X]\in T$, то $[X\vee Y]\in T$ и $[Y\vee X]\in T$ 
+    1. По принципу Дирихле найдутся такие $p$ и $q$, что $[P_p]=[P_q]$ 
+    2. $\vdash (P\rightarrow P)\rightarrow(P\rightarrow P)$
+    3. По корректности $[(P\rightarrow P)\rightarrow(P\rightarrow P)]\in T$
+    4. Тк $[P_p]=[P_q]$, то $[(P_p\rightarrow P_q)\rightarrow(P_q\rightarrow P_p)]\in T$
+    5. Аналогично, если $[X]\in T$, то $[X\vee Y]\in T$ и $[Y\vee X]\in T$ 
 
-      * **Лемма 2.** Найдется модель Крипке, что $\nVdash\alpha_{n+1}$
+    * **Лемма 2.** Найдется модель Крипке, что $\nVdash\alpha_{n+1}$
 
-      ```mermaid 
-      graph LR;
-        WR --P1--> W1
-        WR --P2--> W2
-        WR --PN--> WN
-        WR --PN+1--> WN+1
-      ```
-
+      $W_R\rightarrow_{P_1}  W_1\\$
+      $W_R\rightarrow_{P_2} W_2\\$
+      $W_R\rightarrow_{P_N} W_N\\$
+      $W_R\rightarrow_{P_{N+1}} W_{N+1}\\$
+    
   </details>
 
  ## 6.  Гёделева алгебра. Операция $\Gamma(A)$. Дизъюнктивность интуиционистского исчисления высказываний.
