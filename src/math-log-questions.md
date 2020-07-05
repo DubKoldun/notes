@@ -286,7 +286,7 @@
  * **Интуиционистское исчисление высказываний.** Чтобы получить **ИИВ** (Интуиционистское исчисление высказываний) нужно в **КИВ** (Классическое исчисление высказываний) заменить 10-ю аксиому ($\neg\neg\alpha\rightarrow\alpha$) на $\alpha\rightarrow\neg\alpha\rightarrow\beta$
    
     * В интуиционистском исчислении высказываний невозможно доказать правило исключенного третьего: $\alpha\vee\neg\alpha$
-    * Существует множество способов построить модель для интуиционистской логики: BHK-интерпретация, Модели Крипке, Топологическая интерпретация...
+    * Существует множество способов построить модель для интуиционистской логики: Модели Крипке, Топологическая интерпретация...
     * <details> <summary>Топологическая интерпретация.</summary>  
     
       Начнем с множества истинностных значений. Возьмем в качестве этого множества все открытые множества некоторого заранее выбранного топологического пространства. Определим оценку для связок интуиционистского исчисления высказываний следующим образом: 
@@ -446,16 +446,84 @@
 
   6. $W_k \nVdash \perp$
 
-     
-
 * **Определение**
 
   * $\Vdash \phi$ в модели $W$ (иначе: $W\vDash\phi$), если $W_i \Vdash \phi$ при всех $W_i \in W$ (*Будем говорить, что формула $\phi$ **истинна** в данной модели, если она вынуждена в каждом мире этой модели*)
   * $\vDash \phi$, если $\Vdash\phi$ во всех моделях $W$ (*Будем говорить, что формула $\phi$ **общезначима**, если она вынуждена во всех моделях*)
 
+* **Примеры.**
+  
+  * $Q\rightarrow P$
+   
+  ```mermaid
+  graph TD;
+    W0 --P--> W1
+    W1 --Q--> W2
+  ```
+  1. $W_2\Vdash P$ и $W_2\Vdash Q$ - значит, $W_2\Vdash P\rightarrow Q$
+  2. $W_1\nVdash Q$. Также, $W_2\Vdash P\rightarrow Q$. При всех мирах после $W_1$ вынуждена импликация $P$ и $Q$, тогда и в $W_1$ вынуждена эта импликация (тк в мире $W_1$ не вынуждена $Q$ и мы не можем требовать вынужденности $P$ в этом мире)
+  3. $W_0$ аналогично $W_1$ 
+
+  * $\neg\neg P\rightarrow P$
+
+  ```mermaid
+  graph TD;
+    W0 --P--> W1
+  ```
+  1. $W_0\nVdash P$  $W_1\Vdash P$
+  2. $W_0\nVdash\neg P$  $W_1\nVdash\neg P$
+  3. $W_0\Vdash\neg\neg P$  $W_1\Vdash\neg\neg P$ (вынуждено тогда, когда не вынуждено $\neg P$)
+  4. $W_0\nVdash\neg\neg P\rightarrow P$ (тк из вынуждености $\neg\neg P$ не следует вынужденность $P$)  $W_1\Vdash\neg\neg P\rightarrow P$  
+  5. $\nVdash\neg\neg P\rightarrow P$ в модели, что значит $\nvDash\neg\neg P\rightarrow P$
+  
+  * $(A\rightarrow B)\lor(B\rightarrow c)\lor(C\rightarrow A)$
+
+  ```mermaid
+  graph TD;
+    WR --A--> WA
+    WR --B--> WB
+    WR --C--> WC
+  ```
+  1. $W_A\nVdash A\rightarrow B$  $W_B\nVdash B\rightarrow C$  $W_C\nVdash C\rightarrow A$
+  2. $W_R\nVdash A\rightarrow B$  $W_R\nVdash B\rightarrow C$  $W_R\nVdash C\rightarrow A$
+  3. $W_R\nVdash(A\rightarrow B)\lor(B\rightarrow C)\lor(C\rightarrow A)$
+  4. $\nVdash(A\rightarrow B)\lor(B\rightarrow C)\lor(C\rightarrow A)$ в модели, что значит $\nvDash(A\rightarrow B)\lor(B\rightarrow C)\lor(C\rightarrow A)$
+   
+* <details><summary>Вспомогательные утверждения</summary>
+
+  * **Лемма 0.** Пусть $\langle\{W_0\},(\preceq),(\Vdash)\rangle$ - модель Крипке с одноэлементным множеством миров. Пусть $\phi$ - формула. Пусть $T_1,...,T_n$ - все переменные из $\phi$, что $\W_0\Vdash T_i$, и $F_1,...,F_k$ - переменные из $\phi$, что $W_0\nVdash F_i$. Тогда $W_0\Vdash\phi$ тогда и только тогда, когда $[\phi]^{T_i:=И,F_j:=Л}=И$ (как формула классического исчисления высказывания)
+  
+  Доказательство. Индукция по структуре формулы, проверка значений.
+
+  * **Лемма 1.** Схемы аксиом истинны в моделя Крипке.
+   
+    <details><summary>Доказательство</summary>
+    Рассмотрим схему аксиом 9. $9.\ (\alpha\rightarrow\beta)\rightarrow(\alpha\rightarrow\neg\beta)\rightarrow\neg\alpha$
+
+    Фиксируем $\langle W,(\preceq),(\Vdash)\rangle$ и формулы $\alpha,\beta$. Индукцией по структуре покажем, что $W\Vdash(\alpha\rightarrow\beta)\rightarrow(\alpha\rightarrow\neg\beta)\rightarrow\neg\alpha$
+
+    1. База: $W$-лист. По лемме 0 в моделях Крипке с одним миром выполнено.
+    2. Переход: $W'\Vdash(\alpha\rightarrow\beta)\rightarrow(\alpha\rightarrow\neg\beta)\rightarrow\neg\alpha$ при всех $W\prec W'$. Тогда $W\Vdash(\alpha\rightarrow\beta)\rightarrow(\alpha\rightarrow\neg\beta)\rightarrow\neg\alpha$
+
+    Предположим $W\Vdash\alpha\rightarrow\beta$, покажем $W\Vdash(\alpha\rightarrow\neg\beta)\rightarrow\neg\alpha$.
+      
+      1. Либо $W\Vdash\alpha$: рассмотрим $W\preceq W'$. $W'\Vdash\beta$; тогда $W'\nVdash\neg\beta$; тогда $W'\nVdash\alpha\neg\beta$; то есть $W\Vdash(\alpha\rightarrow\neg\beta)\rightarrow\neg\alpha$ (тк левая часть импликации нигде в последующих мирах не вынуждена)
+      2. Либо $W\nVdash\alpha$ и $W\Vdash\neg\alpha$; тогда $W'\Vdash\phi\rightarrow\neg\alpha$ (если $\phi$ не вынуждена в $W'$, то формула вынуждена сама по себе, а если $\phi$ не вынуждена, то формула также вынуждена (определение импликации))
+      3. $W\nVdash\alpha$ и $W\preceq W':\ W'\Vdash\alpha$. Тогда: $W'\Vdash\alpha\rightarrow\beta$ и оттого $W'\nVdash\alpha\rightarrow\neg\beta$; тогда $W\nVdash\alpha\rightarrow\neg\beta$;
+
+      Покажем, что при $W\preceq W_1$ из $W_1\Vdash\alpha\rightarrow\neg\beta$ следует $W_1\Vdash\neg\alpha$
+
+    
+
+    </details>
+
+  </details>
+
 * **Теорема**
 
   * Модель Крипке это **алгебра Гейтинга**
+
+* **Теорема о корректности моделей Крипке.** Если $\vdash_{ИИВ}\phi$, то $\vDash$ в моделях Крипке.
 
 * **Табличная модель.** Будем говорить, что модель исчисления - табличная, если:
     1. Задано множество истинностных значений $V$.
@@ -463,8 +531,6 @@
     3. Среди $V$ выделены некоторые истинные значения $\top$. Мы считаем, что $\models\alpha$, если $[\alpha]\in\top$ при любых оценках пропозициональных переменных.
     4. Модель корректна
     * классическая оценка для исчисления высказываний - табличная модель
-  
-*  TODO картинки?, ...
 
 * **Теорема** В интуиционистской логике нет полной табличной модели
   
@@ -528,8 +594,8 @@
 
   Пусть $\theta$ свободно для подстановки вместо $x$ в $\psi$
 
-  11.  ($\forall x. \psi) \rightarrow (\psi[x:=\theta])$
-  12.  $\psi[x:=\theta]\rightarrow \exists x. \psi$
+  1.   ($\forall x. \psi) \rightarrow (\psi[x:=\theta])$
+  2.   $\psi[x:=\theta]\rightarrow \exists x. \psi$
 
 * Правила вывода:
 
@@ -611,13 +677,13 @@
         \right.
     $$
 
-    3. Итоговое множество
+    1. Итоговое множество
 
     $$
       \Delta=\cup_i\Gamma_i
     $$
 
-    4. Непротиворечивость $\Delta$ не следует из индукции - индукция гарантирует непротиворечивость только $\Gamma_i$ при натуральном i
+    1. Непротиворечивость $\Delta$ не следует из индукции - индукция гарантирует непротиворечивость только $\Gamma_i$ при натуральном i
 
         1. Пусть $\Delta$ противоречиво, то есть: $\Delta\vdash\alpha\&\neg\alpha$
         2. Доказательство конечной длины и использует конечное кол-во гипотез $\{\delta_1,...,\delta_n\}\subset\Delta$, то есть $\delta_1,...,\delta_n\vdash\alpha\&\neg\alpha$
