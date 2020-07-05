@@ -511,19 +511,38 @@
       2. Либо $W\nVdash\alpha$ и $W\Vdash\neg\alpha$; тогда $W'\Vdash\phi\rightarrow\neg\alpha$ (если $\phi$ не вынуждена в $W'$, то формула вынуждена сама по себе, а если $\phi$ не вынуждена, то формула также вынуждена (определение импликации))
       3. $W\nVdash\alpha$ и $W\preceq W':\ W'\Vdash\alpha$. Тогда: $W'\Vdash\alpha\rightarrow\beta$ и оттого $W'\nVdash\alpha\rightarrow\neg\beta$; тогда $W\nVdash\alpha\rightarrow\neg\beta$;
 
-      Покажем, что при $W\preceq W_1$ из $W_1\Vdash\alpha\rightarrow\neg\beta$ следует $W_1\Vdash\neg\alpha$
-
-    
+      Покажем, что при $W\preceq W_1$ из $W_1\Vdash\alpha\rightarrow\neg\beta$ следует $W_1\Vdash\neg\alpha$:
+        
+        * $W\prec W_1$: тк $W_1\Vdash(\alpha\rightarrow\beta)\rightarrow(\alpha\rightarrow\neg\beta)\rightarrow\neg\alpha$ и $W_1\Vdash\alpha\rightarrow\beta$, то $W_1\Vdash\neg\alpha$
+        * $W=W_1$: $W\nVdash\alpha\rightarrow\neg\beta$ даёт требуемое.
 
     </details>
 
   </details>
 
+* **Теорема о корректности моделей Крипке.** Если $\vdash_{ИИВ}\phi$, то $\vDash$ в моделях Крипке.
+
+  <details><summary>Доказательство</summary>
+
+  Пусть $\vdash\phi$. Существуют $\delta_1,...,\delta_n$, причем $\delta_n=\phi$. Покажем, что $\vDash\delta_k$ при любом $k\in(1..n)$
+  
+  Индукция по длине n.
+
+  База: $n=0$. Если в доказательстве нет ни одной формулы, то все формулы в доказательстве общезначимы.
+
+  Переход: $\delta_1...\delta_{n-1}$ - вывод, и $\vDash\delta_1...\vDash\delta_{n-1}$. Покажем, что если $\delta_1...\delta_{n}$ - вывод, то и $\vDash\delta_n$. Разбор случаев:
+    
+    1. $\delta_n$ - аксиома (лемма 1);
+    2. $\delta_n$ - $Modeus\ Ponens$ из $\delta_k,\ \delta_p=\delta_k\rightarrow\delta_n$. Фиксируем модель Крипке $\langle\Psi,(\preceq),(\Vdash)\rangle$, выберем $W\in\Psi$. По индукционному предположению, $W\Vdash\delta_k,\ W\Vdash\delta_k\rightarrow\delta_n$. Тогда, по определению импликации, $W\Vdash\delta_n$. 
+  </details>
+
+  Если мы нашли хотя бы один пример, на котором некоторая формула не истинна, то нет возможности ее доказать.
+
+* **Полнота моделей Крипке.** Если $\vDash\phi$ в любой модели Крипке, то $\vdash_{ИИВ}\phi$
+
 * **Теорема**
 
   * Модель Крипке это **алгебра Гейтинга**
-
-* **Теорема о корректности моделей Крипке.** Если $\vdash_{ИИВ}\phi$, то $\vDash$ в моделях Крипке.
 
 * **Табличная модель.** Будем говорить, что модель исчисления - табличная, если:
     1. Задано множество истинностных значений $V$.
@@ -532,10 +551,42 @@
     4. Модель корректна
     * классическая оценка для исчисления высказываний - табличная модель
 
-* **Теорема** В интуиционистской логике нет полной табличной модели
+* **Модель Крипке как табличная модель.**
+
+  1. Рассмотри все модели Крипке и объединим их всех в один "лес" (несвязный набор деревьев). Пусть $V$ - множество всех подмножеств миров. Оценка переменной $P$ - множество (перечень) всех миров, в которых она вынуждена.
+  2. Оценка связки $\alpha\star\beta$: все миры, в которых $\Vdash\alpha\star\beta$
+  3. Истинное значение - множество всех миров (только формула, истинная во всех мирах, общезначима).
+  4. Модель корректна (мы это доказали)
+
+* **Теорема** В интуиционистской логике нет полной табличной модели.
   
   <details><summary>Доказательство</summary>
-  TODO()
+      
+      Рассмотрим $\alpha_n=\vee_{1\leq i\leq j\leq n}((P_i\rightarrow P_j)(P_j\rightarrow P_i))$
+
+      Тогда покажем, что: 
+      
+      1. Если $|V|=n$, то $[\alpha_{n+1}]\in T$ (лемма 1)
+      2. Найдется такая модель Крипке $\langeW,(\preceq),(\Vdash)\rangle$, что $\nVdash\alpha_{n+1}$ (лемма 2)
+
+      * **Лемма 1.** Если $|V|=n$, то $[\alpha_{n+1}]\in T$
+
+      1. По принципу Дирихле найдутся такие $p$ и $q$, что $[P_p]=[P_q]$ 
+      2. $\vdash (P\rightarrow P)\rightarrow(P\rightarrow P)$
+      3. По корректности $[(P\rightarrow P)\rightarrow(P\rightarrow P)]\in T$
+      4. Тк $[P_p]=[P_q]$, то $[(P_p\rightarrow P_q)\rightarrow(P_q\rightarrow P_p)]\in T$
+      5. Аналогично, если $[X]\in T$, то $[X\vee Y]\in T$ и $[Y\vee X]\in T$ 
+
+      * **Лемма 2.** Найдется модель Крипке, что $\nVdash\alpha_{n+1}$
+
+      ```mermaid 
+      graph LR;
+        WR --P1--> W1
+        WR --P2--> W2
+        WR --PN--> WN
+        WR --PN+1--> WN+1
+      ```
+
   </details>
 
  ## 6.  Гёделева алгебра. Операция $\Gamma(A)$. Дизъюнктивность интуиционистского исчисления высказываний.
