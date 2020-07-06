@@ -472,7 +472,7 @@
 
   * Определение. Возьмем множество всех формул ИИВ, тогда:
 
-  1. $\alpha\sqsubseteq\beta$, если $\beta\vdash\alpha$ (формула бета истинна в не меньшем количестве случаев, чем альфа)
+  1. $\alpha\sqsubseteq\beta$, если $\alpha\vdash\beta$ (формула бета истинна в не меньшем количестве случаев, чем альфа)
   2. $\alpha\approx\beta$, если $\alpha\sqsubseteq\beta$ и $\beta\sqsubseteq\alpha$
 
 * **Лемма.** $(\approx)$ - отношение эквиваленьности, $(\sqsubseteq)$ - отношение порядка.
