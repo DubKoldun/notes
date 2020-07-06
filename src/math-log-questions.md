@@ -185,7 +185,7 @@
 
       </details>
 
-    * *Лемма 4.* Правило исключенного третьего. Какова бы ни была формула $\alpha,\vdash\alpha\vee\neg\alpha$
+    * *Лемма 4.* Правило исключенного третьего. Какова бы ни была формула $\alpha,\ \vdash\alpha\vee\neg\alpha$
       <details><summary>Доказательство Леммы 4</summary> 
 
       * 1 часть. Для начала покажем $\vdash\neg(\alpha\vee\neg\alpha)\rightarrow\neg\alpha\\$
@@ -382,6 +382,13 @@
 
     Рассмотрим $a\rightarrow a$ для какого-то фиксированного $a$. $a\rightarrow a=$ наибольший $\{t|t\ast a\sqsubseteq a\}$. Тк операция нижней грани может только уменьшить результат, а нам нужен такой максимальный $t$, то он должен найтись, если его нет в решетке, то она бесконечна вверх и операцию псевдодополнения можно считать неопределенной.
     </details> 
+
+  * Наибольший элемент единственнен
+
+    <details><summary>Доказательство</summary>
+    Давайте сравним два элемента $1,1'$, тк для всех элементов должна быть определена большая грань, то один из них больше. Если $1\sqsubseteq1'\ и\ 1'\sqsubseteq1$, то они равны между собой по антисимметричности рёшетки.
+
+    </details>
 
   * **Теорема** Если решётка импликативна, то она дистрибутивна.
 
@@ -682,8 +689,16 @@
 
   Пусть $\theta$ свободно для подстановки вместо $x$ в $\psi$
 
-  1.   ($\forall x. \psi) \rightarrow (\psi[x:=\theta])$
+  1.   $\forall x.(\psi) \rightarrow (\psi[x:=\theta])$
   2.   $\psi[x:=\theta]\rightarrow \exists x. \psi$
+
+  * Контр-примеры для схем аксиом (когда нарушается свобода для подстановки $\theta$ в $\psi$)
+    1. $\forall x.(\psi)\rightarrow(\psi[x:=\theta])\\$
+       $\psi:=\exist a.\neg(a=b);\ x:=b;\ \theta=a\\$
+       $\forall b.\exist a.(\neg(a=b))\rightarrow\exist a.(\neg(a=a))$
+
+    2. TODO()
+
 
 * Правила вывода:
 
@@ -691,6 +706,14 @@
 
   $${{\phi\rightarrow\psi}\over{\phi\rightarrow \forall x.\psi}}$$ 
   $${{\psi\rightarrow\phi}\over{(\exists x. \psi)\rightarrow \phi}}$$
+
+  * Контр-примеры для правила вывода (если $x$ входит свободно в $\phi$)
+    1. $x=0\rightarrow x=0\\$
+       $x=0\rightarrow\forall x.(x=0)$
+
+    2. $\neg(x=x)\rightarrow\neg(x=x)\\$
+       $\exist.x (\neg(x=x))\rightarrow\neg(x=x)$ TODO()
+
 
 * **Определения**
 
@@ -700,7 +723,7 @@
 
 * **Теорема о дедукции**
 
-  Если $\Gamma, \alpha\vdash\beta$, и в доказательстве отсутствуют применения правил для кванторов, использующих свободные применения правил для кванторов, использующих свободные переменные из формулы $\alpha$, то $\Gamma\vdash\alpha\rightarrow\beta$. Обратно, если $\Gamma\vdash\alpha\rightarrow\beta$, то $\Gamma, \alpha\vdash\beta$
+  Если $\Gamma, \alpha\vdash\beta$, и в доказательстве отсутствуют применения правил для кванторов, использующих свободные переменные из формулы $\alpha$, то $\Gamma\vdash\alpha\rightarrow\beta$. Обратно, если $\Gamma\vdash\alpha\rightarrow\beta$, то $\Gamma, \alpha\vdash\beta$
 
   <details><summary>Доказательство</summary>
   TODO()
