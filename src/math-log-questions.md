@@ -572,7 +572,128 @@ $z$-максимальный в M, если нет такого $t\in M: z\sqsub
 
         ​*** Доказали, что конъюнкция может восприниматься нами как умножение
 
-        *** Аналогично для других правил показываем												
+    * 
+
+* Существует операция **(1)**  $a+b = c:a\sqsubseteq c,b\sqsubseteq c$  и если **(2)** $a\sqsubseteq t,b \sqsubseteq t$, то $c \sqsubseteq t$
+
+  * Возьмем $a=\alpha, b=\beta, c=\alpha\vee\beta$
+
+    * Докажем первое утверждение:
+      $$
+      {\alpha\vdash\alpha}\over{\alpha\vdash\alpha\vee\beta}
+      $$
+
+      $$
+      {\beta\vdash\beta}\over{\beta\vdash\alpha\vee\beta}
+      $$
+
+    * Докажем второе утверждение:
+      $$
+      {\alpha\vee\beta,\alpha\vdash\gamma\ \ \ \ \ \ \ \ \ \ 
+      \alpha\vee\beta,\beta\vdash\gamma}
+      \ \ \ \ \ \ \ \ \ \ \ {\alpha\vee\beta\vdash\alpha\vee\beta}
+      \over{\alpha\vee\beta\vdash\gamma}
+      $$
+      
+
+* Докажем, что $[\alpha\rightarrow\beta]$ - псевдодополнение
+
+* $\alpha,\beta$ -  формулы. $[\alpha]\rightarrow[\beta]$ это такое наибольшее $\tau$, что $\alpha\cdot\beta\sqsubseteq\tau$
+
+  * Докажем это
+    $$
+    {
+    {\alpha\&(\alpha\rightarrow\beta)\vdash\alpha\&(\alpha\rightarrow\beta)}
+    \over
+    {\alpha\&(\alpha\rightarrow\beta)\vdash\alpha\rightarrow\beta}
+    }
+    {
+    {\alpha\&(\alpha\rightarrow\beta)\vdash\alpha\&(\alpha\rightarrow\beta)}
+    \over
+    {\alpha\&(\alpha\rightarrow\beta)\vdash\alpha}
+    }
+    \over
+    {\alpha\&(\alpha\rightarrow\beta)\vdash\beta}
+    $$
+
+  * Теперь покажем, что $\tau\sqsubseteq\alpha\rightarrow\beta$. Для этого покажем, что $\tau\vdash\alpha\rightarrow\beta$
+    $$
+    {
+    {
+    {\tau,\alpha,\alpha\&\tau\vdash\beta}\ \ \ \ \ 
+    {\tau,\alpha,\alpha\&\tau\vdash\beta}\ \ \ \ \ 
+    {
+    {\tau,\alpha\vdash\alpha\&\tau}
+    \over
+    {\tau,\alpha\vdash(\alpha\&\tau)\vee(\alpha\&\tau)}
+    }
+    }
+    
+    \over
+    {\tau,\alpha\vdash\beta}
+    }
+    \over
+    {
+    \tau\vdash\alpha\rightarrow\beta
+    }
+    $$
+    (В 3 столбце у нас идет еще две посылки: $\tau,\alpha\vdash\tau$ и $\tau,\alpha\vdash\alpha$)
+
+    В данном дереве вывода (1) = (2), и в обоих выражениях присутствую посылка $\alpha\&\tau$ и заключение $\beta$. Так как рассматриваются именно такие элементы $\tau$ , удовлетворяющие утверждению $\alpha\&\tau\vdash\beta$, то выражения (1) и (2) фактически даны.
+
+* Докажем, что $[\bot]$ - ноль
+
+  Ноль - наименьший элемент решетки, то есть для всех $t$, $0\sqsubseteq t$
+
+  Покажем это
+  $$
+  {\bot\vdash\bot}
+  \over
+  {\bot\vdash\alpha}
+  $$
+
+* Докажем, что $[\neg\alpha]$ - псевдодополнение до 0 $[\sim\alpha]$
+
+  * $\alpha$ -  формула. $[\alpha]\rightarrow[0]$ это такое наибольшее $\tau$, что $\alpha\cdot 0\sqsubseteq\tau$
+
+    * Докажем это
+      $$
+      {
+      {\alpha\&(\alpha\rightarrow 0)\vdash\alpha\&(\alpha\rightarrow0)}
+      \over
+      {\alpha\&(\alpha\rightarrow0)\vdash\alpha\rightarrow0}
+      }
+      {
+      {\alpha\&(\alpha\rightarrow0)\vdash\alpha\&(\alpha\rightarrow0)}
+      \over
+      {\alpha\&(\alpha\rightarrow0)\vdash\alpha}
+      }
+      \over
+      {\alpha\&(\alpha\rightarrow0)\vdash0}
+      $$
+
+    * Теперь покажем, что $\tau\sqsubseteq\alpha\rightarrow0$. Для этого покажем, что $\tau\vdash\alpha\rightarrow0$
+      $$
+      {
+      {
+      {\tau,\alpha,\alpha\&\tau\vdash0}\ \ \ \ \ 
+      {\tau,\alpha,\alpha\&\tau\vdash0}\ \ \ \ \ 
+      {
+      {\tau,\alpha\vdash\alpha\&\tau}
+      \over
+      {\tau,\alpha\vdash(\alpha\&\tau)\vee(\alpha\&\tau)}
+      }
+      }
+      
+      \over
+      {\tau,\alpha\vdash0}
+      }
+      \over
+      {
+      \tau\vdash\alpha\rightarrow0
+      }
+      $$
+      (В 3 столбце у нас идет еще две посылки: $\tau,\alpha\vdash\tau$ и $\tau,\alpha\vdash\alpha$
 
 * Полнота ИИВ
 
