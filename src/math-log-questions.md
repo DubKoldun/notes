@@ -407,7 +407,7 @@ $z$-максимальный в M, если нет такого $t\in M: z\sqsub
 
   Записывать мы будем его как $\Gamma\sqsubseteq a$. Также, на случай $G=\varnothing$ положим, что $\varnothing\sqsubseteq a$ означает $a=1$ (это естественно предположить, поскольку к любому $G$ всегда можно добавить некоторое $g_0=1$, при этом смысл выражения $g_0\ast g_1\ast g_2\ast...\ast g_n\sqsubseteq a$ останется прежним)
 
-  Разберем все правила вывода (Генценовский тип исчисления, потому что Генценовский тип как раз и представляет интуиционисткую логику (сведение Генценовского исчисления к Гильбертскому оставим читателю))
+  Разберем все правила вывода (Генценовский тип исчисления, потому что Генценовское исчисление как раз и представляет интуиционисткую логику (сведение Генценовского исчисления к Гильбертскому оставим читателю))
 
   * *Аксиома.*  $G,a\sqsubseteq a$
 
@@ -415,8 +415,34 @@ $z$-максимальный в M, если нет такого $t\in M: z\sqsub
 
   * *Введение $\&$.* Если $G\sqsubseteq b$ и $G\sqsubseteq c$, то $G\sqsubseteq b\ast c$
 
-    Распишем правило по определению: $g_1\ast...\ast g_n\ast\sqsubseteq b$, $g_1\ast...\ast g_n\ast\sqsubseteq c$, $g_1\ast...\ast g_n\ast\sqsubseteq b\ast c$. Тк $\ast$ - наименьшая грань. Не умаляя общности, возьмем $b\sqsubseteq c$, тогда $b\ast c=t, t\sqsubseteq b$
-  
+    Пусть $t=G$, где $t$ наибольшее среди всех из множества, что $t\sqsubseteq c, t\sqsubseteq b$, что в точности есть определение наименьшей нижней грани $b\ast c$ 
+
+  * *Удаление $\&$.* Если $G\sqsubseteq b\ast c$, то $G\sqsubseteq b$ и $G\sqsubseteq c$.
+
+    Тк $b\ast c=t, t\sqsubseteq c, t\sqsubseteq b$, то условие перепишется так $g_1\ast...\ast g_n\sqsubseteq t$ и по транзитивности отношения: $g_1\ast...\ast g_n\sqsubseteq с$, $g_1\ast...\ast g_n\sqsubseteq b$
+
+  * *Введение $\vee$.* Если $G\sqsubseteq b$, то $G\sqsubseteq b+c$ и $G\sqsubseteq c+b$ 
+
+    $c+b=b+c=t, b\sqsubseteq t, c\sqsubseteq t$, тогда по транзитивности $G\sqsubseteq t$, $G\sqsubseteq b+c$
+
+  * *Удаление $\vee$.* Если $G,a\sqsubseteq c,\ G,b\sqsubseteq c,\ G\sqsubseteq a+b$, то $G\sqsubseteq c$
+
+    $G=\prod g_i\ast\prod g_i\sqsubseteq \prod g_i\ast(a+b)=\prod g_i\ast a + \prod g_i\ast b\sqsubseteq c+c=c$
+
+  * *Введение $\rightarrow$.* Если $G,a\sqsubseteq b$, то $G\sqsubseteq a\rightarrow b$.
+
+    $a\rightarrow b=c:(max t| t\ast a\sqsubseteq b), \forall\sqsubseteq c$. Пусть тогда $t=G$: $G,a\sqsubseteq b\Rightarrow\prod g_i\ast a\sqsubseteq b$, тогда по определению $\prod g_i\sqsubseteq c\Rightarrow \prod g_i\sqsubseteq a\rightarrow b$
+
+  * *Удаление $\rightarrow$.* Если $G\sqsubseteq a\rightarrow b, G\sqsubseteq a$, то $G\sqsubseteq b$ 
+
+    $\prod g_i\sqsubseteq a\rightarrow b$, $a\rightarrow b=t_{max}\ast a\sqsubseteq b$. По транзитивности $\prod g_i\sqsubseteq b$
+
+  * *Удаление лжи.* Если $G\sqsbseteq 0$, то $G\sqsubseteq b$
+
+    $G\sqsbseteq 0\Rightarrow_{введение дизъюнкции} G\sqsbseteq b+0\Rightarrow_{определение верхней грани} G\sqsubseteq b$
+
+  Теперь мы научились каждое правило интерпретировать на языке алгебр Гейтинга. Из $\vdash\alpha$ следует, что $\prod g_i=1\sqsubseteq a$, где $a=[\alpha]$, тогда a = 1, тк в алгебре Гейтинга 1 наибольший и единственный элемент.
+   
   </details>
 
 * **Булева алгебра.** Псевдобулева алгебра, в которой для любых $a$: $a + (a\rightarrow 0) = 1$. \
