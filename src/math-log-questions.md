@@ -1386,7 +1386,7 @@ $z$-максимальный в M, если нет такого $t\in M: z\sqsub
         \left \{
           \begin{array}{ll}
             f(x_1,...,x_n), y=0\\
-            g(x_1, ..., x_n,y-1,R\langle f,g\rangle(x_1,...,x_n,y)), y>0
+            g(x_1, ..., x_n,y-1,R\langle f,g\rangle(x_1,...,x_n,y-1)), y>0
           \end{array}
         \right.
     $$
