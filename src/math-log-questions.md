@@ -190,12 +190,12 @@
 
       * 1 часть. Для начала покажем $\vdash\neg(\alpha\vee\neg\alpha)\rightarrow\neg\alpha\\$
         $1.\ \alpha\rightarrow\alpha\vee\neg\alpha\ (Sch.\ Ax.\ 6)\\$
-        $2.\ ... (n+1)\ \gamma_1,...,\gamma_{n-1},(\alpha\rightarrow\alpha\vee\neg\alpha)\rightarrow\neg(\alpha\vee\neg\alpha)\rightarrow\neg\alpha\ (Lemma\ 4\ proof)\\$
+        $2.\ ... (n+1)\ \gamma_1,...,\gamma_{n-1},(\alpha\rightarrow\alpha\vee\neg\alpha)\rightarrow\neg(\alpha\vee\neg\alpha)\rightarrow\neg\alpha\ (Lemma\ 3\ proof)\\$
         $(n+2).\ \neg(\alpha\vee\neg\alpha)\rightarrow\neg\alpha\ (MP\ 1,n+1)\\$
 
       * 2 часть. Покажем $\vdash\neg(\alpha\vee\neg\alpha)\rightarrow\neg\neg\alpha\\$
         $1.\ \neg\alpha\rightarrow\alpha\vee\neg\alpha\ (Sch.\ Ax.\ 6)\\$
-        $2.\ ... (n+1)\ \gamma_1,...,\gamma_{n-1}, (\neg\alpha\rightarrow\alpha\vee\neg\alpha)\rightarrow\neg(\alpha\vee\neg\alpha)\rightarrow\neg\neg\alpha\ (Lemma\ 4\ proof)\\$
+        $2.\ ... (n+1)\ \gamma_1,...,\gamma_{n-1}, (\neg\alpha\rightarrow\alpha\vee\neg\alpha)\rightarrow\neg(\alpha\vee\neg\alpha)\rightarrow\neg\neg\alpha\ (Lemma\ 3\ proof)\\$
         $(n+2).\ \neg(\alpha\vee\neg\alpha)\rightarrow\neg\neg\alpha\ (MP\ 1,n+1)\\$ 
        
       * 3 часть\
@@ -241,9 +241,9 @@
       $\Gamma\vdash\neg\rho\rightarrow\alpha$ Дедукция.\
       $1.\ \rho\rightarrow\alpha\\$
       $2.\ \neg\rho\rightarrow\alpha\\$
-      $3.\ \rho\vee\neg\rho\ (Lemma 4)\\$
+      $3.\ \rho\vee\neg\rho\ (Lemma\ 4)\\$
       $4.\ (\rho\rightarrow\alpha)\rightarrow(\neg\rho\rightarrow\alpha)\rightarrow\rho\vee\neg\rho\rightarrow\alpha\ (Sch.\ Ax.\ 8)\\$
-      3 MP
+      3 MP\
       $7.\ \alpha\\$
 
       </details>
@@ -270,11 +270,11 @@
     
     1. Построим таблицы истинности для каждой связки $(\star)$ и докажем в них каждую строку: (Лемма 5)
       
-      $\phi^{(\neg)},\xi^{(\neg)}\vdash(\phi\star\xi)^{(\neg)}$ 
+    $\phi^{(\neg)},\xi^{(\neg)}\vdash(\phi\star\xi)^{(\neg)}$ 
     
     2. Построим таблицу истинности для $\alpha$ и докажем в ней каждую строку: (Лемма 6)
     
-      $X_1^{(\neg)},X_2^{(\neg)}...X_N^{(\neg)}\vdash\alpha^{(\neg)}$
+    $X_1^{(\neg)},X_2^{(\neg)}...X_N^{(\neg)}\vdash\alpha^{(\neg)}$
 
     3. Если формула общезначима, то в ней все строки будут иметь вид $\Gamma\vdash\alpha$, потому от гипотез мы можем избавиться и получить требуемое $\vdash\alpha$. (Лемма 8)
 
