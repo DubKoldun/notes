@@ -2,13 +2,11 @@
 
 > Лабораторные:
 >
-> 1. perl
->2. Ручное построение трансляторов
+> 1. Perl
+> 2. Ручное построение трансляторов
 > 3. Использование автоматических генераторов трансляторов
 > **e.g.** ANTLR (java), Bison + Yacc (c++), Happy (haskell)
 > 4. Написание автоматического генератора транслятора
->
->    1 - pcms, 2-4 - защита
 
 $\Sigma, \Sigma^*, L \subset \Sigma^*$ - формальный язык
 
@@ -59,28 +57,41 @@ $\Sigma, \Sigma^*, L \subset \Sigma^*$ - формальный язык
 
 **Однозначность** - если у любого слова не более одного дерева разбора в этой грамматике  // Модификация алгоритма Эрли - $\Omicron(n^2)$
 
-**LL, LR** - грамматики, на которые наложены дополнительные ограничения, чтобы разбор работал за линейное время.  **LL(R)** - **L**: left to right parse, **L(R)**: leftmost derivation (right most derivation).
+**LL, LR** - грамматики, на которые наложены дополнительные ограничения, чтобы разбор работал за линейное время.  **LL(R)** - **L**: left to right parse - обходим слово слева направо; **L(R)**: leftmost derivation (right most derivation) - левосторонний (правосторонний) вывод.
 
 $\Gamma, \ w$ на вход
 
-Можем строить дерево разбора сверзу вниз - **нисходящая трансляция**(used **LL**). Шаг называется *раскрытие нетерминала*
+Можем строить дерево разбора сверзу вниз - **нисходящая трансляция**(used **LL**). Шаг называется *раскрытие нетерминала*. Нисходящий парсер : 
+
+> 1. Находим нетерминал,у которого неизвестно поддерево
+> 2. Раскрываем его
+> В основном это самый левый нетерминал 
 
 Снизу вверх - **восходящий разбор** (used **LR**). Шаг - *свёртка*
 
+> 1. Находим правую часть какого-то терминала
+> 2. Сворачиваем ее
+> Получается правосторонний вывод слова (поэтому R)
+
 ## Метод нисходящих трансляций для LL грамматик
 
-**Def:** Грамматика $ \Gamma = \big \langle \Sigma, N, S, P \big \rangle$, где $\Sigma $ - множество терминалов (terms), $N$ - множество нетерминалов (nonterms), $S $ - стартовый символ ($S \in N$), $P$ - множество правил вывода (productions) $\alpha \rightarrow \beta$. Пусть $\Gamma$ - контекстно-свободная (в левой части только одиночные нетерминалы)
+### LL(k) - грамматика
 
-**Def: LL(k)-грамматика** - если достаточно посмотреть на первые k символов $\gamma $, чтобы понять, какое правило применить для нетерминала A:
+**Def:** Грамматика $\Gamma = \big \langle \Sigma, N, S, P \big \rangle$, где $\Sigma$ - множество терминалов (terms), $N$ - множество нетерминалов (nonterms), $S $ - стартовый символ ($S \in N$), $P$ - множество правил вывода (productions) $\alpha \rightarrow \beta$. Пусть $\Gamma$ - контекстно-свободная (в левой части только одиночные нетерминалы)
+
+**Def: LL(k)-грамматика** - если достаточно посмотреть на первые k символов $\gamma$, чтобы понять, какое правило применить для нетерминала A:
 
 **S** - стартовый нетерминал, **w** - слово, префикс которого разобран. Рассмотрим два произвольных левосторонних вывода слова **w** .
 
-$s \Rightarrow^* xA\xi \Rightarrow x \alpha \xi \Rightarrow^* x\gamma\eta \\ s \Rightarrow^* xA\xi \Rightarrow x\beta\xi \Rightarrow^*x\gamma\zeta \\$
-где $x$ и $\gamma$ - цепочки из терминалов - разобранная часть слова **w**, $A$ - нетерминал грамматики, в которой есть правила $A\rightarrow \alpha, A\rightarrow\beta$, причем $\alpha,\beta,\xi,\eta,\zeta$ - последовательности из terms и nonterms. Если из выполнения условий, что ($|\gamma | = k$) или ($|\gamma | < k, \eta = \zeta =\epsilon $) , следует равенство $\alpha = \beta$, то $\Gamma$ называется  **LL(k)-грамматикой**
+$s \Rightarrow^* xA\alpha \Rightarrow x\gamma\alpha \Rightarrow^* xy\zeta \\ s \Rightarrow^* xA\beta \Rightarrow x\xi\beta \Rightarrow^*xy\mu \\$
+где $x$ и $\gamma$ - цепочки из терминалов - разобранная часть слова **w**, $A$ - нетерминал грамматики, в которой есть правила $A\rightarrow\gamma, A\rightarrow\xi$, причем $\alpha,\beta,\xi,\gamma,\mu,\zeta$ - последовательности из терминалов и нетерминалов. Если из выполнения условий, что ($|y| = k$) или ($|y| < k, \mu = \zeta =\epsilon $) , следует равенство $\gamma = \xi$, то $\Gamma$ называется  **LL(k)-грамматикой**
 
-Грамматика $\Gamma$ называется **LL(1) грамматикой** (посмотрев на первый символ можно понять какое следующее правило нужно применить), если $s \Rightarrow^* xA\xi \Rightarrow x \alpha \xi \Rightarrow^* xc\eta \\ s \Rightarrow^* xA\xi \Rightarrow x\beta\xi\Rightarrow^*xc\zeta \\ \alpha = \beta$
+Грамматика $\Gamma$ называется **LL(1) грамматикой** (посмотрев на первый символ можно понять какое следующее правило нужно применить), если $s \Rightarrow^* xA\alpha \Rightarrow x\gamma\alpha \Rightarrow^* xc\zeta \\ s \Rightarrow^* xA\beta \Rightarrow x\xi\beta \Rightarrow^*xc\mu \\$
+Неформально это означает, что, посмотрев на очередной символ после уже выведенной части слова, можно однозначно определить, какое правило из грамматики выбрать.
 
-(Смотрим на символ $c$ в строке и сразу понимаем, что $\alpha = \beta$, что значит, что мы используем одно и то же правило для $A$)
+(Смотрим на символ $c$ в строке и сразу понимаем, что $\gamma = \xi$, что значит, что мы используем одно и то же правило для $A$) 
+
+**LL(0) грамматика** - для каждого нетерминала есть только одно правило. По-другому называются "линейные программы". Такие грамматики лежат в основе теории архивации (если грамматика короче, то слово сжато, тк каждый нетерминал будет задавать только одно слово и вы можете его заменить на соответсвующий нетерминал)
 
 ---
 
@@ -106,10 +117,22 @@ $S\rightarrow abB|aaA\\ B\rightarrow d\\A\rightarrow c|d$
 
 ---
 
-**def** *FIRST*: $(N \cup \Sigma)^* \rightarrow 2^{\Sigma \cup \{\epsilon\}}$
-    $c \in FIRST(\alpha) \Leftrightarrow \alpha \Rightarrow^* cx \\ e \in FIRST(\alpha) \Leftrightarrow \alpha\Rightarrow^* \epsilon $
+*Example 3:* 
 
-> **e.g.** $S \rightarrow SS \\ S \rightarrow (S) \\ S \rightarrow \epsilon$
+$E \rightarrow T \\ E \rightarrow E \ + \ T \\ T \rightarrow F \\ T \rightarrow T \ \times \ F \\ F \rightarrow n \\ F \rightarrow (E)$
+
+Данная грамматика не является **LL(k)**. Контр-пример:
+> $2*2*2*2*....+2$, где k символов до $+$
+
+Мы не можем понять по первым k символам понять по какому нетерминалу нам применять правило.
+
+### $FIRST$ и $FOLLOW$
+
+**def** *FIRST*: $(N \cup \Sigma)^* \rightarrow 2^{\Sigma \cup \{\epsilon\}}$. По строчке из терминалов и нетерминалов возвращается множество, которое состоит из символов и $\epsilon$
+$c \in FIRST(\alpha) \Leftrightarrow \alpha \Rightarrow^* cx$. Множество символов, с которых может начинаться $\alpha$
+$e \in FIRST(\alpha) \Leftrightarrow \alpha\Rightarrow^* \epsilon $
+
+> *Example* $S \rightarrow SS \\ S \rightarrow (S) \\ S \rightarrow \epsilon$
 >
 > $FIRST(S) = \{c, \epsilon\}$
 >
@@ -118,8 +141,51 @@ $S\rightarrow abB|aaA\\ B\rightarrow d\\A\rightarrow c|d$
 > $FIRST(\epsilon) = \{\epsilon\}$
 >
 > $FIRST('))((') = \{')'\}$
+> 
 
-## Алгортим удаления бесполезных символов
+**def** *FOLLOW*: $N \rightarrow 2^{\Sigma \cup \{\$\}}$
+	$c \in FOLLOW(A) \Leftrightarrow S \Rightarrow^* \alpha A c \beta \\
+	\$ \in FOLLOW(A) \Leftrightarrow S \Rightarrow^* \alpha A$. Множество символов, которые могут быть после нетерминала
+
+> *Example* $E \rightarrow T \\ E \rightarrow E \ + \ T \\ T \rightarrow F \\ T \rightarrow T \ \times \ F \\ F \rightarrow n \\ F \rightarrow (E)$
+> 
+> $FOLLOW(F) = \{),\$,+,\times\}$
+> 
+> $FOLLOW(E) = \{),\$,+\}$
+> 
+
+### Лемма о рекурсивном вычислении $FIRST$
+
+$\alpha = c\beta$
+$FIRST(\alpha) = \{c\}$
+
+$\alpha = A\beta$
+$FIRST(\alpha) = (FIRST(A)) \setminus \epsilon) \cup (FIRST(\beta)\ if\ \epsilon \in FIRST(A))$
+
+$FIRST(\epsilon) = \{\epsilon\}$
+
+### Алгоритм построения $FIRST$
+
+$\forall A\ FIRST[A]=\empty$
+$while\ (FIRST\ changes) \{$
+  $for\ $$A\rightarrow\alpha:$
+    $FIRST[A]\cup=FIRST[\alpha]$
+$\}$
+
+### Алгоритм построения $FOLLOW$
+
+$FOLLOW: map<N, set<$$\Sigma \cup \$>>$
+$FOLLOW(S) = {\$}$
+$do \{$
+	$for\ A $$\rightarrow \alpha$
+		$for\ B\ in\ $$\alpha$
+			$let$ $\alpha = \xi B \eta$
+			$FOLLOW(B) = FIRST$($\eta) \setminus \epsilon$
+			$if$ $\epsilon \in FIRST(\eta)$
+				$FOLLOW(B) $$\cup =$$ FOLLOW(A)$ // почему FOLLOW(A)
+$\}\ while\ FOLLOW\ changes$
+
+### Алгоритм TODO()
 
 1. Удалить непорождающие символы
 
@@ -129,41 +195,23 @@ $S\rightarrow abB|aaA\\ B\rightarrow d\\A\rightarrow c|d$
 
    **ex**: Grammar:
 
-### Удаление непорождающих символов
+### Удаление непорождающих символов TODO()
 
 1. Множество непорождающих символов $Gen = \empty$
 
-    do {
-
+     do {
     ​    for A $\rightarrow \alpha$
-
     ​        if $\alpha \in (\Sigma \cup Gen)^*$:
-
     ​            Gen $\cup=$ A
-
     } while Gen change
 
     NonGen = N $\setminus$ Gen
 
-
-
-    A - порождающий, но Алгоритм 1 выбрал как порождающий
+A - порождающий, но Алгоритм 1 выбрал как порождающий
     
-    $A \Rightarrow \alpha \Rightarrow^{k - 1} x$
+$A \Rightarrow \alpha \Rightarrow^{k - 1} x$
 
-#### Лемма о рекурсивном вычислении FIRST
-
-$\alpha = c\beta$
-
-$FIRST(\alpha) = \{c\}$
-
-$\alpha = A\beta$
-
-$FIRST(\alpha) = (FIRST(A)) \setminus \epsilon) \cup (FIRST(\beta)\ if\ \epsilon \in FIRST(A))$
-
-$FIRST(\epsilon) = \{\epsilon\}$
-
-### Алгоритм
+### Алгоритм TODO()
 
 FIRST: map<N, set<$\Sigma \cup \epsilon$>>
 
@@ -177,43 +225,7 @@ function getFIRST($\alpha$)
 
 ​    return $(FIRST[ \alpha[0]] \setminus \epsilon) \cup (getFIRST(\alpha[1:]), if \ \epsilon \in FIRST[\alpha[0]])$
 
-#### Алгоритм построения FIRST
 
-do {
-
-​    for A $\rightarrow \alpha$:
-
-​        FIRST[A] $\cup = getFIRST(\alpha)$
-
-} while FIRST changes
-
-**def** *FOLLOW*: $N \rightarrow 2^{\Sigma \cup \{\$\}}$
-
-​    $c \in FOLLOW(A) \Leftrightarrow S \Rightarrow^* \alpha A c \beta$
-
-​    $\$ \in FOLLOW(A) \Leftrightarrow S \Rightarrow^* \alpha A$
-
-### Алгоритм FOLLOW
-
-FOLLOW: map<N, set<$\Sigma \cup \$$>>
-
-FOLLOW(S) = {$}
-
-do {
-
-​    for A $\rightarrow \alpha$
-
-​        for B in $\alpha$
-
-​            let $\alpha = \xi B \eta$
-
-​            FOLLOW(B) = FIRST($\eta) \setminus \epsilon$
-
-​            if $\epsilon \in FIRST(\eta)$
-
-​                FOLLOW(B) $\cup =$ FOLLOW(A)
-
-} while FOLLOW changes
 
 ## Теорема
 
