@@ -128,6 +128,8 @@ $E \rightarrow T \\ E \rightarrow E \ + \ T \\ T \rightarrow F \\ T \rightarrow 
 
 ### $FIRST$ и $FOLLOW$
 
+---
+
 **def** *FIRST*: $(N \cup \Sigma)^* \rightarrow 2^{\Sigma \cup \{\epsilon\}}$. По строчке из терминалов и нетерминалов возвращается множество, которое состоит из символов и $\epsilon$
 $c \in FIRST(\alpha) \Leftrightarrow \alpha \Rightarrow^* cx$. Множество символов, с которых может начинаться $\alpha$
 $e \in FIRST(\alpha) \Leftrightarrow \alpha\Rightarrow^* \epsilon $
@@ -154,7 +156,7 @@ $e \in FIRST(\alpha) \Leftrightarrow \alpha\Rightarrow^* \epsilon $
 > $FOLLOW(E) = \{),\$,+\}$
 > 
 
-### Лемма о рекурсивном вычислении $FIRST$
+#### Лемма о рекурсивном вычислении $FIRST$
 
 $\alpha = c\beta$
 $FIRST(\alpha) = \{c\}$
@@ -164,7 +166,7 @@ $FIRST(\alpha) = (FIRST(A)) \setminus \epsilon) \cup (FIRST(\beta)\ if\ \epsilon
 
 $FIRST(\epsilon) = \{\epsilon\}$
 
-### Алгоритм построения $FIRST$
+#### Алгоритм построения $FIRST$
 
 $\forall A\ FIRST[A]=\empty$
 $while\ (FIRST\ changes) \{$
@@ -172,7 +174,7 @@ $while\ (FIRST\ changes) \{$
     $FIRST[A]\cup=FIRST[\alpha]$
 $\}$
 
-### Алгоритм построения $FOLLOW$
+#### Алгоритм построения $FOLLOW$
 
 $FOLLOW: map<N, set<$$\Sigma \cup \$>>$
 $FOLLOW(S) = {\$}$
@@ -185,7 +187,7 @@ $do \{$
 				$FOLLOW(B) $$\cup =$$ FOLLOW(A)$ // почему FOLLOW(A)
 $\}\ while\ FOLLOW\ changes$
 
-### Алгоритм TODO()
+##### Алгоритм TODO()
 
 1. Удалить непорождающие символы
 
@@ -195,7 +197,7 @@ $\}\ while\ FOLLOW\ changes$
 
    **ex**: Grammar:
 
-### Удаление непорождающих символов TODO()
+##### Удаление непорождающих символов TODO()
 
 1. Множество непорождающих символов $Gen = \empty$
 
@@ -211,7 +213,7 @@ A - порождающий, но Алгоритм 1 выбрал как поро
     
 $A \Rightarrow \alpha \Rightarrow^{k - 1} x$
 
-### Алгоритм TODO()
+##### Алгоритм TODO()
 
 FIRST: map<N, set<$\Sigma \cup \epsilon$>>
 
@@ -225,44 +227,42 @@ function getFIRST($\alpha$)
 
 ​    return $(FIRST[ \alpha[0]] \setminus \epsilon) \cup (getFIRST(\alpha[1:]), if \ \epsilon \in FIRST[\alpha[0]])$
 
+#### Теорема 1
 
-
-## Теорема
-
-$\Gamma$ является LL(1) $\Leftrightarrow$ $\forall A \rightarrow \alpha, A \rightarrow \beta$:
+$\Gamma\in$  **LL(1)** $\Leftrightarrow$ $\forall A \rightarrow \alpha, A \rightarrow \beta$:
 
 1. $FIRST(\alpha) \cap FIRST(\beta) = \empty$
 2. $\epsilon \in FIRST(\alpha) \Rightarrow FIRST(\beta) \cap FOLLOW(A) = \empty$
 
 >  Доказательство:
+>  Определение **LL(1)**.
+>  1. $S\Rightarrow^*xA\xi\Rightarrow^*x\gamma\xi\Rightarrow^*xc\tau$
+>  2. $S\Rightarrow^*xA\eta\Rightarrow^*x\delta\eta\Rightarrow^*xc\sigma$
+>  Тогда $\gamma=\delta$  
 >
->  $\Rightarrow$) от противного:
+>  $\Rightarrow)$ (Необходимость). Пусть $\Gamma\in$ **LL(1)** 
 >
->  ​    ] не (1)
+>  1. $\exists A \rightarrow \alpha, A \rightarrow \beta, c \in FIRST(\alpha) \cap FIRST(\beta)$
+>     $S \Rightarrow^* xA\sigma \Rightarrow x \alpha \sigma \Rightarrow^* xc\xi\sigma$
+>     $S \Rightarrow^* xA\sigma \Rightarrow x \beta \sigma \Rightarrow^* xc\eta\sigma$. По символу $c$ мы не можем понять какое из правил выбирать следующим $\Rightarrow\Gamma\notin$ **LL(1)**
+>  2. $\epsilon \in FIRST(\alpha) \cap FIRST(\beta)$
+>     $S \Rightarrow^* xA\sigma \Rightarrow x \alpha \sigma \Rightarrow^* x\sigma \Rightarrow xc\tau$
+>     $S \Rightarrow^* xA\sigma \Rightarrow x \beta \sigma \Rightarrow^* x\sigma \Rightarrow xc\tau$. По символу $c$ мы не можем понять какое из правил выбирать следующим $\Rightarrow\Gamma\notin$ **LL(1)**
+>  3. $\epsilon\in FIRST(\alpha)$ и $c\in FIRST(\beta)\cap FOLLOW(A)$
+>     $S\Rightarrow^*xA\xi\Rightarrow^*x\alpha\xi\Rightarrow^*x\xi\Rightarrow xc\eta$
+>     $S\Rightarrow^*xA\xi\Rightarrow^*x\beta\xi\Rightarrow^*xc\beta'\xi$. Аналогино первым двум пунктам
 >
->    1. $\exists A \rightarrow \alpha, A \rightarrow \beta, c \in FIRST(\alpha) \cap FIRST(\beta)$
+>  $\Leftarrow)$ (Достаточность). Пусть $\gamma\neq\delta$. При этом выполнены условия 1 и 2:
 >
->  ​      $S \Rightarrow^* xA\sigma \Rightarrow x \alpha \sigma \Rightarrow^* xc\xi\sigma$
->
->  ​      $S \Rightarrow^* xA\sigma \Rightarrow x \beta \sigma \Rightarrow^* xc\eta\sigma$
->
->  ​    2. $\epsilon \in FIRST(\alpha) \cap FIRST(\beta)$
->
->  ​       $S \Rightarrow^* xA\sigma \Rightarrow x \alpha \sigma \Rightarrow^* x\sigma \Rightarrow xc\tau$
->
->  ​        $S \Rightarrow^* xA\sigma \Rightarrow x \beta \sigma \Rightarrow^* x\sigma \Rightarrow xc\tau$
->
->  ​    ] не (2)
->
->  ​    ...
+>  1. Если из $\gamma$ выводится $c$ и из $\delta$ выводится $c$, то $c\in FIRST(\gamma)$ и $c\in FIRST(\delta)$, что противоречит условию 1 теоремы.
+>  2. Если из $\gamma$ выводится $c$ и из $\delta$ выводится $\epsilon$, при этом $c$ лежит в $\eta$, тогда $c\in FIRST(\gamma)$, $c\in FOLLOW(A)$ и $\epsilon\in FIRST(\delta)$, что противоречит условию 2 теоремы. (аналогично для $\gamma\Rightarrow^*\epsilon\zeta$ и $\delta\Rightarrow^*c\sigma$ ).
+>  3. Если из $\gamma$ выводится $\epsilon$ и из $\delta$ выводится $\epsilon$, тогда, соответственно, $\epsilon\in FIRST(\gamma)$ и $\epsilon\in FIRST(\delta)$, что противоречит 1 пункту теоремы.
+
+### Рекурсивный спуск
 
 ---
 
-## Рекурсивный спуск
-
 $A \rightarrow \alpha_1 | \alpha_2 | ... | \alpha_k$
-
-
 
 Node:
 
