@@ -258,57 +258,59 @@ $\Gamma\in$  **LL(1)** $\Leftrightarrow$ $\forall A \rightarrow \alpha, A \right
 >  2. Если из $\gamma$ выводится $c$ и из $\delta$ выводится $\epsilon$, при этом $c$ лежит в $\eta$, тогда $c\in FIRST(\gamma)$, $c\in FOLLOW(A)$ и $\epsilon\in FIRST(\delta)$, что противоречит условию 2 теоремы. (аналогично для $\gamma\Rightarrow^*\epsilon\zeta$ и $\delta\Rightarrow^*c\sigma$ ).
 >  3. Если из $\gamma$ выводится $\epsilon$ и из $\delta$ выводится $\epsilon$, тогда, соответственно, $\epsilon\in FIRST(\gamma)$ и $\epsilon\in FIRST(\delta)$, что противоречит 1 пункту теоремы.
 
-### Рекурсивный спуск
+## Рекурсивный спуск
 
 ---
 
+#### Алгоритм
+
 $A \rightarrow \alpha_1 | \alpha_2 | ... | \alpha_k$
 
-Node:
+1. Построить множества $FIRST$ и $FOLLOW$
+2. Определим структуру $Node$
 
-​    s: $N \cup \Sigma$
+    $Node:$
+      $s:$ $N \cup \Sigma$
+      $ch:$ array(Node)
 
-​    ch: array(Node)
+    $token:$ $\Sigma \cup \{\$\}$ // текущий терминал
+    $next()$ // функция взятия следующего токена
 
-token: $\Sigma \cup \{\$\}$
+3. Определим мета-фукцию $FIRST'$ (которая, на самом деле, является множеством)
 
-next()
+    $FIRST'(A \rightarrow \alpha) = (FIRST(\alpha) \setminus \epsilon) \cup (FOLLOW(A) \ if\ \epsilon \in FIRST(\alpha))$
 
+4. Для каждого нетерминала построим функции. (строим дерево разбора) 
 
+    ```pseudocode
+    Node A() {
+        Node res = Node(A)
+        switch (token)
+            FIRST`(A -> a1):
+                // a1 = X1X2...Xl
+                // X1 in N
+                Node x1 = X1() // вызывается рекурсивно X1
+                res.addChild(x1)
+                // X1 in N
+                Node x2 = X2()
+                res.addChild(x2)
+                // X3 in Sigma
+                assert x3 = token or Error()
+                res.addChild(token)
+                next()
 
-$FIRST'(A \rightarrow \alpha) = (FIRST(\alpha) \setminus \epsilon) \cup (FOLLOW(A) \ if\ \epsilon \in FIRST(\alpha))$
+                ...
+                // Xl ...
+                ...
 
+                return res
+           FIRST`(A -> a2)
+               ...
 
-
-```
-Node A() {
-    Node res = Node(A)
-    switch (token)
-        FIRST'(A -> a1):
-            // a1 = X1X2...Xl
-            // X1 in N
-            Node x1 = X1()
-            res.addChild(x1)
-            // X1 in N
-            Node x2 = X2()
-            res.addChild(x2)
-            // X3 in Sigma
-            assert x3 = token or Error()
-            res.addChild(token)
-            next()
-
-            ...
-            // Xl ...
-            ...
-
-            return res
-       FIRST'(A -> a2)
-           ...
-
-       default:
-           Error()
-}
-```
+           default:
+               Error()
+    }
+    ```
 
 
 
@@ -325,18 +327,25 @@ F \rightarrow (E)
 $$
 
 
-|      | FIRST  |
-| ---- | ------ |
-| E    | `n, (` |
-| T    | `n, (` |
-| F    | `n, (` |
+|      | FIRST  | FOLLOW |
+| ---- | ------ | ------ |
+| E    | `n, (` |	 |
+| T    | `n, (` | 		 |
+| F    | `n, (` |		 |
 
-`FIRST (E + T) = {n, (}`
-`FIRST(T) = {n, (}`
+$FIRST`(E + T) = {n, (}$
+$FIRST`(T) = {n, (}$ замечаем, что наша грамматика не **LL(1)** (она леворекурсивная)
 
-**def** $\Gamma$ называется *леворекурсивной*, если в $\Gamma: A \Rightarrow^+ A \alpha$
+### Левая рекурсия и правое ветвление
 
-**comment** $\Gamma$ - леворекурсивная $\Rightarrow \ \Gamma \notin LL(1) $
+---
+
+**Определение** $\Gamma$ называется *леворекурсивной*, если в $\Gamma: A \Rightarrow^+ A \alpha$
+
+#### Теорема 2. 
+
+$\Gamma$ - леворекурсивная $\Rightarrow \ \Gamma \notin LL(1) $
+
 $$
 A \Rightarrow \beta \Rightarrow^* A \alpha \\
 A \Rightarrow^* B \xi \Rightarrow \gamma \xi \Rightarrow^* A \alpha \\
@@ -348,7 +357,7 @@ $A \rightarrow A \alpha$ - непосредственная левая реку�
 $A \rightarrow \beta$
 $\beta \alpha^*$
 
-Устранение левой рекурсии:
+Устранение непосредственной левой рекурсии:
 
 $A \rightarrow \beta A'$
 $A' \rightarrow \epsilon$
