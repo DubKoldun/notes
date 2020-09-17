@@ -260,7 +260,6 @@ $\Gamma\in$  **LL(1)** $\Leftrightarrow$ $\forall A \rightarrow \alpha, A \right
 
 ## Рекурсивный спуск
 
----
 
 #### Алгоритм
 
@@ -280,7 +279,7 @@ $A \rightarrow \alpha_1 | \alpha_2 | ... | \alpha_k$
 
     $FIRST'(A \rightarrow \alpha) = (FIRST(\alpha) \setminus \epsilon) \cup (FOLLOW(A) \ if\ \epsilon \in FIRST(\alpha))$
 
-4. Для каждого нетерминала построим функции. (строим дерево разбора) 
+4. Для каждого нетерминала построим функции (строим дерево разбора). 
 
     ```pseudocode
     Node A() {
@@ -329,9 +328,9 @@ $$
 
 |      | FIRST  | FOLLOW |
 | ---- | ------ | ------ |
-| E    | `n, (` |	 |
-| T    | `n, (` | 		 |
-| F    | `n, (` |		 |
+| E    | `n, (` | `$, +, )` |
+| T    | `n, (` | `$, +, *, )` |
+| F    | `n, (` | `$, +, *, )` |
 
 $FIRST`(E + T) = {n, (}$
 $FIRST`(T) = {n, (}$ замечаем, что наша грамматика не **LL(1)** (она леворекурсивная)
@@ -340,43 +339,97 @@ $FIRST`(T) = {n, (}$ замечаем, что наша грамматика не
 
 ---
 
-**Определение** $\Gamma$ называется *леворекурсивной*, если в $\Gamma: A \Rightarrow^+ A \alpha$
+**Определение.** $\Gamma$ называется *леворекурсивной*, если в $\Gamma: A \Rightarrow^+ A \alpha$
+**Определение.** Говорят, что в грамматике есть правое ветвление, если $A\rightarrow\alpha\beta$, $A\rightarrow\alpha\gamma$ и $\beta\neq\gamma$ 
 
 #### Теорема 2. 
 
-$\Gamma$ - леворекурсивная $\Rightarrow \ \Gamma \notin LL(1) $
+$\Gamma$ - леворекурсивная или в $\Gamma$ есть правое ветвление $\Rightarrow \ \Gamma \notin LL(1) $
 
-$$
-A \Rightarrow \beta \Rightarrow^* A \alpha \\
-A \Rightarrow^* B \xi \Rightarrow \gamma \xi \Rightarrow^* A \alpha \\
-A \Rightarrow^* B \xi \Rightarrow \delta \xi \Rightarrow^* x = cy \\
-c \in (FIRST(\delta)) \setminus \epsilon \cup (FIRST(\xi) \ if \ \epsilon \in FIRST(\delta)) \\
-c \in FIRST(\gamma) \setminus \epsilon \cup (FIRST(\xi) \ if \ \epsilon \ in FIRST(\gamma))
-$$
-$A \rightarrow A \alpha$ - непосредственная левая рекурсия
+**Доказательство** 
+
+1. Левая рекурсия
+    $A\Rightarrow^*x,\ x\in\Sigma^*$
+    $A\Rightarrow^+A\alpha$
+    $A \Rightarrow^* B \xi \Rightarrow \gamma \xi \Rightarrow^* A \alpha\Rightarrow^*x\alpha=cy\alpha $
+    $A \Rightarrow^* B \xi \Rightarrow \delta \xi \Rightarrow^* x = cy$
+    $c \in (FIRST(\delta)) \setminus \epsilon \cup (FIRST(\xi) \ if \ \epsilon \in FIRST(\delta))$
+    $c \in FIRST(\gamma) \setminus \epsilon \cup (FIRST(\xi) \ if \ \epsilon \ in FIRST(\gamma))$
+   
+2. Правое ветвление
+
+    Очевидно из того, по $A\rightarrow\alpha\beta$, $A\rightarrow\alpha\gamma$ и $\beta\neq\gamma$  не выполняется пункт 1 теоремы 1 ($FIRST(\alpha\beta)\cap FIRST(\alpha\gamma)\neq\empty)$
+
+Непосредственная левая рекурсия
+$A \rightarrow A \alpha$ 
 $A \rightarrow \beta$
 $\beta \alpha^*$
 
-Устранение непосредственной левой рекурсии:
+#### Устранение левой рекурсии и правого ветвления
 
-$A \rightarrow \beta A'$
-$A' \rightarrow \epsilon$
-$A' \rightarrow \alpha A'$
+**Правое ветвление**
+Проблема:
 
-$E \rightarrow E \stackrel{\alpha}{+ T}$
-$E \rightarrow \stackrel{\beta}{T}$
+$A\rightarrow\alpha\beta$
+$A\rightarrow\alpha\gamma$
+
+Решение:
+
+$A\rightarrow\alpha A`$
+$A`\rightarrow\beta$
+$A`\rightarrow\gamma$
+
+**Непосредственная левая рекурсия**
+Проблема: 
+
+```mermaid
+graph TD;
+    A[A] --> B[A]
+    A --> C[alpha]
+    B --> D[A]
+    B --> E[alpha]
+    D --> F[A]
+    D --> G[alpha]
+    F --> H[beta]
+```
+
+$A\rightarrow A\alpha$
+$A\rightarrow\beta$
+
+Решение:
+
+$A \rightarrow \beta A`$
+$A` \rightarrow \epsilon$
+$A` \rightarrow \alpha A`$
+
+**Косвенная левая рекурсия** (без $\epsilon$ правил)
+Добьемся такого:
+
+$A_1,...,A_n$
+Если $A_i\Rightarrow^+A_j\alpha$, то $j>i$
+
+$for\ i=1..n$
+	$removeDescentRecursion(A_i\rightarrow A_i\alpha)$
+	$for\ j=i+1..n$
+		$if(exist(A_j\rightarrow A_i\beta))\{$
+			$forall\ A_i\rightarrow\gamma$
+            	$insert(A_j\rightarrow\gamma\beta)$
+            $remove(A_j\rightarrow A_i\beta)$
+            $\}$ 
+Инвариант: 
+Если $k<i, A_k\rightarrow\beta, \beta[1]=A_l$, тогда $l>k$
+Если $k\geq i,A_k\rightarrow\beta, \beta[1]=A_l$, тогда $l\geq i$
 
 
-
-### Грамматика с устранённой непосредственной левой рекурсией
+#### Грамматика с устранённой непосредственной левой рекурсией
 
 $$
-E \rightarrow TE' \\
-E' \rightarrow \epsilon \\
-E' \rightarrow +TE' \\
-T \rightarrow FT' \\
-T' \rightarrow \epsilon \\
-T' \rightarrow \times FT' \\
+E \rightarrow TE` \\
+E` \rightarrow \epsilon \\
+E` \rightarrow +TE` \\
+T \rightarrow FT` \\
+T` \rightarrow \epsilon \\
+T` \rightarrow \times FT` \\
 F \rightarrow n \\
 F \rightarrow (E)
 $$
@@ -384,9 +437,9 @@ $$
 |      | FIRST | FOLLOW    |
 | ---- | ----- | --------- |
 | E    | `( n` | `$ )`     |
-| E'   | `+ e` | `$ )`     |
+| E`   | `+ e` | `$ )`     |
 | T    | `( n` | `+ $ )`   |
-| T'   | `* e` | `+ $ )`   |
+| T`   | `* e` | `+ $ )`   |
 | F    | `( n` | `* + $ )` |
 
 ```
@@ -446,44 +499,17 @@ Node F()
             return res
 ```
 
----
-
-$$
-A \rightarrow A \alpha \\
-A \rightarrow \beta \\
---- \\
-A \rightarrow \beta A' \\
-A' \rightarrow \alpha A' \\
-A' \rightarrow \epsilon
-$$
-
-
+#### Устранение левой рекурсии полный алгоритм (с удалением $\epsilon$ правил)
 
 $\beta \alpha^*$
-    A
-        switch
-            FIRST'($A \rightarrow \beta_1$)
-
-​                     $\beta_1$
-
-​            FIRST'($A \rightarrow \beta_2$)
-
-​                     $\beta_2$
-​             ...
-​             while (token $\in$ FIRST'($A \rightarrow A \alpha $))
-
-```mermaid
-graph TD;
-    A[A] --> B[A]
-    A --> C[alpha]
-    B --> D[A]
-    B --> E[alpha]
-    D --> F[A]
-    D --> G[alpha]
-    F --> H[beta]
-```
-
-
+$A()$
+	$switch$
+		$FIRST`$($A \rightarrow \beta_1$)
+			$\beta_1$
+		$FIRST`$($A \rightarrow \beta_2$)
+			 $\beta_2$
+		...
+while (token $\in$ FIRST'($A \rightarrow A \alpha $))
 
 $A \Rightarrow^+ A\alpha$
 $A \rightarrow X \alpha, \ X \in \Sigma$ или $\#X > \#A$
@@ -516,7 +542,7 @@ $A \rightarrow \alpha A' \\ A' \rightarrow \beta \\ A' \rightarrow \gamma$
 
 
 
-## Построение нерекурснвных нисходящих разборов
+## Построение нерекурсивных нисходящих разборов
 
 Стек, управлящая таблица
 
