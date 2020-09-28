@@ -2,41 +2,53 @@
 
 _Алонзо Чёрч_ ~ 40 годы. Развитие идеи, что все - функция
 
-Рассмотрим алфавит
-
+1) Предметный язык:
 
 $$
-pre- \lambda -term \ T \ :=
+pred- \lambda -term \ T \ :=
 \left\{
 	\begin{array}{ll}
    		x \ (variable; set \ of \ small \ letter \ with \ indices); \\
 		(T,T) \ (application); \\
-		\lambda x.T \ (abstraction). \\
+		(\lambda x.T) \ (abstraction). \\
 	\end{array}
 \right.
 $$
 
-
+2) Мета-язык
 
 x, y - метапеременные для переменных
 большие буквы - метапеременные для T
 
-Назовем два $ pre- \lambda -terms$ (P, Q)  $ \alpha$ - **эквивалентными**, если
+Договоренность об  интерпретации сокращенных записей:
 
-1. P = x Q = y и x = y
-2. P = (S<sub>1</sub>T<sub>1</sub>) Q = (S<sub>2</sub>T<sub>2</sub>) и S<sub>1</sub> = $\alpha$S<sub>2</sub>, T<sub>1</sub> = $\alpha$T<sub>2</sub>
-3. P = $(\lambda x.A) \ Q \ =  \ \lambda y.B \ and \  A[x:=t] B[y:=t] \ t $ - свободная переменна
+1) Аппликация. $2\ 2\ 2\ 2\rightarrow((2\ 2)\ 2)\ 2$. (слева направо)
+2) $\lambda-abstraction$. $\lambda x.\lambda. y a b c\rightarrow \lambda x.(\lambda y. (a b c))$. (жадно) 
+
+#### $\alpha$ - эквивалентность
+
+Назовем два $ pre- \lambda -terms$ (P, Q)  $ \alpha$ - **эквивалентными** (P$=_\alpha$Q), если
+
+1. P = x, Q = y и x = y
+2. P = (S<sub>1</sub>T<sub>1</sub>), Q = (S<sub>2</sub>T<sub>2</sub>) и S<sub>1</sub> $=_\alpha$S<sub>2</sub>, T<sub>1</sub> $ =_\alpha$T<sub>2</sub>
+3. P = $(\lambda x.A), \ Q \ =  \ \lambda y.B \ and \  A[x:=t]=_\alpha B[y:=t]$, где $ t $ - свободная(свежая???) переменная
 
 **Равенство** <=> текстовое совпадение
+
+**Определение.** $P[x:=Q]$
+
+1.  Если $Q$ свободен для подстановки в $P$ вместо $x$
+2. 
+
 $$
-A[x:=B] =
+P[x:=Q] =
 	\left \{
 		\begin{array}{ll}
-			B  , \  A=x \\
-			A,  \ A=y, \ y!=x \\
-			P[x:=B] \  Q[x:B] \ A = (PQ) \\
-			\lambda y.p[x:=B] \ if  \ A = \lambda y.P \  and \ y \ \neq x \\
-			A \ if \ A= \lambda x.P
+			Q,\ if\  P=y,\ p=x \\
+			y,\ if\  P=y, \ y\neq x \\
+			R[x:=Q]S[x:=Q],\ if \ P = (RS) \\
+			\lambda y.R[x:=Q],\ if\  \ P = (\lambda y.R)\  and\ x\neq y \\
+			P, \ if \ P= \lambda y.R\ and\ x=y
 		\end{array}
 	\right.
 $$
@@ -63,7 +75,7 @@ $$
 
 **def** **$\beta$-редекс**
 
-**def** $\alpha$ -><sub>$\beta$</sub> B находятся в отношении $\beta $ - редукции, если
+**def** $\alpha$ $\rightarrow_\beta$ B находятся в отношении $\beta $ - редукции, если
 
 1. A = PQ B = RS. P -><sub>$\beta$</sub>R Q =<sub>$\alpha$</sub> S либо (знаки отрази)
 2. A - B - редекс A = ($\lambda$ x.P) Q, B = p[x := Q] при условии, что Q  обобщается для подстановки для x в P
